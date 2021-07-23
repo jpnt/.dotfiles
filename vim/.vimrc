@@ -12,7 +12,7 @@ set tabstop=4 softtabstop=4
 set shiftwidth=4
 
 syntax enable
-filetype plugin on
+filetype plugin indent on
 
 command! MakeTags !ctags -R .
 
