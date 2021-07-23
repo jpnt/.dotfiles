@@ -1,0 +1,58 @@
+! xterm
+XTerm*faceName: 		Terminus
+XTerm*faceSize: 		12
+XTerm*saveLines:		4096
+
+! urxvt
+URxvt*font:						xft:Terminus:size=12
+URxvt*saveLines:				4096
+URxvt*scrollBar:				false
+URxvt*transparent:				true
+URxvt*shading:					20
+URxvt.iso14755:					false
+URxvt.iso14755_52:				false
+URxvt.keysym.Shift-Control-V:	eval:paste_clipboard
+URxvt.keysym.Shift-Control-C:	eval:selection_to_clipboard
+
+
+! universal
+*.pointerColor:				white
+*.pointerColorBackground: 	black
+*.cursorColor:				white
+*.cursorBlink:				true
+ 
+! fore/background
+*.foreground:			#e9e0e9
+*.background:			#000000
+
+! black
+*.color0:				#000000
+*.color8:				#fd8df9
+
+! red
+*.color1:				#160e15
+*.color9:				#c9ac29
+
+! green
+*.color2:				#2b1f2b
+*.color10:				#fe27f7
+
+! yellow
+*.color3:				#483647
+*.color11:				#f59b9e
+
+! blue
+*.color4:				#6d536c
+*.color12:				#3bae49
+
+! magenta
+*.color5:				#9a7798
+*.color13:				#fd8086
+
+! cyan
+*.color6:				#c2a7c1
+*.color14:				#00b72f
+
+! white
+*.color7:				#e9e0e9
+*.color15:				#2091f3
