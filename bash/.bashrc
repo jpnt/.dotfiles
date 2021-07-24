@@ -7,4 +7,6 @@
 
 alias ls='ls --color=auto'
 alias ll='ls -AlX'
+alias tree='tree -C'
+
 PS1='[\u@\h \W]\$ '
