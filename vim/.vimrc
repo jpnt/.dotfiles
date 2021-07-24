@@ -1,15 +1,11 @@
 set nu
-
-set path+=**
-
-set wildmenu
-
-set nocompatible
-
+set incsearch
 set cursorline
-
 set tabstop=4 softtabstop=4
 set shiftwidth=4
+set nocompatible
+set path+=**
+set wildmenu
 
 syntax enable
 filetype plugin indent on
