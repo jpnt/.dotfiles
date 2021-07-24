@@ -8,4 +8,6 @@ git clone https://github.com/jpnt/.dotfiles
 
 cd .dotfiles
 
+rm README.md
+
 stow *
