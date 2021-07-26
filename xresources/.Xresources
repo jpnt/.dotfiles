@@ -1,7 +1,7 @@
 ! xterm
-XTerm*faceName: 		Terminus
-XTerm*faceSize: 		12
-XTerm*saveLines:		4096
+XTerm*faceName:		Terminus
+XTerm*faceSize:		12
+XTerm*saveLines:	4096
 
 ! urxvt
 URxvt*font:						xft:Terminus:size=12
@@ -13,46 +13,51 @@ URxvt.iso14755:					false
 URxvt.iso14755_52:				false
 URxvt.keysym.Shift-Control-V:	eval:paste_clipboard
 URxvt.keysym.Shift-Control-C:	eval:selection_to_clipboard
-
+URxvt.keysym.Control-Up:		\033[1;5A
+URxvt.keysym.Control-Down:		\033[1;5B
+URxvt.keysym.Control-Left:		\033[1;5D
+URxvt.keysym.Control-Right:		\033[1;5C
+URxvt.keysym.Shift-Up:			command:\033]720;1\007
+URxvt.keysym.Shift-Down:		command:\033]721;1\007
 
 ! universal
 *.pointerColor:				white
-*.pointerColorBackground: 	black
+*.pointerColorBackground:	black
 *.cursorColor:				white
 *.cursorBlink:				true
  
 ! fore/background
-*.foreground:			#e9e0e9
-*.background:			#000000
+*.foreground:	#e9e0e9
+*.background:	#000000
 
 ! black
-*.color0:				#000000
-*.color8:				#fd8df9
+*.color0:	#000000
+*.color8:	#fd8df9
 
 ! red
-*.color1:				#160e15
-*.color9:				#c9ac29
+*.color1:	#160e15
+*.color9:	#c9ac29
 
 ! green
-*.color2:				#2b1f2b
-*.color10:				#fe27f7
+*.color2:	#2b1f2b
+*.color10:	#fe27f7
 
 ! yellow
-*.color3:				#483647
-*.color11:				#f59b9e
+*.color3:	#483647
+*.color11:	#f59b9e
 
 ! blue
-*.color4:				#6d536c
-*.color12:				#3bae49
+*.color4:	#6d536c
+*.color12:	#3bae49
 
 ! magenta
-*.color5:				#9a7798
-*.color13:				#fd8086
+*.color5:	#9a7798
+*.color13:	#fd8086
 
 ! cyan
-*.color6:				#c2a7c1
-*.color14:				#00b72f
+*.color6:	#c2a7c1
+*.color14:	#00b72f
 
 ! white
-*.color7:				#e9e0e9
-*.color15:				#2091f3
+*.color7:	#e9e0e9
+*.color15:	#2091f3
