@@ -15,7 +15,7 @@ print_date() {
 
 print_mem() {
 	MEM=`/usr/bin/free -m | grep ^Mem: | sed -E 's/ +/ /g' | cut -d ' ' -f4`
-	echo -n "Free mem: ${MEM}M  "
+	echo -n "Free RAM: ${MEM}M  "
 }
 
 print_bat() {
@@ -71,8 +71,6 @@ while :; do
 	fi
 	# print_date
 	print_mem
-	print_cpu $IOSTAT_DATA
-	print_cpuspeed
 	print_bat $ACPI_DATA
 	echo ""
 	I=$(( ( ${I} + 1 ) % 11 ))
