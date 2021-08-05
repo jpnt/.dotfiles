@@ -23,41 +23,46 @@ URxvt.keysym.Shift-Down:		command:\033]721;1\007
 ! universal
 *.pointerColor:				white
 *.pointerColorBackground:	black
-*.cursorColor:				white
 *.cursorBlink:				true
- 
-! fore/background
-*.foreground:	#e9e0e9
-*.background:	#000000
 
-! black
-*.color0:	#000000
-*.color8:	#fd8df9
-
-! red
-*.color1:	#160e15
-*.color9:	#c9ac29
-
-! green
-*.color2:	#2b1f2b
-*.color10:	#fe27f7
-
-! yellow
-*.color3:	#483647
-*.color11:	#f59b9e
-
-! blue
-*.color4:	#6d536c
-*.color12:	#3bae49
-
-! magenta
-*.color5:	#9a7798
-*.color13:	#fd8086
-
-! cyan
-*.color6:	#c2a7c1
-*.color14:	#00b72f
-
-! white
-*.color7:	#e9e0e9
-*.color15:	#2091f3
+! NightLionV2 color scheme
+*.foreground:  #bbbbbb
+*.background:  #171717
+*.cursorColor: #bbbbbb
+!
+! Black
+*.color0:      #4c4c4c
+*.color8:      #555555
+!
+! Red
+*.color1:      #bb0000
+*.color9:      #ff5555
+!
+! Green
+*.color2:      #04f623
+*.color10:     #7df71d
+!
+! Yellow
+*.color3:      #f3f167
+*.color11:     #ffff55
+!
+! Blue
+*.color4:      #64d0f0
+*.color12:     #62cbe8
+!
+! Magenta
+*.color5:      #ce6fdb
+*.color13:     #ff9bf5
+!
+! Cyan
+*.color6:      #00dadf
+*.color14:     #00ccd8
+!
+! White
+*.color7:      #bbbbbb
+*.color15:     #ffffff
+!
+! Bold, Italic, Underline
+*.colorBD:     #e3e3e3
+!*.colorIT:
+!*.colorUL:
