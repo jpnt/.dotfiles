@@ -1,28 +1,27 @@
 #!/bin/sh
 
-essential="networkmanager wget tree base-devel"
 calculator="calc libqalculate"
 sysmonitor="htop sysstat acpi"
 musicplayer="cmus"
 rss="newsboat"
-filemanager="ranger pcmanfm"
-webbrowser="w3m netsurf"
+filemanager="ranger pcmanfm tree"
+web="w3m netsurf wget"
 imageviewer="sxiv"
 wallpaper="nitrogen"
 mediaplayer="mplayer"
 pdfviewer="zathura zathura-pdf-mupdf"
 texteditor="vim nano"
 audio="alsa-utils pulseaudio"
-networking="net-tools"
+networking="net-tools networkmanager"
 convertdoc="pandoc"
 office="libreoffice"
 plot="gnuplot"
-gtktheme="lxappearance"
+gtktheme="lxappearance gnome-themes-extra"
 bittorrent="qbittorrent"
 spectrwm="spectrwm dmenu xorg-server xorg-xinit gnu-free-fonts"
 
 
-packages="$essential $calculator $sysmonitor $musicplayer $rss $filemanager $web $imageviewer $wallpaper $pdfviewer $texteditor $audio $networking $convertdoc $office $plot $gtktheme $bittorrent $spectrwm"
+packages="$calculator $sysmonitor $musicplayer $rss $filemanager $web $imageviewer $wallpaper $mediaplayer $pdfviewer $texteditor $audio $networking $convertdoc $office $plot $gtktheme $bittorrent $spectrwm"
 
 echo "Installing packages in 5 seconds..."
 echo "Packages: $packages"
