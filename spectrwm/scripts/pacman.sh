@@ -18,7 +18,7 @@ office="libreoffice"
 plot="gnuplot"
 gtktheme="lxappearance gnome-themes-extra"
 bittorrent="qbittorrent"
-spectrwm="spectrwm dmenu xorg-server xorg-xinit gnu-free-fonts"
+spectrwm="spectrwm dmenu xorg-server xorg-xinit xorg-xrandr arandr gnu-free-fonts"
 
 
 packages="$calculator $sysmonitor $musicplayer $rss $filemanager $web $imageviewer $wallpaper $mediaplayer $pdfviewer $texteditor $audio $networking $convertdoc $office $plot $gtktheme $bittorrent $spectrwm"
