@@ -3,6 +3,7 @@ set incsearch
 set cursorline
 set tabstop=4 softtabstop=4
 set shiftwidth=4
+set expandtab
 set nocompatible
 set path+=**
 set wildmenu

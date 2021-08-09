@@ -9,4 +9,7 @@ alias ls='ls --color=auto'
 alias ll='ls -AlX'
 alias tree='tree -C'
 
-PS1='[\u@\h \W]\$ '
+PS1="\[\e[32m\][\w] $ \[\e[00m\]"
+
+# root PS1:
+# PS1="\[\e[31m\][\w] # \[\e[00m\]"
