@@ -1,5 +1,6 @@
 #!/bin/sh
 
+terminal="rxvt-unicode xterm"
 calculator="calc libqalculate"
 sysmonitor="htop sysstat acpi"
 musicplayer="cmus"
@@ -21,7 +22,7 @@ bittorrent="qbittorrent"
 spectrwm="spectrwm dmenu xorg-server xorg-xinit xorg-xrandr arandr gnu-free-fonts"
 
 
-packages="$calculator $sysmonitor $musicplayer $rss $filemanager $web $imageviewer $wallpaper $mediaplayer $pdfviewer $texteditor $audio $networking $convertdoc $office $plot $gtktheme $bittorrent $spectrwm"
+packages="$terminal $calculator $sysmonitor $musicplayer $rss $filemanager $web $imageviewer $wallpaper $mediaplayer $pdfviewer $texteditor $audio $networking $convertdoc $office $plot $gtktheme $bittorrent $spectrwm"
 
 echo "Installing packages in 5 seconds..."
 echo "Packages: $packages"
