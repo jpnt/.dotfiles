@@ -1,7 +1,7 @@
 #!/bin/sh
 #
-# Simple package installer for Arch Linux
-#
+# Simple package installer for Void Linux
+# 
 # Installs a custom list of fine software
 # Add or remove any software if you want.
 
@@ -14,18 +14,17 @@ filemanager="ranger pcmanfm tree"
 web="w3m netsurf wget"
 imageviewer="sxiv"
 wallpaper="nitrogen"
-mediaplayer="mplayer"
+mediaplayer="mplayer ffmpeg"
 pdfviewer="zathura zathura-pdf-mupdf"
 texteditor="vim"
-audio="alsa-utils pulseaudio"
-networking="net-tools networkmanager"
+audio="alsa-utils apulse"
+networking="net-tools NetworkManager"
 convertdoc="pandoc"
 office="libreoffice"
 plot="gnuplot"
 gtktheme="lxappearance gnome-themes-extra"
 bittorrent="qbittorrent"
-spectrwm="spectrwm dmenu slock xorg xorg-xinit xorg-xrandr arandr gnu-free-fonts"
-
+spectrwm="spectrwm dmenu slock terminus-font xorg xinit xrandr arandr freefont-ttf"
 
 packages="$terminal $calculator $sysmonitor $musicplayer $rss $filemanager $web $imageviewer $wallpaper $mediaplayer $pdfviewer $texteditor $audio $networking $convertdoc $office $plot $gtktheme $bittorrent $spectrwm"
 
@@ -35,4 +34,4 @@ sleep 5
 echo "Installing the selected packages"
 
 # Update and install packages
-sudo pacman -Syu $packages --noconfirm
+sudo xbps-install -Suy $packages
