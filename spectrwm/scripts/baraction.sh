@@ -14,7 +14,7 @@ print_date() {
 }
 
 print_mem() {
-	MEM=`/usr/bin/free -m | grep ^Mem: | sed -E 's/ +/ /g' | cut -d ' ' -f4`
+	MEM=`/usr/bin/free -m | grep ^Mem | sed -E 's/ +/ /g' | cut -d ' ' -f4`
 	echo -n "Free RAM: ${MEM}M  "
 }
 
