@@ -1,4 +1,4 @@
-[jpnt dotfiles]
+# jpnt dotfiles
 
 how to use:
 
