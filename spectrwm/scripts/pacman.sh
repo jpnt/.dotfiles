@@ -25,9 +25,9 @@ plot="gnuplot"
 gtktheme="lxappearance gnome-themes-extra"
 bittorrent="qbittorrent"
 spectrwm="spectrwm dmenu slock xorg xorg-xinit xorg-xrandr arandr gnu-free-fonts"
+debugtools="strace ngrep tcpdump perf curl dstat wireshark-cli wireshark-qt"
 
-
-packages="$terminal $calculator $sysmonitor $musicplayer $rss $filemanager $web $imageviewer $wallpaper $mediaplayer $pdfviewer $texteditor $audio $networking $convertdoc $office $plot $gtktheme $bittorrent $spectrwm"
+packages="$terminal $calculator $sysmonitor $musicplayer $rss $filemanager $web $imageviewer $wallpaper $mediaplayer $pdfviewer $texteditor $audio $networking $convertdoc $office $plot $gtktheme $bittorrent $spectrwm $debugtools"
 
 echo "Installing packages in 5 seconds..."
 echo "Packages: $packages"
