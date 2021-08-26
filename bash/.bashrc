@@ -14,6 +14,10 @@ alias grep='grep --color=auto'
 
 alias tree='tree -C'
 
+alias ..='cd ..'
+
+alias untar='tar -xvzf'
+
 PS1="\[\e[32m\][\w] $ \[\e[00m\]"
 
 # root PS1:
