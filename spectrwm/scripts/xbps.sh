@@ -6,7 +6,7 @@
 # Add or remove any software if you want.
 
 terminal="rxvt-unicode xterm"
-calculator="calc libqalculate"
+calculator="calc qalculate"
 sysmonitor="htop sysstat acpi"
 musicplayer="cmus"
 rss="newsboat"
