@@ -22,6 +22,13 @@ let g:netrw_list_hide.=',\(^\s\s\)\zs\.\S\+'
 
 nnoremap ,html :-1read $HOME/.vim/.skeleton.html<CR>3jwf>a
 
+nmap <silent> t<C-n> :TestNearest<CR>
+nmap <silent> t<C-f> :TestFile<CR>
+nmap <silent> t<C-s> :TestSuite<CR>
+nmap <silent> t<C-l> :TestLast<CR>
+nmap <silent> t<C-g> :TestVisit<CR>
+
 call plug#begin()
 Plug 'jiangmiao/auto-pairs'
+Plug 'vim-test/vim-test'
 call plug#end()
