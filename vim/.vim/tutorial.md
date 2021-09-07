@@ -1,10 +1,12 @@
 # How to use this Vim config:
 
+My configuration is heavily inspired by Max Cantor's presentation called 'How to Do 90% of What Plugins Do (With Just Vim)', if you are interested go check it out!
+
 # Find files
 
 - :find <file>
 - *. to make it fuzzy
-- :b autocomplete open buffers
+- :b to autocomplete open buffers
 
 # Tag jumping (Ctags)
 
@@ -39,6 +41,14 @@
 
 - ,html gives html snippet (.skeleton.html)
 - (We can also add more snippets)
+
+# Run integration (vim-test plugin)
+
+- t + Ctrl + n for :TestNearest
+- t + Ctrl + f for :TestFile
+- t + Ctrl + s for :TestSuite
+- t + Ctrl + l for :TestLast
+- t + Ctrl + g for :TestVisit
 
 # Advice
 
