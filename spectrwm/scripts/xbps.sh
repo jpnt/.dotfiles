@@ -24,7 +24,7 @@ office="libreoffice"
 plot="gnuplot"
 gtktheme="lxappearance gnome-themes-extra"
 bittorrent="qbittorrent"
-spectrwm="spectrwm dmenu slock terminus-font xorg xinit xrandr arandr freefont-ttf"
+spectrwm="spectrwm dmenu scrot slock terminus-font xorg xinit xrandr arandr freefont-ttf"
 debugtools="strace ngrep tcpdump perf curl dstat wireshark wireshark-qt"
 
 packages="$terminal $calculator $sysmonitor $musicplayer $rss $filemanager $web $imageviewer $wallpaper $mediaplayer $pdfviewer $texteditor $audio $networking $convertdoc $office $plot $gtktheme $bittorrent $spectrwm $debugtools"
