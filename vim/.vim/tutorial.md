@@ -42,7 +42,7 @@ My configuration is heavily inspired by Max Cantor's presentation called 'How to
 - ,html gives html snippet (.skeleton.html)
 - (We can also add more snippets)
 
-# Run integration (vim-test plugin)
+# Build integration (vim-test plugin)
 
 - t + Ctrl + n for :TestNearest
 - t + Ctrl + f for :TestFile
