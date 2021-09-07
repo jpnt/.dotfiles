@@ -1,8 +1,8 @@
 #!/bin/sh
-# Example Bar Action Script for Linux.
-# Requires: acpi, iostat.
-# Tested on: Debian 10, Fedora 31.
 #
+# Example Bar Action Script for Linux.
+#
+# Requires: acpi, iostat.
 
 print_date() {
 	# The date is printed to the status bar by default.
