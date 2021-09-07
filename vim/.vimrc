@@ -22,8 +22,6 @@ let g:netrw_list_hide.=',\(^\s\s\)\zs\.\S\+'
 
 nnoremap ,html :-1read $HOME/.vim/.skeleton.html<CR>3jwf>a
 
-set makeprg=bundle\ exec\ rspec\ -f\ QuickfixFormatter
-
 call plug#begin()
 Plug 'jiangmiao/auto-pairs'
 call plug#end()
