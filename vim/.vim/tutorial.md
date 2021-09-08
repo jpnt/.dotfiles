@@ -8,6 +8,11 @@ Please view this file in raw format (some text disappears when converted to mark
 - :find <file>
 - *. to make it fuzzy
 - :b to autocomplete open buffers
+  
+# Recently used files
+
+- r + Ctrl + f to open recent files
+- (this is a map of :browse files) 
 
 # Tag jumping (Ctags)
 
@@ -37,11 +42,6 @@ Please view this file in raw format (some text disappears when converted to mark
 - <CR>/v/t to open in horizontal, vertical or tabbed
 - :help netrw-browse-maps
 - (<CR> is Enter/Return key)
-
-# Recently used files
-
-- r + Ctrl + f to open recent files
-- (this is a map of :browse files) 
 
 # Snippets
 
