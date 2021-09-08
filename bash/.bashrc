@@ -46,4 +46,5 @@ xf ()
 
 # Root user bash prompt color
 # PS1="\[\e[31m\][\w] # \[\e[00m\]"
-. "$HOME/.cargo/env"
+
+# . "$HOME/.cargo/env"
