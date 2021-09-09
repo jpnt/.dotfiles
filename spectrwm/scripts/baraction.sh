@@ -14,8 +14,9 @@ print_date() {
 }
 
 print_mem() {
-	MEM=`/usr/bin/free -m | grep ^Mem | sed -E 's/ +/ /g' | cut -d ' ' -f4`
-	echo -n "Free RAM: ${MEM}M  "
+	TOTAL_MEM=`/usr/bin/free -h | grep Mem: | awk '{print $2}'`
+    USED_MEM=`/usr/bin/free -h | grep Mem: | awk '{print $3}'`
+	echo -n "RAM: ${USED_MEM} / ${TOTAL_MEM}  "
 }
 
 print_bat() {
