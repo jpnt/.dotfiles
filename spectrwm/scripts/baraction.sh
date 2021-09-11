@@ -14,9 +14,7 @@ print_date() {
 }
 
 print_mem() {
-	TOTAL_MEM=`/usr/bin/free -h | grep Mem: | awk '{print $2}'`
-    USED_MEM=`/usr/bin/free -h | grep Mem: | awk '{print $3}'`
-	echo -n "RAM: ${USED_MEM} / ${TOTAL_MEM}  "
+    echo -n "RAM: $(free -h | awk '/Mem/ {print $4 "/" $2}')  "
 }
 
 print_bat() {
