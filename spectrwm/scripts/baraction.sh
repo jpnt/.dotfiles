@@ -14,7 +14,7 @@ print_date() {
 }
 
 print_mem() {
-    echo -n "RAM: $(free -h | awk '/Mem/ {print $4 "/" $2}')  "
+    echo -n "RAM: $(free -h | awk '/Mem/ {print $3 "/" $2}')  "
 }
 
 print_bat() {
