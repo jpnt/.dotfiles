@@ -1,5 +1,5 @@
 #!/bin/sh
 setxkbmap pt &
-xrdb -merge ~/.Xresources &
+xrdb ~/.Xresources &
 nitrogen --restore &
 exec spectrwm
