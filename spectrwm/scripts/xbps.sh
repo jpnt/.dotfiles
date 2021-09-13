@@ -17,7 +17,7 @@ wallpaper="nitrogen"
 mediaplayer="mplayer ffmpeg"
 pdfviewer="zathura zathura-pdf-mupdf"
 texteditor="vim leafpad"
-audio="alsa-utils apulse"
+audio="pulseaudio pulsemixer alsa-plugins-pulseaudio"
 networking="net-tools NetworkManager"
 convertdoc="pandoc"
 office="libreoffice"
@@ -29,10 +29,12 @@ debugtools="strace ngrep tcpdump perf curl dstat wireshark wireshark-qt"
 
 packages="$terminal $calculator $sysmonitor $musicplayer $rss $filemanager $web $imageviewer $wallpaper $mediaplayer $pdfviewer $texteditor $audio $networking $convertdoc $office $plot $gtktheme $bittorrent $spectrwm $debugtools"
 
+echo "==================================="
 echo "Installing packages in 5 seconds..."
+echo "==================================="
 echo "Packages: $packages"
 sleep 5
-echo "Installing the selected packages"
+echo "==================================="
 
 # Update and install packages
 sudo xbps-install -Suy $packages
