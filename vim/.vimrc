@@ -30,7 +30,10 @@ nmap <silent> t<C-g> :TestVisit<CR>
 
 nmap r<C-f> :bro ol<CR>
 
+nmap <F8> :TagbarToggle<CR>
+
 call plug#begin()
 Plug 'jiangmiao/auto-pairs'
 Plug 'vim-test/vim-test'
+Plug 'preservim/tagbar'
 call plug#end()
