@@ -3,16 +3,34 @@
 My configuration is heavily inspired by Max Cantor's presentation called 'How to Do 90% of What Plugins Do (With Just Vim)', if you are interested go check it out!
 Please view this file in raw format (some text disappears when converted to markdown).
 
+# Recently used files
+
+- r + Ctrl + f to open recent files
+- (this is a map of :browse files) 
+
 # Find files
 
 - :find <file>
 - *. to make it fuzzy
 - :b to autocomplete open buffers
   
-# Recently used files
+# File browsing
 
-- r + Ctrl + f to open recent files
-- (this is a map of :browse files) 
+- :edit a folder
+- type 'vim .'
+- <CR>/v/t to open in horizontal, vertical or tabbed
+- :help netrw-browse-maps
+- (<CR> is Enter/Return key)
+
+# Autocompletion
+
+- ^n for anything specified
+- ^n for next suggestion
+- ^p for previous suggestion
+- ^x^n just for this file
+- ^x^f for filenames
+- ^x^] for tags only
+- :help ins-completion
 
 # Tag jumping (Ctags)
 
@@ -25,36 +43,23 @@ Please view this file in raw format (some text disappears when converted to mark
 - ^t to jump back in tag stack
 - g^] for tags in entire code base
 
-# Autocompletion
+# Tag browser (Tagbar)
 
-- ^x^n just for this file
-- ^x^f for filenames
-- ^x^] for tags only
-- ^n for anything specified
-- ^n for next suggestion
-- ^p for previous suggestion
-- :help ins-completion
+- F8 for :TagbarToggle
+- Ctrl + w + h/l to navigate into Tagbar
 
-# File browsing
-
-- :edit a folder
-- type 'vim .'
-- <CR>/v/t to open in horizontal, vertical or tabbed
-- :help netrw-browse-maps
-- (<CR> is Enter/Return key)
-
-# Snippets
-
-- ,html gives html snippet (.skeleton.html)
-- (We can also add more snippets)
-
-# Build integration (vim-test plugin)
+# Build integration (vim-test)
 
 - t + Ctrl + n for :TestNearest
 - t + Ctrl + f for :TestFile
 - t + Ctrl + s for :TestSuite
 - t + Ctrl + l for :TestLast
 - t + Ctrl + g for :TestVisit
+
+# Snippets
+
+- ,html gives html snippet (.skeleton.html)
+- (We can also add more snippets)
 
 # Advice
 
