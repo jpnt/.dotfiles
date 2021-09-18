@@ -7,6 +7,7 @@
 
 # Environment variables
 export PATH="$HOME/.local/bin:$PATH"
+export EDITOR=vim
 
 # Aliases
 alias ls='ls --color=auto'
