@@ -16,6 +16,7 @@ alias la='ls -A'
 alias l='ls -CF'
 alias grep='grep --color=auto'
 alias tree='tree -C'
+alias cd='cd ~'
 alias ..='cd ..'
 
 # Bash prompt color
