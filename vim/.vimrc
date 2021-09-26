@@ -1,5 +1,6 @@
 " Sane settings
-set nu rnu
+set number relativenumber
+set splitbelow splitright
 set incsearch
 set cursorline
 set tabstop=4 softtabstop=4
@@ -38,7 +39,7 @@ nmap <silent> t<C-l> :TestLast<CR>
 nmap <silent> t<C-g> :TestVisit<CR>
 
 " Open recent files pressing r-Ctrl-f
-nmap r<C-f> :bro ol<CR>
+nmap r<C-f> :browse old<CR>
 
 " Open Tagbar pressing F8
 nmap <F8> :TagbarToggle<CR>
