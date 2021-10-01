@@ -1,23 +1,25 @@
 # How to use this Vim config:
 
 My configuration is heavily inspired by Max Cantor's presentation called 'How to Do 90% of What Plugins Do (With Just Vim)', if you are interested go check it out!
+
 Please view this file in raw format (some text disappears when converted to markdown).
 
 # Recently used files
 
 - r + Ctrl + f to open recent files
-- (this is a map of :browse files) 
+- (this is a map of :browse old) 
 
 # Find files
 
+- :edit to edit a file 
 - :find <file>
 - *. to make it fuzzy
 - :b to autocomplete open buffers
   
 # File browsing
 
-- :edit a folder
-- type 'vim .'
+- :Ex opens file tree
+- type 'vim .' to open file tree
 - <CR>/v/t to open in horizontal, vertical or tabbed
 - :help netrw-browse-maps
 - (<CR> is Enter/Return key)
