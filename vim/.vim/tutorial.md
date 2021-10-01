@@ -11,15 +11,15 @@ Please view this file in raw format (some text disappears when converted to mark
 
 # Find files
 
-- :edit to edit a file 
 - :find <file>
 - *. to make it fuzzy
 - :b to autocomplete open buffers
   
 # File browsing
 
-- :Ex opens file tree
+- :e to edit a file 
 - type 'vim .' to open file tree
+- (:Ex also opens a file tree)
 - <CR>/v/t to open in horizontal, vertical or tabbed
 - :help netrw-browse-maps
 - (<CR> is Enter/Return key)
