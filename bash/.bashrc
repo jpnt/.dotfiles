@@ -5,6 +5,11 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# Enable bash-completion
+if [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+fi
+
 # Environment variables
 export PATH="$HOME/.local/bin:$PATH"
 export EDITOR=vim
