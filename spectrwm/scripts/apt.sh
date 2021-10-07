@@ -6,11 +6,11 @@
 # Add or remove any software if you want.
 
 terminal="rxvt-unicode xterm"
-calculator="calc qalc"
+calculator="calc"
 sysmonitor="htop sysstat acpi"
 musicplayer="cmus"
 rss="newsboat"
-filemanager="ranger pcmanfm tree"
+filemanager="nnn pcmanfm tree"
 web="w3m netsurf-gtk wget"
 imageviewer="sxiv"
 wallpaper="nitrogen"
