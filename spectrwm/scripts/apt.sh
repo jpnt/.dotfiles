@@ -37,4 +37,4 @@ sleep 5
 echo "==================================="
 
 # Update and install packages
-sudo apt update && apt -y upgrade && apt -y install $packages
+sudo apt update && sudo apt -y install $packages
