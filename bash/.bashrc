@@ -23,8 +23,8 @@ alias grep='grep --color=auto'
 alias tree='tree -C'
 alias ..='cd ..'
 
-# Bash prompt color
-PS1="\[\e[32m\][\w] $ \[\e[00m\]"
+# Bash prompt
+PS1="\[\033[01;38;5;10m\]\u@\h\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[01;38;5;14m\]\w\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[01;38;5;11m\]\$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/')\[$(tput sgr0)\]\n\[$(tput sgr0)\]\[\033[01;38;5;13m\]\\$\[$(tput sgr0)\] \[$(tput sgr0)\]"
 
 # Extract file - xf
 # Usage: xf <file>
@@ -53,8 +53,5 @@ xf ()
         echo "'$1' is not a valid file."
     fi
 }
-
-# Root user bash prompt color
-# PS1="\[\e[31m\][\w] # \[\e[00m\]"
 
 # . "$HOME/.cargo/env"
