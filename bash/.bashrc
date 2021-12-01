@@ -24,7 +24,7 @@ alias tree='tree -C'
 alias ..='cd ..'
 
 # Bash prompt
-PS1="\[\033[01;38;5;10m\]\u@\h\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[01;38;5;14m\]\w\[$(tput sgr0)\] \[$(tput sgr0)\]\[\033[01;38;5;11m\]\$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/')\[$(tput sgr0)\]\n\[$(tput sgr0)\]\[\033[01;38;5;13m\]\\$\[$(tput sgr0)\] \[$(tput sgr0)\]"
+PS1="\[\033]0;\u@\h:\w\007\]\[\033[01;32m\]\u@\h\[\033[01;34m\] \w \$\[\033[00m\] "
 
 # Extract file - xf
 # Usage: xf <file>
