@@ -17,6 +17,10 @@ print_mem() {
     echo -n "RAM: $(free -h | awk '/Mem/ {print $3 "/" $2}')  "
 }
 
+print_cpu() {
+    echo -n "CPU: $(top -b -n 1 | awk '/Cpu/ {print $2 "%"}') "
+}
+
 print_bat() {
 	AC_STATUS="$3"
 	BAT_STATUS="$6"
@@ -70,6 +74,7 @@ while :; do
 	fi
 	# print_date
 	print_mem
+	print_cpu
 	print_bat $ACPI_DATA
 	echo ""
 	I=$(( ( ${I} + 1 ) % 11 ))
