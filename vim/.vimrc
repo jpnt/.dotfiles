@@ -2,7 +2,7 @@
 set number relativenumber
 set splitbelow splitright
 set incsearch
-set cursorline
+"set cursorline
 set nocompatible
 set mouse=a
 
@@ -26,7 +26,9 @@ let g:netrw_list_hide=netrw_gitignore#Hide()
 let g:netrw_list_hide.=',\(^\s\s\)\zs\.\S\+'
 
 " Snippets
-nnoremap ,html :-1read $HOME/.vim/.skeleton.html<CR>3jwf>a
+nnoremap ,html :-1read $HOME/.vim/.skeleton.html<CR>4jwf>a
+nnoremap ,java :-1read $HOME/.vim/.skeleton.java<CR>4jA
+nnoremap ,c :-1read $HOME/.vim/.skeleton.c<CR>4jA
 
 " Build integration
 nmap <silent> t<C-n> :TestNearest<CR>
