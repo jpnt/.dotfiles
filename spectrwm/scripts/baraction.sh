@@ -14,11 +14,11 @@ print_date() {
 }
 
 print_mem() {
-    echo -n "RAM: $(free -h | awk '/Mem/ {print $3 "/" $2}')  "
+	echo -n "RAM: $(free -h | awk '/Mem/ {print $3 "/" $2}')  "
 }
 
 print_cpu() {
-    echo -n "CPU: $(top -b -n 1 | awk '/Cpu/ {print $2 "%"}') "
+	echo -n "CPU: $(top -b -n 1 | awk '/Cpu/ {print $2 "%"}') "
 }
 
 print_bat() {
