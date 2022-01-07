@@ -1,70 +1,33 @@
 ! xterm
-XTerm*faceName:     Terminus 
+XTerm*faceName:		Terminus
 XTerm*faceSize:		12
 XTerm*saveLines:	4096
 
 ! urxvt
-URxvt*font:						xft:Terminus:size=12
-URxvt*saveLines:				4096
-URxvt*scrollBar:				false
-URxvt*transparent:				true
-URxvt*shading:					20
-URxvt.iso14755:					false
-URxvt.iso14755_52:				false
+URxvt*font:		xft:Iosevka:size=12
+URxvt*saveLines:	4096
+URxvt*scrollBar:	false
+URxvt*transparent:	true	
+URxvt*shading:		20
+URxvt.iso14755:		false
+URxvt.iso14755_52:	false
 URxvt.keysym.Shift-Control-V:	eval:paste_clipboard
 URxvt.keysym.Shift-Control-C:	eval:selection_to_clipboard
-URxvt.keysym.Control-Up:		\033[1;5A
-URxvt.keysym.Control-Down:		\033[1;5B
-URxvt.keysym.Control-Left:		\033[1;5D
-URxvt.keysym.Control-Right:		\033[1;5C
-URxvt.keysym.Shift-Up:			command:\033]720;1\007
-URxvt.keysym.Shift-Down:		command:\033]721;1\007
-URxvt.keysym.C-plus:            command:\033]710;xft:Terminus:size=16\007
-URxvt.keysym.C-minus:           command:\033]710;xft:Terminus:size=12\007
+URxvt.keysym.Control-Up:	\033[1;5A
+URxvt.keysym.Control-Down:	\033[1;5B
+URxvt.keysym.Control-Left:	\033[1;5D
+URxvt.keysym.Control-Right:	\033[1;5C
+URxvt.keysym.Shift-Up:		command:\033]720;1\007
+URxvt.keysym.Shift-Down:	command:\033]721;1\007
+URxvt.keysym.C-plus:		command:\033]710;xft:Iosevka:size=16\007
+URxvt.keysym.C-minus:		command:\033]710;xft:Iosevka:size=12\007
 
 ! universal
-*.pointerColor:				white
+*.pointerColor:			white
 *.pointerColorBackground:	black
-*.cursorBlink:				true
+*.cursorBlink:			true
 
-! NightLionV2 color scheme
-*.foreground:  #bbbbbb
-*.background:  #171717
-*.cursorColor: #bbbbbb
-!
-! Black
-*.color0:      #4c4c4c
-*.color8:      #555555
-!
-! Red
-*.color1:      #bb0000
-*.color9:      #ff5555
-!
-! Green
-*.color2:      #04f623
-*.color10:     #7df71d
-!
-! Yellow
-*.color3:      #f3f167
-*.color11:     #ffff55
-!
-! Blue
-*.color4:      #64d0f0
-*.color12:     #62cbe8
-!
-! Magenta
-*.color5:      #ce6fdb
-*.color13:     #ff9bf5
-!
-! Cyan
-*.color6:      #00dadf
-*.color14:     #00ccd8
-!
-! White
-*.color7:      #bbbbbb
-*.color15:     #ffffff
-!
-! Bold, Italic, Underline
-*.colorBD:     #e3e3e3
-!*.colorIT:
-!*.colorUL:
+! colorscheme
+*.foreground:	#FFFFFF
+*.background:	#000000
+*.cursorColor:	#FFFFFF
