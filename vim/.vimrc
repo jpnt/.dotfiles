@@ -2,7 +2,6 @@
 set number relativenumber
 set splitbelow splitright
 set incsearch
-"set cursorline
 set nocompatible
 set mouse=a
 
