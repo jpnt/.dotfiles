@@ -3,9 +3,9 @@
 screenshot ()
 {
 case $1 in
-	full)   scrot -m    ;;
-	window) scrot -s    ;;
-	*)                  ;;
+	full)	scrot -m	;;
+	window)	scrot -s	;;
+	*)			;;
 esac;
 }
 
