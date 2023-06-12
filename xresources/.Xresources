@@ -9,6 +9,7 @@ URxvt*saveLines:	4096
 URxvt*scrollBar:	false
 URxvt*transparent:	true
 URxvt*shading:		20
+URxvt.geometry:		400x400
 URxvt.iso14755:		false
 URxvt.iso14755_52:	false
 URxvt.keysym.Shift-Control-V:	eval:paste_clipboard
