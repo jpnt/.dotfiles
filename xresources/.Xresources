@@ -8,7 +8,7 @@ URxvt*font:		xft:Terminus:size=12
 URxvt*saveLines:	4096
 URxvt*scrollBar:	false
 URxvt*transparent:	true
-URxvt*shading:		20
+URxvt*shading:		25
 URxvt.geometry:		400x400
 URxvt.iso14755:		false
 URxvt.iso14755_52:	false
