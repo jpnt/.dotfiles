@@ -90,6 +90,10 @@ extract() {
         print_format "rpm"
         check_tool rpm2cpio
         rpm2cpio "$1" | cpio -id ;;
+      *.jar)
+        print_format "jar"
+        check_tool jar
+        jar xf "$1" ;;
       *)
         echo "'$1' cannot be extracted via extract."
         echo "Supported archive formats: tar, tar.xz, tar.gz, tgz, tar.bz2, tbz2, bz2, rar, 7z, gz, zip, Z, lz4, zst, xz, iso, deb, rpm" ;;
