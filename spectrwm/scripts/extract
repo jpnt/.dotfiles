@@ -1,0 +1,102 @@
+#!/bin/bash
+
+print_format() {
+  echo "Extracting archive format: $1"
+}
+
+check_tool() {
+  command -v "$1" >/dev/null 2>&1 || { echo >&2 "$1 is required but it's not installed. Aborting."; exit 1; }
+}
+
+display_help() {
+  echo "USAGE: `basename $0` <file>"
+  exit 0
+}
+
+extract() {
+  if [ "$1" == "" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
+    display_help
+  elif [ -f "$1" ]; then
+    case "$1" in
+      *.tar)
+        print_format "tar"
+        check_tool tar
+        tar xf "$1" ;;
+      *.tar.xz)
+        print_format "tar xz"
+        check_tool tar
+        tar xf "$1" ;;
+      *.tar.gz)
+        print_format "tar gz"
+        check_tool tar
+        tar xzf "$1" ;;
+      *.tgz)
+        print_format "tar gz"
+        check_tool tar
+        tar xzf "$1" ;;
+      *.tar.bz2)
+        print_format "tar bz2"
+        check_tool tar
+        tar xjf "$1" ;;
+      *.tbz2)
+        print_format "tar bz2"
+        check_tool tar
+        tar xjf "$1" ;;
+      *.bz2)
+        print_format "bzip2"
+        check_tool bunzip2
+        bunzip2 "$1" ;;
+      *.rar)
+        print_format "rar"
+        check_tool unrar
+        unrar x "$1" ;;
+      *.7z)
+        print_format "7z"
+        check_tool 7z
+        7z x "$1" ;;
+      *.gz)
+        print_format "gzip"
+        check_tool gunzip
+        gunzip "$1" ;;
+      *.zip)
+        print_format "zip"
+        check_tool unzip
+        unzip "$1" ;;
+      *.Z)
+        print_format "Z"
+        check_tool uncompress
+        uncompress "$1" ;;
+      *.lz4)
+        print_format "lz4"
+        check_tool unlz4
+        unlz4 "$1" ;;
+      *.zst)
+        print_format "zstd"
+        check_tool unzstd
+        unzstd "$1" ;;
+      *.xz)
+        print_format "xz"
+        check_tool unxz
+        unxz "$1" ;;
+      *.iso)
+        print_format "iso to extracted directory"
+        check_tool 7z
+        7z x "$1" -o"extracted" ;;
+      *.deb)
+        print_format "deb"
+        check_tool dpkg
+        dpkg -x "$1" ;;
+      *.rpm)
+        print_format "rpm"
+        check_tool rpm2cpio
+        rpm2cpio "$1" | cpio -id ;;
+      *)
+        echo "'$1' cannot be extracted via extract."
+        echo "Supported archive formats: tar, tar.xz, tar.gz, tgz, tar.bz2, tbz2, bz2, rar, 7z, gz, zip, Z, lz4, zst, xz, iso, deb, rpm" ;;
+    esac
+  else
+    echo "'$1' is not a valid file."
+  fi
+}
+
+extract $1
