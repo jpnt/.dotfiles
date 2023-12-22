@@ -9,7 +9,7 @@ check_tool() {
 }
 
 display_help() {
-  echo "USAGE: `basename $0` <file>"
+  echo "Usage: `basename $0` [FILE]"
   exit 0
 }
 
