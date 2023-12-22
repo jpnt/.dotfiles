@@ -5,53 +5,53 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+
 # Enable bash-completion
 if [ -f /etc/bash_completion ]; then
 	. /etc/bash_completion
 fi
 
+
 # Environment variables
 export PATH="$HOME/.local/bin:$PATH"
-export EDITOR=vim
+export EDITOR=nvim
+export PAGER=nvimpager
+export BROWSER=vivaldi-stable
+# Support for color in less
+export LESS='-R --use-color -Dd+r$Du+b$'
+# Custom shell prompt
+export PS1="\[$(tput setaf 2)\]\u\[$(tput setaf 1)\]@\[$(tput setaf 3)\]\h \[$(tput setaf 6)\]\w\[$(tput sgr0)\] $ "
+
 
 # Aliases
-alias ls='ls --color=auto'
+alias ls='ls --color=always'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
-alias grep='grep --color=auto'
+alias grep='grep --color=always'
 alias tree='tree -C'
+alias diff='diff --color=always'
+alias ip='ip --color=always'
+alias dmesg='dmesg --color=always'
 alias ..='cd ..'
+alias nv='nvim'
+alias code='code-oss'
 
-# Bash prompt
-PS1="\[\033]0;\u@\h:\w\007\]\[\033[01;32m\]\u@\h\[\033[01;34m\] \w \$\[\033[00m\] "
 
-# Extract file - xf
-# Usage: xf <file>
-xf ()
-{
-if [ -f $1 ]; then
-	case $1 in
-		*.tar)		tar xf $1	;;
-		*.tar.xz)	tar xf $1	;;
-		*.tar.gz)	tar xzf $1	;;
-		*.tgz)		tar xzf $1	;;
-		*.tar.bz2)	tar xjf $1	;;
-		*.tbz2)		tar xjf $1	;;
-		*.bz2)		bunzip2 $1	;;
-		*.rar)		unrar x $1	;;
-		*.7z)		7z x $1		;;
-		*.gz)		gunzip $1	;;
-		*.zip)		unzip $1	;;
-		*.Z)		uncompress $1	;;
-		*.lz4)		unlz4 $1	;;
-		*.zst)		unzstd $1	;;
-		*.xz)		unxz $1		;;
-		*)		echo "'$1' cannot be extracted via xf." ;;
-	esac
-else
-	echo "'$1' is not a valid file."
+# Transparency for suckless terminal
+term=$(cat /proc/$PPID/comm)
+if [[ $term == "st" ]]; then
+	transset "0.8" --id $WINDOWID >/dev/null
 fi
-}
 
-# . "$HOME/.cargo/env"
+#
+# Extras
+#
+
+#. "$HOME/.cargo/env"
+#
+#eval "$(zoxide init bash)"
+#
+##THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+#export SDKMAN_DIR="$HOME/.sdkman"
+#[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
