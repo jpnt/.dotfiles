@@ -1,0 +1,54 @@
+#!/bin/bash
+
+BACKUP_DIR=~/Backups
+
+display_help() {
+	echo "USAGE: $(basename "$0") <file/dir> <tar.gz/zip>"
+	exit 2
+}
+
+configure_backup_dir() {
+	if [ ! -e "$BACKUP_DIR" ]; then
+		mkdir "${BACKUP_DIR}"
+	fi
+}
+
+backup() {
+	configure_backup_dir
+
+	if [ "$#" -ne 2 ]; then
+		display_help
+	fi
+
+	input=$1
+	compression=$2
+	timestamp=$(date +%F-%kh%M)
+	backup_filename="${BACKUP_DIR}/${input}_${timestamp}.${compression}"
+	
+	if [ ! -e "$input" ]; then
+		echo "Error: File or directory not found: ${input}"
+		exit 1
+	fi
+
+	case "$compression" in
+		tar)
+			if [ -d "$input" ]; then
+				tar -cvzf "{backup_filename}" -C "$(dirname "${input}")" "$(basename "${input}")"
+			else
+				tar -cvzf "${backup_filename}" "${input}"
+			fi
+			;;
+		zip)
+			zip -rv "${backup_filename}" "${input}"
+			;;
+		*)
+			echo "Error: Invalid compression option. Use 'tar' or 'zip'."
+			display_help
+			;;
+	esac
+	
+	echo "Backup created: ${backup_filename}"
+	exit 0
+}
+
+backup $1 $2
