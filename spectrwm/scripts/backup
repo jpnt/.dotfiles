@@ -22,7 +22,7 @@ check_dependencies() {
 }
 
 display_help() {
-	echo "Usage: $(basename "$0") [FILE] [gzip|bzip2|zstd|zip|7z]"
+	echo "Usage: $(basename "$0") [FILE] [gzip|bzip2|zstd|zip]"
 	exit 2
 }
 
