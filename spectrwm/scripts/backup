@@ -3,7 +3,8 @@
 
 # Settings
 BACKUP_DIR=~/Backups
-COMPRESSION_LEVEL="6"
+COMPRESSION_LEVEL="6" # 1 to 9
+COMPRESSION_LEVEL_ZSTD="3" # 1 to 19
 PROCESSES=$(nproc)
 
 check_dependencies() {
@@ -78,17 +79,17 @@ backup() {
 			echo "Begin compression with zstd..."
 			if [ -d "$input" ]; then
 				extension="tar.zst"
-				time tar --use-compress-program="zstd -v -T${PROCESSES}" -cvf \
+				time tar --use-compress-program="zstd -v -T${PROCESSES} -${COMPRESSION_LEVEL_ZSTD}" -cvf \
 					"${backup_filename}.${extension}" -C "$(dirname "${input}")" "$(basename "${input}")"
 			else
 				extension="zst"
-				time zstd -v -T${PROCESSES} -o "${backup_filename}.${extension}" "${input}"
+				time zstd -v -T${PROCESSES} -${COMPRESSION_LEVEL_ZSTD} -o "${backup_filename}.${extension}" "${input}"
 			fi
 			;;
 		zip) # Slow but has compatibility with many systems
 			echo "Begin compression with zip..."
 			extension="zip"
-			time zip -rv "${backup_filename}.${extension}" "${input}"
+			time zip -rv -${COMPRESSION_LEVEL} "${backup_filename}.${extension}" "${input}"
 			;;
 		*)
 			echo "Error: Invalid compression option."
