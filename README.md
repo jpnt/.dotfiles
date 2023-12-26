@@ -1,6 +1,6 @@
 # jpnt dotfiles
 
-how to use:
+### How to:
 
 cd ~
 
