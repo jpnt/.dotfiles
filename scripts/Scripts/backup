@@ -1,0 +1,107 @@
+#!/bin/bash
+# Backup utility that uses parallel compression utilities whenever possible
+
+# Settings
+BACKUP_DIR=~/Backups
+COMPRESSION_LEVEL="6" # 1 to 9
+COMPRESSION_LEVEL_ZSTD="3" # 1 to 19
+PROCESSES=$(nproc)
+
+check_dependencies() {
+	declare -a dependencies=("time" "tar" \
+		"gzip" "pigz" \
+		"bzip2" "pbzip2" \
+		"zstd" \
+		"zip")
+
+	for cmd in "${dependencies[@]}"; do
+		command -v "$cmd" >/dev/null 2>&1 || {
+			echo "Error: '${cmd}' is not installed."
+			exit 1
+		}
+	done
+}
+
+display_help() {
+	echo "Usage: $(basename "$0") [FILE] [gzip|bzip2|zstd|zip]"
+	exit 2
+}
+
+configure_backup_dir() {
+	if [ ! -e "$BACKUP_DIR" ]; then
+		mkdir "${BACKUP_DIR}"
+	fi
+}
+
+backup() {
+	if [ "$#" -ne 2 ]; then
+		display_help
+	fi
+
+	input=$(echo "$1" | sed 's/\/$//') # Remove last trailing `/`
+	compression=$2
+	timestamp=$(date +'%F-%Hh%M')
+	backup_filename="${BACKUP_DIR}/${input}_${timestamp}"
+	
+	if [ ! -e "$input" ]; then
+		echo "Error: File or directory not found: ${input}"
+		exit 1
+	fi
+
+	echo "Initial size: $(du -sh "${input}")"
+
+	case "$compression" in
+		gzip) # Fast and compatible with most UNIX systems
+			echo "Begin compression with gzip..."
+			if [ -d "$input" ]; then
+				extension="tar.gz"
+				time tar --use-compress-program="pigz -k -p ${PROCESSES} -${COMPRESSION_LEVEL}" -cvf \
+					"${backup_filename}.${extension}" -C "$(dirname "${input}")" "$(basename "${input}")"
+			else
+				extension="gz"
+				time tar --use-compress-program="pigz -k -p ${PROCESSES} -${COMPRESSION_LEVEL}" -cvf \
+					"${backup_filename}.${extension}" "${input}"
+			fi
+			;;
+		bzip2) # Slower than gzip but better compression
+			echo "Begin compression with bzip2..."
+			if [ -d "$input" ]; then
+				extension="tar.bz2"
+				time tar --use-compress-program="pbzip2 -k -p${PROCESSES} -${COMPRESSION_LEVEL}" -cvf \
+					"${backup_filename}.${extension}" -C "$(dirname "${input}")" "$(basename "${input}")"
+			else
+				extension="bz2"
+				time tar --use-compress-program="pbzip2 -k -p${PROCESSES} -${COMPRESSION_LEVEL}" -cvf \
+					"${backup_filename}.${extension}" "${input}"
+			fi
+			;;
+		zstd) # Newer compression utility that is fast and has a good compression ratio
+			echo "Begin compression with zstd..."
+			if [ -d "$input" ]; then
+				extension="tar.zst"
+				time tar --use-compress-program="zstd -v -T${PROCESSES} -${COMPRESSION_LEVEL_ZSTD}" -cvf \
+					"${backup_filename}.${extension}" -C "$(dirname "${input}")" "$(basename "${input}")"
+			else
+				extension="zst"
+				time zstd -v -T${PROCESSES} -${COMPRESSION_LEVEL_ZSTD} -o "${backup_filename}.${extension}" "${input}"
+			fi
+			;;
+		zip) # Slow but has compatibility with many systems
+			echo "Begin compression with zip..."
+			extension="zip"
+			time zip -rv -${COMPRESSION_LEVEL} "${backup_filename}.${extension}" "${input}"
+			;;
+		*)
+			echo "Error: Invalid compression option."
+			display_help
+			;;
+	esac
+	
+	echo "Backup created: $(du -h "${backup_filename}.${extension}")"
+	exit 0
+}
+
+set -e
+check_dependencies
+configure_backup_dir
+backup $1 $2
