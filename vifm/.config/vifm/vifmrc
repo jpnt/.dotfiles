@@ -1,0 +1,38 @@
+set vicmd=nvim
+set vicmd=nvim
+set syscalls
+set trash
+set history=100
+set nofollowlinks
+set undolevels=100
+set timefmt='%Y/%m/%d %H:%M'
+set wildmenu
+set wildstyle=popup
+set ignorecase
+set smartcase
+set nohlsearch
+set incsearch
+set scrolloff=4
+set statusline="  Hint: %z%= %A %10u:%-7g %15s %20d  "
+set fillchars=vborder:│
+
+nnoremap s :shell<cr>
+nnoremap S :sort<cr>
+nnoremap w :view<cr>
+vnoremap w :view<cr>gv
+nnoremap A cw
+nnoremap I cw<c-a>
+nnoremap cc cw<c-u>
+nnoremap q :q<cr>
+nnoremap ,t :!st &<cr>
+
+command! df df -h %m 2> /dev/null
+command! diff vim -d %f %F
+command! zip zip -r %c.zip %f
+command! run !! ./%f
+command! make !!make %a
+command! mkcd :mkdir %a | cd %a
+command! vgrep vim "+grep %a"
+command! reload :write | restart full
+
+" see `:help vifm-macros` and `:help vifm-filename-modifiers` for more
