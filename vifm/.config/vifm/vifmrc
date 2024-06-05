@@ -1,5 +1,4 @@
 set vicmd=nvim
-set vicmd=nvim
 set syscalls
 set trash
 set history=100
