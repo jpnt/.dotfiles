@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Backup utility that uses parallel compression utilities whenever possible
 
 # Settings

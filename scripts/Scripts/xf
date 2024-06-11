@@ -1,11 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# e(x)tract (f)ile
 
 print_format() {
   echo "Extracting archive format: $1"
 }
 
 check_tool() {
-  command -v "$1" >/dev/null 2>&1 || { echo >&2 "$1 is required but it's not installed. Aborting."; exit 1; }
+  command -v "$1" >/dev/null 2>&1 || { echo >&2 "$1 is required but it's not installed"; exit 1; }
 }
 
 display_help() {
@@ -95,11 +96,10 @@ extract() {
         check_tool jar
         jar xf "$1" ;;
       *)
-        echo "'$1' cannot be extracted via extract."
-        echo "Supported archive formats: tar, tar.xz, tar.gz, tgz, tar.bz2, tbz2, bz2, rar, 7z, gz, zip, Z, lz4, zst, xz, iso, deb, rpm" ;;
+        echo "'$1' could not be extracted: unsupported file format" ;;
     esac
   else
-    echo "'$1' is not a valid file."
+    echo "'$1' is not a valid file"
   fi
 }
 
