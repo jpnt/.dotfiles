@@ -1,0 +1,22 @@
+#!/bin/sh
+# (t)mux goto (p)roject
+# creates a session with two windows (shell and build) in a directory
+
+if [ -z "$1" ]; then
+	echo "Usage: tp [DIR]"
+	exit 1
+fi
+
+PROJECT_DIR="$1"
+cd "$PROJECT_DIR" || { echo "Failed to change directory to $PROJECT_DIR"; exit 1; }
+
+SESSION_NAME="tp_$(date +%s)"
+
+tmux new-session -d -s "$SESSION_NAME" -n "shell"
+tmux new-window -t "$SESSION_NAME:1" -n "build"
+
+tmux send-keys -t "$SESSION_NAME:0" "clear" C-m
+tmux send-keys -t "$SESSION_NAME:1" "clear" C-m
+tmux send-keys -t "$SESSION_NAME:1" "echo 'Ready for build commands...'" C-m
+
+tmux attach-session -t "$SESSION_NAME"
