@@ -1,0 +1,23 @@
+#!/bin/sh
+# rmws - remove whitespace
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 filename"
+    exit 1
+fi
+
+file="$1"
+
+if [ ! -e "$file" ]; then
+    echo "File not found: $file"
+    exit 1
+fi
+
+new_name=$(echo "$file" | tr ' ' '_' | tr -d ',')
+
+if [ "$file" != "$new_name" ]; then
+    mv -- "$file" "$new_name"
+    echo "Renamed '$file' to '$new_name'"
+else
+    echo "No renaming needed for '$file'"
+fi
