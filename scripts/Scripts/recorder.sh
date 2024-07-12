@@ -19,9 +19,8 @@ VIDEO_SETTINGS="-vcodec $VIDEO_CODEC -preset $VIDEO_PRESET -crf $VIDEO_CRF"
 recorder ()
 {
 case $1 in
-	p|pulseaudio)
+	na|noaudio)
 		ffmpeg -f x11grab -s "$RES" -r "$FPS" -i :0.0 \
-			-f pulse $AUDIO_SETTINGS \
 			$VIDEO_SETTINGS -threads 0 "$OUTPUT_FILE"
 		;;
 	a|alsa)
@@ -29,8 +28,9 @@ case $1 in
 			-f alsa $AUDIO_SETTINGS \
 			$VIDEO_SETTINGS -threads 0 "$OUTPUT_FILE"
 		;;
-	*)
+	*) # pulseaudio
 		ffmpeg -f x11grab -s "$RES" -r "$FPS" -i :0.0 \
+			-f pulse $AUDIO_SETTINGS \
 			$VIDEO_SETTINGS -threads 0 "$OUTPUT_FILE"
 		;;
 esac;
