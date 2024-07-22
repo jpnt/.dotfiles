@@ -11,9 +11,12 @@ bar_font_color_selected="-sf black"
 dmenu_opts="$bottom $bar_font $bar_color $bar_font_color $bar_color_selected $bar_font_color_selected"
 
 apps="floorp
+vivaldi-stable
+pavucontrol
 libreoffice
 pcmanfm
-sioyek"
+sioyek
+calibre"
 
 chosen_app=$(printf "%s\n" "$apps" | dmenu $dmenu_opts)
 

@@ -1,8 +1,11 @@
 #!/bin/sh
 setxkbmap pt &
-xrdb ~/.Xresources &
+#xrdb ~/.Xresources &
 nitrogen --restore &
-urxvtd --quiet --opendisplay --fork &
+#urxvtd --quiet --opendisplay --fork &
+#xinput set-prop 10 341 1 &
+xset r rate 200 25 &
 #udiskie &
-picom &
-exec spectrwm
+#picom &
+pipewire &
+exec dbus-run-session spectrwm
