@@ -15,7 +15,6 @@ vivaldi-stable
 pavucontrol
 libreoffice
 pcmanfm
-sioyek
 calibre"
 
 chosen_app=$(printf "%s\n" "$apps" | dmenu $dmenu_opts)
