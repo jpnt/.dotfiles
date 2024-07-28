@@ -7,5 +7,6 @@ nitrogen --restore &
 xset r rate 200 25 &
 #udiskie &
 #picom &
-pipewire &
-exec dbus-run-session spectrwm
+#pipewire &
+#exec dbus-run-session spectrwm
+exec spectrwm
