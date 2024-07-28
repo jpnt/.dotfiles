@@ -1,0 +1,14 @@
+#!/bin/sh
+# fpe - fuzzy find pdf,epub books
+
+# FIND="find . -type f \( -name "*pdf" -o -name "*.epub" \)"
+FIND="fd -e pdf -e epub"
+
+DOC_VIEWER=zathura
+# DOC_VIEWER=xdg-open
+
+selected=$(${FIND} | fzf)
+
+if [ -n "$selected" ]; then
+	$DOC_VIEWER "$selected"
+fi
