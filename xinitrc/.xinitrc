@@ -9,5 +9,6 @@ xset r rate 200 25 &
 #picom &
 #pipewire &
 #exec dbus-run-session spectrwm
-brightnessctl s 11%
+brightnessctl s 11% &
+gammastep -l 38.7:-27.2 -t 5700:3600 -g 0.8 -m randr &
 exec spectrwm
