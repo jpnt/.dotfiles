@@ -5,6 +5,7 @@
 PATH=$PATH:$HOME/.local/bin
 EDITOR=nvim
 PAGER=less
+TERMINAL=st
 BROWSER=$HOME/.local/bin/floorp
 LESS='-R --use-color -Dd+r$Du+b$'
 

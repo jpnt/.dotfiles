@@ -18,6 +18,7 @@ PS1='$(slcp $COLUMNS $?)'
 export PATH=$HOME/.local/bin:$PATH
 export EDITOR=nvim
 export PAGER=nvimpager
+export TERMINAL=st
 export BROWSER=$HOME/.local/bin/floorp
 export LESS='-R --use-color -Dd+r$Du+b$'
 
@@ -47,3 +48,5 @@ alias gp='git pull'
 # TODO: Remove this bloated mess, takes ~20ms
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+#if [ -f "/home/jpnt/.config/fabric/fabric-bootstrap.inc" ]; then . "/home/jpnt/.config/fabric/fabric-bootstrap.inc"; fi

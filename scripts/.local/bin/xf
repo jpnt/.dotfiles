@@ -42,15 +42,15 @@ extract() {
       *.zip)
         print_format "zip"
         check_tool unzip
-        unzip -v "$1" ;;
+        unzip "$1" ;;
       *.lz4)
         print_format "lz4"
         check_tool unlz4
-        unlz4 -v "$1" ;;
+        unlz4 "$1" ;;
       *.zst)
         print_format "zstd"
         check_tool unzstd
-        unzstd -v "$1" ;;
+        unzstd "$1" ;;
       *.xz)
         print_format "xz"
         check_tool unxz
