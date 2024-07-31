@@ -18,7 +18,6 @@ PS1='$(slcp $COLUMNS $?)'
 export PATH=$HOME/.local/bin:$PATH
 export EDITOR=nvim
 export PAGER=nvimpager
-export TERMINAL=st
 export BROWSER=$HOME/.local/bin/floorp
 export LESS='-R --use-color -Dd+r$Du+b$'
 
