@@ -1,11 +1,10 @@
 #!/bin/sh
-# Fuzzy mount disks
-
-command -v fzf >/dev/null 2>&1 || { echo "fzf is not installed" >&2; exit 1; }
+# fmnt - Fuzzy mount disks
 
 disks=$(lsblk -lp | tail -n +2 | cut -d ' ' -f 1)
 
-selected_disk=$(echo "$disks" | fzf --height 20% --border --ansi --header="Select a disk to mount")
+# selected_disk=$(echo "$disks" | fzf --ansi --header="Select block device to mount:")
+selected_disk=$(echo "$disks" | fzy -p "Select block device to mount:")
 
 [ -z "$selected_disk" ] && { echo "No disk selected"; exit 1; }
 
@@ -22,4 +21,3 @@ else
     echo "Failed to mount $selected_disk to $mount_point" >&2
     exit 1
 fi
-

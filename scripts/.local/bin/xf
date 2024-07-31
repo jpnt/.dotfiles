@@ -19,34 +19,14 @@ extract() {
     display_help
   elif [ -f "$1" ]; then
     case "$1" in
-      *.tar)
+      *.tar|*.tar.xz|*.tar.gz|*.tgz|*.tar.bz2|*.tbz2|*.txz)
         print_format "tar"
         check_tool tar
-        tar xf "$1" ;;
-      *.tar.xz)
-        print_format "tar xz"
-        check_tool tar
-        tar xf "$1" ;;
-      *.tar.gz)
-        print_format "tar gz"
-        check_tool tar
-        tar xzf "$1" ;;
-      *.tgz)
-        print_format "tar gz"
-        check_tool tar
-        tar xzf "$1" ;;
-      *.tar.bz2)
-        print_format "tar bz2"
-        check_tool tar
-        tar xjf "$1" ;;
-      *.tbz2)
-        print_format "tar bz2"
-        check_tool tar
-        tar xjf "$1" ;;
+        tar xvf "$1" ;;
       *.bz2)
         print_format "bzip2"
         check_tool bunzip2
-        bunzip2 "$1" ;;
+        bunzip2 -v "$1" ;;
       *.rar)
         print_format "rar"
         check_tool unrar
@@ -58,31 +38,28 @@ extract() {
       *.gz)
         print_format "gzip"
         check_tool gunzip
-        gunzip "$1" ;;
+        gunzip -v "$1" ;;
       *.zip)
         print_format "zip"
         check_tool unzip
-        unzip "$1" ;;
-      *.Z)
-        print_format "Z"
-        check_tool uncompress
-        uncompress "$1" ;;
+        unzip -v "$1" ;;
       *.lz4)
         print_format "lz4"
         check_tool unlz4
-        unlz4 "$1" ;;
+        unlz4 -v "$1" ;;
       *.zst)
         print_format "zstd"
         check_tool unzstd
-        unzstd "$1" ;;
+        unzstd -v "$1" ;;
       *.xz)
         print_format "xz"
         check_tool unxz
-        unxz "$1" ;;
+        unxz -v "$1" ;;
       *.iso)
-        print_format "iso to extracted directory"
+        extracted=iso_$(date +%Y-%m-%d_%H-%M-%S)
+        print_format "iso extracted to $extracted"
         check_tool 7z
-        7z x "$1" -o"extracted" ;;
+        7z x "$1" -o"$extracted" ;;
       *.deb)
         print_format "deb"
         check_tool dpkg
@@ -95,6 +72,22 @@ extract() {
         print_format "jar"
         check_tool jar
         jar xf "$1" ;;
+      *.cab)
+        print_format "cab"
+        check_tool cabextract
+        cabextract -v "$1" ;;
+      *.arj)
+        print_format "arj"
+        check_tool arj
+        arj x "$1" ;;
+      *.cpio)
+        print_format "cpio"
+        check_tool cpio
+        cpio -id < "$1" ;;
+      *.Z)
+        print_format "Z"
+        check_tool uncompress
+        uncompress -v "$1" ;;
       *)
         echo "'$1' could not be extracted: unsupported file format" ;;
     esac
