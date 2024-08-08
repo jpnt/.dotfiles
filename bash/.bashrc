@@ -23,9 +23,10 @@ export LESS='-R --use-color -Dd+r$Du+b$'
 
 # Aliases
 alias ls='ls --color=always'
-alias ll='ls -alF'
-alias la='ls -A'
 alias l='ls -CF'
+alias ll='ls -lF'
+alias la='ls -A'
+alias lla='ls -alF'
 alias grep='grep --color=always'
 alias tree='tree -C'
 alias diff='diff --color=always'
