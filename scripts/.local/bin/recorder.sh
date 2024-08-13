@@ -1,6 +1,5 @@
 #!/bin/sh
 # FFmpeg screen recording script - recorder.sh
-# Usage: recorder [OPTION]
 
 FPS="30"
 RES=$(xdpyinfo | grep dimensions | awk '{print $2}')
@@ -28,11 +27,13 @@ case $1 in
 			-f alsa $AUDIO_SETTINGS \
 			$VIDEO_SETTINGS -threads 0 "$OUTPUT_FILE"
 		;;
-	*) # pulseaudio
+	p|pulse|pulseaudio) # pulseaudio
 		ffmpeg -f x11grab -s "$RES" -r "$FPS" -i :0.0 \
 			-f pulse $AUDIO_SETTINGS \
 			$VIDEO_SETTINGS -threads 0 "$OUTPUT_FILE"
 		;;
+	*)
+		echo "Usage: recorder.sh {noaudio,alsa,pulseaudio}"
 esac;
 }
 

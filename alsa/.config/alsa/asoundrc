@@ -1,0 +1,16 @@
+defaults.bluealsa.service "org.bluealsa"
+defaults.bluealsa.device "88:C9:E8:E7:65:D3"
+defaults.bluealsa.profile "a2dp"
+defaults.bluealsa.delay 10000
+
+pcm.!default {
+	type asym
+	playback.pcm {
+		type plug
+		slave.pcm "hw:0,0"
+	}
+	capture.pcm {
+		type plug
+		slave.pcm "hw:0,0"
+	}
+}
