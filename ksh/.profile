@@ -10,6 +10,12 @@ LESS='-R --use-color -Dd+r$Du+b$'
 
 export PATH EDITOR PAGER BROWSER LESS
 
+if [ -z "$XDG_RUNTIME_DIR" ]; then
+	XDG_RUNTIME_DIR="/tmp/$(id -u)-runtime-dir"
+	mkdir -pm 0700 "$XDG_RUNTIME_DIR"
+	export XDG_RUNTIME_DIR
+fi
+
 if [ -z "$PWD" ]; then
 	PWD=$HOME
 	export PWD

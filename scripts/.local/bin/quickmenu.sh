@@ -12,7 +12,6 @@ dmenu_opts="$bottom $bar_font $bar_color $bar_font_color $bar_color_selected $ba
 
 apps="floorp
 vivaldi-stable
-pavucontrol
 libreoffice
 pcmanfm
 calibre
