@@ -7,7 +7,7 @@ OUTPUT_DIR="${HOME}"
 OUTPUT_FILE="${OUTPUT_DIR}/recording_$(date +%Y-%m-%d_%H-%M-%S).mkv"
 
 AUDIO_CODEC="aac"
-AUDIO_BITRATE="44100"
+AUDIO_BITRATE="48000"
 AUDIO_SETTINGS="-ac 2 -i default -acodec $AUDIO_CODEC -ar $AUDIO_BITRATE"
 
 VIDEO_CODEC="libx264"
@@ -27,7 +27,7 @@ case $1 in
 			-f alsa $AUDIO_SETTINGS \
 			$VIDEO_SETTINGS -threads 0 "$OUTPUT_FILE"
 		;;
-	p|pulse|pulseaudio) # pulseaudio
+	p|pulse|pulseaudio)
 		ffmpeg -f x11grab -s "$RES" -r "$FPS" -i :0.0 \
 			-f pulse $AUDIO_SETTINGS \
 			$VIDEO_SETTINGS -threads 0 "$OUTPUT_FILE"
