@@ -3,7 +3,9 @@
 set -o vi
 
 # Custom shell prompt
-PS1='$(slcp $COLUMNS $?)'
+#PS1='$(slcp $COLUMNS $?)'
+
+PS1='\[[1;32;40m\]\h\[[0;37;40m\]:\[[34;40m\][\[[1;31;40m\]\u\[[0;34;40m\]]\[[0;37;40m\]:\[[35;40m\]\w\[[1;33;40m\]#\[[0m\] '
 
 # Aliases
 alias ls='ls --color=always'
