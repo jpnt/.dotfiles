@@ -5,7 +5,7 @@
 PATH=$PATH:$HOME/.local/bin
 EDITOR=nvim
 PAGER=less
-BROWSER=$HOME/.local/bin/floorp
+BROWSER=vivaldi-stable
 LESS='-R --use-color -Dd+r$Du+b$'
 
 export PATH EDITOR PAGER BROWSER LESS
