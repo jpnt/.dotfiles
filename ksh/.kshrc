@@ -30,5 +30,5 @@ alias stracerw='strace -ftt -o stracerw.log -e trace=read,write'
 alias gp='git pull'
 
 # Prompt
-#PS1='$(slcp $COLUMNS $?)'
-PS1='\[[1;32;40m\]\h\[[0;37;40m\]:\[[34;40m\][\[[1;31;40m\]\u\[[0;34;40m\]]\[[0;37;40m\]:\[[35;40m\]\w\[[1;33;40m\]#\[[0m\] '
+#PS1='\u@\h:[\w]\\$ '
+PS1='\[\e[1;32m\]\u@\h\[\e[0m\]:\[\e[1;34m\][\w]\[\e[0m\]\\$ '
