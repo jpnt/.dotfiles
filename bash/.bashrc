@@ -5,21 +5,12 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+set -o vi
 
 # Enable bash-completion
 if [ -f /etc/bash_completion ]; then
 	. /etc/bash_completion
 fi
-
-# Custom shell prompt
-PS1='$(slcp $COLUMNS $?)'
-
-# Environment variables
-export PATH=$HOME/.local/bin:$PATH
-export EDITOR=nvim
-export PAGER=nvimpager
-export BROWSER=$HOME/.local/bin/floorp
-export LESS='-R --use-color -Dd+r$Du+b$'
 
 # Aliases
 alias ls='ls --color=always'
@@ -40,12 +31,22 @@ alias straceps='strace -ftt -o straceps.log -e trace=%process,%signal'
 alias stracerw='strace -ftt -o stracerw.log -e trace=read,write'
 alias gp='git pull'
 
+# Prompt
+PS1='$(slcp $COLUMNS $?)'
+
 #
 # Extras
 #
 
-# TODO: Remove this bloated mess, takes ~20ms
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+eval "$(jump shell)"
 
-#if [ -f "/home/jpnt/.config/fabric/fabric-bootstrap.inc" ]; then . "/home/jpnt/.config/fabric/fabric-bootstrap.inc"; fi
+sdkman_init() {
+	export SDKMAN_DIR="$HOME/.sdkman"
+	[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+}
+
+dotnet_init() {
+	export DOTNET_CLI_TELEMETRY_OPTOUT=1
+	export DOTNET_ROOT=/usr/lib/dotnet/dotnet8
+	export PATH="$PATH:$DOTNET_ROOT:$HOME/.dotnet/tools"
+}

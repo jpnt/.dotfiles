@@ -10,10 +10,10 @@ bar_font_color_selected="-sf black"
 
 dmenu_opts="$bottom $bar_font $bar_color $bar_font_color $bar_color_selected $bar_font_color_selected"
 
-apps="floorp
-vivaldi-stable
+apps="firefox
+chromium
 libreoffice
-pcmanfm
+spacefm
 calibre
 arandr"
 

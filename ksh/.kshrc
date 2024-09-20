@@ -1,11 +1,14 @@
+#
 # ~/.kshrc
+#
+
+# If not running interactively, don't do anything
+case $- in
+  *i*) ;;
+  *) return ;;
+esac
 
 set -o vi
-
-# Custom shell prompt
-#PS1='$(slcp $COLUMNS $?)'
-
-PS1='\[[1;32;40m\]\h\[[0;37;40m\]:\[[34;40m\][\[[1;31;40m\]\u\[[0;34;40m\]]\[[0;37;40m\]:\[[35;40m\]\w\[[1;33;40m\]#\[[0m\] '
 
 # Aliases
 alias ls='ls --color=always'
@@ -25,4 +28,7 @@ alias cc='gcc -Wall -Wextra -fanalyzer'
 alias straceps='strace -ftt -o straceps.log -e trace=%process,%signal'
 alias stracerw='strace -ftt -o stracerw.log -e trace=read,write'
 alias gp='git pull'
-alias i='cd'
+
+# Prompt
+#PS1='$(slcp $COLUMNS $?)'
+PS1='\[[1;32;40m\]\h\[[0;37;40m\]:\[[34;40m\][\[[1;31;40m\]\u\[[0;34;40m\]]\[[0;37;40m\]:\[[35;40m\]\w\[[1;33;40m\]#\[[0m\] '

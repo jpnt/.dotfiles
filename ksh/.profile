@@ -5,7 +5,7 @@
 PATH=$PATH:$HOME/.local/bin
 EDITOR=nvim
 PAGER=less
-BROWSER=vivaldi-stable
+BROWSER=chromium
 LESS='-R --use-color -Dd+r$Du+b$'
 
 export PATH EDITOR PAGER BROWSER LESS
@@ -26,6 +26,6 @@ if [ -f $HOME/.kshrc -a -r $HOME/.kshrc ]; then
 	export ENV
 fi
 
-if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then 
+if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
 	exec startx;
 fi
