@@ -3,9 +3,9 @@
 #
 
 export PATH=$HOME/.local/bin:$PATH
-export EDITOR=nvim
-export PAGER=nvimpager
-export BROWSER=$HOME/.local/bin/floorp
+export EDITOR=hx
+export PAGER=less
+export BROWSER=chromium
 export LESS='-R --use-color -Dd+r$Du+b$'
 
 [[ -f ~/.bashrc ]] && . ~/.bashrc

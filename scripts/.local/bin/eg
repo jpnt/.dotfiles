@@ -1,0 +1,3 @@
+#!/bin/sh
+# (e)dit (g)rep selection
+ugrep -Q | xargs $EDITOR
