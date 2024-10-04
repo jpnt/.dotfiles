@@ -8,8 +8,6 @@ case $- in
   *) return ;;
 esac
 
-set -o vi
-
 # Aliases
 alias ls='ls --color=always'
 alias l='ls -CF'
@@ -28,6 +26,7 @@ alias cc='gcc -Wall -Wextra -fanalyzer'
 alias straceps='strace -ftt -o straceps.log -e trace=%process,%signal'
 alias stracerw='strace -ftt -o stracerw.log -e trace=read,write'
 alias gp='git pull'
+alias gb='git branch'
 
 # Prompt
 PS1='$ \u:[\w]> '
