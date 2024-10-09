@@ -1,0 +1,30 @@
+vim9script
+set number relativenumber
+set splitbelow splitright
+set incsearch
+set nocompatible
+syntax on
+filetype plugin indent on
+set statusline=2
+set path+=**
+set wildmenu
+set bg=dark
+colo retrobox
+map <Space> <Leader>
+g:vimhome = substitute(expand('<sfile>:p:h'), '\', '/', 'g')
+
+packadd vim-jetpack
+jetpack#begin(g:vimhome)
+Jetpack 'tani/vim-jetpack', {'opt': 1} # bootstrap
+Jetpack 'Eliot00/auto-pairs'
+Jetpack 'ubaldot/vim-highlight-yanked'
+Jetpack 'habamax/vim-shout'
+Jetpack 'ubaldot/vim-extended-view'
+Jetpack 'yegappan/lsp'
+Jetpack 'girishji/vimcomplete'
+Jetpack 'Donaldttt/fuzzyy'
+jetpack#end()
+
+command! MakeTags !ctags -R .
+command! -nargs=1 Rg Sh! rg -nS --column "<args>" .
+command! Todo Sh! rg -nS --column "\b(TODO|FIXME):" .
