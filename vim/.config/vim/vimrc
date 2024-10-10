@@ -32,4 +32,4 @@ jetpack#end()
 command! MakeTags !ctags -R .
 command! -nargs=1 Rg Sh! rg -nS --column "<args>" .
 
-source ~/.config/vim/lsp-setup.vim
+runtime lsp-setup.vim
