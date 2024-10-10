@@ -5,7 +5,6 @@ set incsearch
 set nocompatible
 syntax on
 filetype plugin indent on
-set statusline=2
 set path+=**
 set wildmenu
 set bg=dark
@@ -23,8 +22,12 @@ Jetpack 'ubaldot/vim-extended-view'
 Jetpack 'yegappan/lsp'
 Jetpack 'girishji/vimcomplete'
 Jetpack 'Donaldttt/fuzzyy'
+Jetpack 'tpope/vim-commentary'
+Jetpack 'tpope/vim-fugitive'
 jetpack#end()
 
 command! MakeTags !ctags -R .
 command! -nargs=1 Rg Sh! rg -nS --column "<args>" .
 command! Todo Sh! rg -nS --column "\b(TODO|FIXME):" .
+
+source lsp-setup.vim
