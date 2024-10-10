@@ -7,12 +7,8 @@ var lspOpts = {
 	diagSignWarningText: 'W>',
 	diagSignInfoText: 'I>',
 	diagSignHintText: 'H>',
-	showDiagWithSign: true,
-	showDiagInPopup: true,
-	hoverInPreview: true,
+	showDiagOnStatusLine: true,
 	semanticHighlight: true,
-	useBufferCompletion: true,
-	useQuickfixForLocations: true,
 }
 
 autocmd User LspSetup call LspOptionsSet(lspOpts)
@@ -23,6 +19,12 @@ var lspServers = [
 		filetype: ['c', 'cpp'],
 		path: '/bin/clangd',
 		args: ['--background-index']
+	},
+	{
+		name: 'gopls',
+		filetype: ['go'],
+		path: '/bin/gopls',
+		args: ['serve']
 	}
 ]
 
