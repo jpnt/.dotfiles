@@ -10,6 +10,7 @@ set wildmenu
 set bg=dark
 colo retrobox
 map <Space> <Leader>
+g:netrw_liststyle = 3
 g:vimhome = substitute(expand('<sfile>:p:h'), '\', '/', 'g')
 
 packadd vim-jetpack
@@ -17,13 +18,15 @@ jetpack#begin(g:vimhome)
 Jetpack 'tani/vim-jetpack', {'opt': 1} # bootstrap
 Jetpack 'Eliot00/auto-pairs'
 Jetpack 'ubaldot/vim-highlight-yanked'
-Jetpack 'habamax/vim-shout'
+Jetpack 'habamax/vim-shout' # run shell commands
 Jetpack 'ubaldot/vim-extended-view'
 Jetpack 'yegappan/lsp'
 Jetpack 'girishji/vimcomplete'
-Jetpack 'Donaldttt/fuzzyy'
-Jetpack 'tpope/vim-commentary'
-Jetpack 'tpope/vim-fugitive'
+Jetpack 'Donaldttt/fuzzyy' # fuzzy finder
+Jetpack 'tpope/vim-commentary' # gc for comments
+Jetpack 'tpope/vim-fugitive' # :G for git commands
+Jetpack 'airblade/vim-gitgutter' # git diff markers
+Jetpack 'dstein64/vim-startuptime'
 jetpack#end()
 
 command! MakeTags !ctags -R .
