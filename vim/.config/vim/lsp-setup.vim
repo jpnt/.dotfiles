@@ -10,7 +10,6 @@ var lspOpts = {
 	showDiagOnStatusLine: true,
 	semanticHighlight: true,
 }
-
 autocmd User LspSetup call LspOptionsSet(lspOpts)
 
 var lspServers = [
@@ -27,5 +26,9 @@ var lspServers = [
 		args: ['serve']
 	}
 ]
-
 autocmd User LspSetup call LspAddServer(lspServers)
+
+nnoremap <Leader>ca :LspCodeAction<CR>
+nnoremap <Leader>D :LspGotoTypeDef<CR>
+nnoremap gd :LspGotoDefinition<CR>
+nnoremap gi :LspGotoImpl<CR>
