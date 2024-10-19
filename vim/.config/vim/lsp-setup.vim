@@ -7,7 +7,7 @@ var lspOpts = {
 	diagSignWarningText: 'W>',
 	diagSignInfoText: 'I>',
 	diagSignHintText: 'H>',
-	showDiagOnStatusLine: true,
+	# showDiagOnStatusLine: true,
 	semanticHighlight: true,
 }
 autocmd User LspSetup call LspOptionsSet(lspOpts)
@@ -15,7 +15,7 @@ autocmd User LspSetup call LspOptionsSet(lspOpts)
 var lspServers = [
 	{
 		name: 'clangd',
-		filetype: ['c', 'cpp'],
+		filetype: ['c', 'cpp', 'h', 'hpp'],
 		path: '/bin/clangd',
 		args: ['--background-index']
 	},
