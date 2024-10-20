@@ -10,12 +10,12 @@ set wildmenu
 set bg=dark
 colo retrobox
 
-var mapleader = "\<Space>"
-var netrw_liststyle = 3
-var vimhome = substitute(expand('<sfile>:p:h'), '\', '/', 'g')
+g:mapleader = "\<Space>"
+g:netrw_liststyle = 3
+g:vimhome = substitute(expand('<sfile>:p:h'), '\', '/', 'g')
 
 packadd vim-jetpack
-jetpack#begin(vimhome)
+jetpack#begin(g:vimhome)
 Jetpack 'tani/vim-jetpack', {'opt': 1} # bootstrap
 Jetpack 'Eliot00/auto-pairs'
 Jetpack 'ubaldot/vim-highlight-yanked'
