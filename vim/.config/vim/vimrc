@@ -22,15 +22,15 @@ Jetpack 'ubaldot/vim-highlight-yanked'
 Jetpack 'habamax/vim-shout' # run shell commands
 Jetpack 'ubaldot/vim-extended-view'
 Jetpack 'yegappan/lsp'
-Jetpack 'girishji/vimcomplete'
+Jetpack 'girishji/vimcomplete' # async autocomplete
 Jetpack 'Donaldttt/fuzzyy' # fuzzy finder
 Jetpack 'tpope/vim-commentary' # comment with gc
-Jetpack 'tpope/vim-fugitive', { 'on': 'G' }
+Jetpack 'tpope/vim-fugitive', { 'on': 'G' } # git
 Jetpack 'airblade/vim-gitgutter'
+Jetpack 'ludovicchabant/vim-gutentags'
 Jetpack 'dstein64/vim-startuptime'
 jetpack#end()
 
-command! MakeTags !ctags -R .
 command! -nargs=1 Rg Sh! rg -nS --column "<args>" .
 
 nnoremap <Tab> :bnext<CR>
