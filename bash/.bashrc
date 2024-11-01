@@ -5,6 +5,8 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+set -o vi
+
 # Enable bash-completion
 if [ -f /etc/bash_completion ]; then
 	. /etc/bash_completion
@@ -29,6 +31,7 @@ alias straceps='strace -ftt -o straceps.log -e trace=%process,%signal'
 alias stracerw='strace -ftt -o stracerw.log -e trace=read,write'
 alias gp='git pull'
 alias gb='git branch'
+alias v='vim'
 
 # Prompt
 PS1='$ \u:[\w]> '
