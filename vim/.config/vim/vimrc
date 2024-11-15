@@ -55,5 +55,6 @@ def OnLspBufferEnabled()
 	nmap <buffer> <leader>rn <Plug>(lsp-rename)
 	nmap <buffer> [d <Plug>(lsp-previous-diagnostic)
 	nmap <buffer> ]d <Plug>(lsp-next-diagnostic)
-	autocmd BufWritePre *.rs,*.go call lsp#document_format_sync()
+	g:lsp_format_sync_timeout = 1000
+	autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
 enddef
