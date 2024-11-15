@@ -3,12 +3,14 @@ set number relativenumber
 set splitbelow splitright
 set incsearch
 set nocompatible
+set updatetime=300
 syntax on
 filetype plugin indent on
 set path+=**
 set wildmenu
+set wildmode=longest:full,full
 set bg=dark
-colo retrobox
+colo industry
 
 g:mapleader = "\<Space>"
 g:netrw_liststyle = 3
@@ -19,21 +21,39 @@ jetpack#begin(g:vimhome)
 Jetpack 'tani/vim-jetpack', {'opt': 1} # bootstrap
 Jetpack 'Eliot00/auto-pairs'
 Jetpack 'ubaldot/vim-highlight-yanked'
-Jetpack 'habamax/vim-shout' # run shell commands
 Jetpack 'ubaldot/vim-extended-view'
-Jetpack 'yegappan/lsp'
-Jetpack 'girishji/vimcomplete' # async autocomplete
+Jetpack 'prabirshrestha/vim-lsp' # LSP
+Jetpack 'mattn/vim-lsp-settings'
+Jetpack 'prabirshrestha/asyncomplete.vim' # auto complete
+Jetpack 'prabirshrestha/asyncomplete-lsp.vim'
+Jetpack 'habamax/vim-shout' # run shell commands
 Jetpack 'Donaldttt/fuzzyy' # fuzzy finder
 Jetpack 'tpope/vim-commentary' # comment with gc
 Jetpack 'tpope/vim-fugitive', { 'on': 'G' } # git
 Jetpack 'airblade/vim-gitgutter'
-Jetpack 'ludovicchabant/vim-gutentags'
+Jetpack 'wakatime/vim-wakatime'
 Jetpack 'dstein64/vim-startuptime'
 jetpack#end()
 
+command! MakeTags !/bin/ctags -R .
 command! -nargs=1 Rg Sh! rg -nS --column "<args>" .
 
 nnoremap <Tab> :bnext<CR>
 nnoremap <S-Tab> :bprevious<CR>
 
-runtime lsp-setup.vim
+augroup lsp_config
+	autocmd!
+	autocmd User lsp_buffer_enabled call OnLspBufferEnabled()
+augroup END
+
+def OnLspBufferEnabled()
+	nmap <buffer> gd <Plug>(lsp-definition)
+	nmap <buffer> gr <Plug>(lsp-references)
+	nmap <buffer> gi <Plug>(lsp-implementation)
+	nmap <buffer> K <Plug>(lsp-hover)
+	nmap <buffer> <leader>ca <Plug>(lsp-code-action)
+	nmap <buffer> <leader>rn <Plug>(lsp-rename)
+	nmap <buffer> [d <Plug>(lsp-previous-diagnostic)
+	nmap <buffer> ]d <Plug>(lsp-next-diagnostic)
+	autocmd BufWritePre *.rs,*.go call lsp#document_format_sync()
+enddef

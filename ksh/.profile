@@ -3,7 +3,7 @@
 #
 
 PATH=$PATH:$HOME/.local/bin
-EDITOR=hx
+EDITOR=vim
 PAGER=less
 BROWSER=chromium
 LESS='-R --use-color -Dd+r$Du+b$'

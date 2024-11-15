@@ -3,7 +3,7 @@
 #
 
 export PATH=$HOME/.local/bin:$PATH
-export EDITOR=hx
+export EDITOR=vim
 export PAGER=less
 export BROWSER=chromium
 export LESS='-R --use-color -Dd+r$Du+b$'
