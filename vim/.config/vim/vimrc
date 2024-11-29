@@ -1,18 +1,19 @@
 vim9script
+syntax on
+filetype plugin indent on
 set number relativenumber
 set splitbelow splitright
 set incsearch
 set nocompatible
 set updatetime=300
-syntax on
-filetype plugin indent on
 set path+=**
 set wildmenu
 set wildmode=longest:full,full
+set list listchars=tab:>--,trail:_,extends:>,precedes:<,nbsp:~
 set bg=dark
 colo industry
 
-g:mapleader = "\<Space>"
+g:mapleader = '\<Space>'
 g:netrw_liststyle = 3
 g:vimhome = substitute(expand('<sfile>:p:h'), '\', '/', 'g')
 
@@ -37,7 +38,7 @@ Jetpack 'dstein64/vim-startuptime'
 jetpack#end()
 
 command! MakeTags !/bin/ctags -R .
-command! -nargs=1 Rg Sh! rg -nS --column "<args>" .
+command! -nargs=1 Rg Sh! rg -nS --column '<args>' .
 
 nnoremap <Tab> :bnext<CR>
 nnoremap <S-Tab> :bprevious<CR>
