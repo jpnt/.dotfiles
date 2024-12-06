@@ -7,14 +7,11 @@ set incsearch
 set nocompatible
 set updatetime=300
 set path+=**
-set wildmenu
-set wildmode=longest:full,full
+set wildmenu wildmode=longest:full,full
 set list listchars=tab:>--,trail:_,extends:>,precedes:<,nbsp:~
 set bg=dark
 colo industry
-
-g:mapleader = '\<Space>'
-g:netrw_liststyle = 3
+g:mapleader = "\<Space>"
 g:vimhome = substitute(expand('<sfile>:p:h'), '\', '/', 'g')
 
 packadd vim-jetpack
