@@ -8,7 +8,7 @@ set nocompatible
 set updatetime=300
 set path+=**
 set wildmenu wildmode=longest:full,full
-set list listchars=tab:>--,trail:_,extends:>,precedes:<,nbsp:~
+set list listchars=tab:>\ ,trail:_,extends:>,precedes:<,nbsp:~
 set bg=dark
 colo industry
 g:mapleader = "\<Space>"
