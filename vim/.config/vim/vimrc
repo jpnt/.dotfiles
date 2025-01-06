@@ -14,7 +14,7 @@ colo retrobox
 
 g:mapleader = "\<Space>"
 g:netrw_liststyle = 3
-g:vimhome = substitute(expand('<sfile>:p:h'), '\', '/', 'g')
+g:vimhome = fnamemodify(expand('<sfile>'), ':p:h')
 
 packadd vim-jetpack
 jetpack#begin(g:vimhome)
@@ -35,8 +35,8 @@ Jetpack 'mhinz/vim-tree'
 Jetpack 'tpope/vim-commentary' # comment with gc
 Jetpack 'tpope/vim-fugitive', { 'on': 'G' } # git
 Jetpack 'airblade/vim-gitgutter'
-Jetpack 'wakatime/vim-wakatime'
 Jetpack 'ConradIrwin/vim-bracketed-paste'
+Jetpack 'mg979/vim-visual-multi'
 Jetpack 'dstein64/vim-startuptime'
 jetpack#end()
 
@@ -64,4 +64,3 @@ augroup lsp_config
 	autocmd!
 	autocmd User lsp_buffer_enabled OnLspBufferEnabled()
 augroup END
-
