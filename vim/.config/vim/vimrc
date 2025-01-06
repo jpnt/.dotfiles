@@ -47,11 +47,6 @@ nnoremap <Tab> :bnext<CR>
 nnoremap <S-Tab> :bprevious<CR>
 nnoremap <C-n> :Tree<CR>
 
-augroup lsp_config
-	autocmd!
-	autocmd User lsp_buffer_enabled call OnLspBufferEnabled()
-augroup END
-
 def OnLspBufferEnabled()
 	nmap <buffer> gd <Plug>(lsp-definition)
 	nmap <buffer> gr <Plug>(lsp-references)
@@ -62,5 +57,11 @@ def OnLspBufferEnabled()
 	nmap <buffer> [d <Plug>(lsp-previous-diagnostic)
 	nmap <buffer> ]d <Plug>(lsp-next-diagnostic)
 	g:lsp_format_sync_timeout = 1000
-	autocmd! BufWritePre *.rs,*.go,*.py call execute('LspDocumentFormatSync')
+	autocmd! BufWritePre *.rs,*.go,*.py execute('LspDocumentFormatSync')
 enddef
+
+augroup lsp_config
+	autocmd!
+	autocmd User lsp_buffer_enabled OnLspBufferEnabled()
+augroup END
+
