@@ -26,6 +26,9 @@ Jetpack 'prabirshrestha/vim-lsp' # LSP
 Jetpack 'mattn/vim-lsp-settings'
 Jetpack 'prabirshrestha/asyncomplete.vim' # auto complete
 Jetpack 'prabirshrestha/asyncomplete-lsp.vim'
+Jetpack 'SirVer/ultisnips' # snippets
+Jetpack 'thomasfaingnaert/vim-lsp-snippets'
+Jetpack 'thomasfaingnaert/vim-lsp-ultisnips'
 Jetpack 'habamax/vim-shout' # run shell commands
 Jetpack 'Donaldttt/fuzzyy' # fuzzy finder
 Jetpack 'mhinz/vim-tree'
@@ -42,7 +45,6 @@ command! -nargs=1 Rg Sh! rg -nS --column '<args>' .
 
 nnoremap <Tab> :bnext<CR>
 nnoremap <S-Tab> :bprevious<CR>
-
 nnoremap <C-n> :Tree<CR>
 
 augroup lsp_config
