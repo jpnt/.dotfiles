@@ -63,7 +63,7 @@ extract() {
       *.deb)
         print_format "deb"
         check_tool dpkg
-        dpkg -x "$1" ;;
+        dpkg -x "$1" . ;;
       *.rpm)
         print_format "rpm"
         check_tool rpm2cpio

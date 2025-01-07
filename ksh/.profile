@@ -21,11 +21,14 @@ if [ -z "$PWD" ]; then
 	export PWD
 fi
 
+# TODO: add validation if using ksh or not
+# TODO: make .profile universal (at least for bash/ksh) so no need for .bash_profile
 if [ -f $HOME/.kshrc -a -r $HOME/.kshrc ]; then
 	ENV=$HOME/.kshrc
 	export ENV
 fi
 
+# TODO: add validation if using Xorg (not using Wayland)
 if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
 	exec startx;
 fi

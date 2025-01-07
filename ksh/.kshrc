@@ -33,3 +33,19 @@ alias v='vim'
 
 # Prompt
 PS1='$ \u:[\w]> '
+
+sdkman_init() {
+	export SDKMAN_DIR="$HOME/.sdkman"
+	[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+}
+
+dotnet_init() {
+	export DOTNET_CLI_TELEMETRY_OPTOUT=1
+	export DOTNET_ROOT=/usr/lib/dotnet/dotnet8
+	export PATH="$PATH:$DOTNET_ROOT:$HOME/.dotnet/tools"
+}
+
+nvm_init() {
+	export NVM_DIR="$HOME/.nvm"
+	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+}
