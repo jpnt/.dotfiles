@@ -1,14 +1,14 @@
 require("vis")
-plugged = require("plugins/vis-plugged")
---require("plugins/vis-autopairs") -- need to fix closing bracket edge case
---require("plugins/vis-bracketpaste") -- copy from vim bracketpaste
---require("plugins/vis-format") -- copy format plugin from neovim
+local plugged = require("plugins/vis-plugged")
 
 plugged.add_plugin("https://github.com/lutobler/vis-commentary")
 plugged.add_plugin("https://git.sr.ht/~mcepl/vis-fzf-open")
 plugged.add_plugin("https://github.com/jpnt/vis-shout")
 plugged.add_plugin("https://github.com/kupospelov/vis-ctags")
-plugged.require_all_plugins()
+plugged.add_plugin("https://github.com/fischerling/vis-lspc")
+--require("plugins/vis-autopairs") -- fix closing bracket edge case
+--require("plugins/vis-bracketpaste") -- copy from vim bracketpaste
+--require("plugins/vis-format") -- copformat plugin from neovim
 
 vis.events.subscribe(vis.events.INIT, function()
 	vis:command("set theme base16-gruvbox-dark-medium")
@@ -29,3 +29,5 @@ vis.events.subscribe(vis.events.WIN_OPEN, function(win)
 		vis:command("set tabwidth 4")
 	end
 end)
+
+plugged.require_all_plugins()
