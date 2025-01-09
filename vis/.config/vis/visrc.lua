@@ -10,7 +10,6 @@ plugged.add_plugin("https://git.sr.ht/~mcepl/vis-fzf-open")
 plugged.add_plugin("https://github.com/jpnt/vis-shout")
 plugged.add_plugin("https://github.com/kupospelov/vis-ctags")
 plugged.add_plugin("https://github.com/fischerling/vis-lspc")
-plugged.add_plugin("https://github.com/jpnt/vis-bracketedpaste")
 -- require("plugins/vis-autopairs") -- fix closing bracket edge case
 -- require("plugins/vis-format") -- copy format plugin from neovim
 
