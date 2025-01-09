@@ -10,9 +10,9 @@ plugged.add_plugin("https://git.sr.ht/~mcepl/vis-fzf-open")
 plugged.add_plugin("https://github.com/jpnt/vis-shout")
 plugged.add_plugin("https://github.com/kupospelov/vis-ctags")
 plugged.add_plugin("https://github.com/fischerling/vis-lspc")
--- require("plugins/vis-bracketpaste") -- copy from vim bracketpaste
+plugged.add_plugin("https://github.com/jpnt/vis-bracketedpaste")
 -- require("plugins/vis-autopairs") -- fix closing bracket edge case
--- require("plugins/vis-format") -- copformat plugin from neovim
+-- require("plugins/vis-format") -- copy format plugin from neovim
 
 vis.events.subscribe(vis.events.INIT, function()
 	vis:command("set theme base16-gruvbox-dark-medium")
