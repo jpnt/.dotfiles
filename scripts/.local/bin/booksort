@@ -39,8 +39,6 @@ for FILE in "$@"; do
 	OUTPUT_DIR="$DIRECTORY/$EXTENSION_LOWER"
 	mkdir -p "$OUTPUT_DIR"
 
-	echo $EXTENSION_LOWER
-
 	if [[ "$EXTENSION_LOWER" == "epub" && "${KEPUB:-0}" -eq 1 ]]; then
 		KEPUB_NAME="${NORMALIZED_NAME%.*}.kepub.epub"
 		KEPUB_DIR="$DIRECTORY/kepub"
