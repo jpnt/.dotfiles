@@ -1,5 +1,5 @@
 require("vis")
-local plugged = (function() if not pcall(require, "plugins/vis-plug") then
+local plugged = (function() if not pcall(require, "plugins/vis-plugged") then
 	os.execute("git clone -q https://github.com/jpnt/vis-plugged " ..
 	(os.getenv("XDG_CONFIG_HOME") or os.getenv("HOME") .. "/.config") ..
 	"/vis/plugins/vis-plugged") -- bootstrap vis-plugged
