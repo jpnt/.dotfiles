@@ -14,7 +14,7 @@ plugged.add_plugin("https://github.com/fischerling/vis-lspc")
 -- require("plugins/vis-format") -- copy format plugin from neovim
 
 vis.events.subscribe(vis.events.INIT, function()
-	vis:command("set theme base16-gruvbox-dark-medium")
+	vis:command("set theme base16-gruvbox-dark-hard")
 end)
 
 vis.events.subscribe(vis.events.WIN_OPEN, function(win)

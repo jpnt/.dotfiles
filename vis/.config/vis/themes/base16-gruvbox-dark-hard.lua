@@ -1,11 +1,11 @@
 -- base16-vis (https://github.com/pshevtsov/base16-vis)
 -- by Petr Shevtsov
--- Gruvbox dark, medium scheme by Dawid Kurek (dawikur@gmail.com), morhetz (https://github.com/morhetz/gruvbox)
+-- Gruvbox dark, hard scheme by Dawid Kurek (dawikur@gmail.com), morhetz (https://github.com/morhetz/gruvbox)
 
 local lexers = vis.lexers
 
 local colors = {
-	['base00'] = '#282828',
+	['base00'] = '#1d2021',
 	['base01'] = '#3c3836',
 	['base02'] = '#504945',
 	['base03'] = '#665c54',
