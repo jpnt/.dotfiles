@@ -45,11 +45,8 @@ for FILE in "$@"; do
 		mkdir -p "$KEPUB_DIR"
 		kepubify "$FILE" -o "$KEPUB_DIR/$KEPUB_NAME"
 		echo "Processed: $KEPUB_NAME -> $KEPUB_DIR"
-
-		mv "$FILE" "$OUTPUT_DIR/$NORMALIZED_NAME"
-		echo "Processed: $NORMALIZED_NAME -> $OUTPUT_DIR"
-	else
-		mv "$FILE" "$OUTPUT_DIR/$NORMALIZED_NAME"
-		echo "Processed: $NORMALIZED_NAME -> $OUTPUT_DIR"
 	fi
+
+	mv "$FILE" "$OUTPUT_DIR/$NORMALIZED_NAME"
+	echo "Processed: $NORMALIZED_NAME -> $OUTPUT_DIR"
 done
