@@ -43,7 +43,7 @@ if [ -z "${DISPLAY}" ] && [ "$(tty)" = "/dev/tty1" ]; then
 			exec startx
 		;;
 		wayland)
-			[ -n "${WAYLAND_DISPLAY}" ] || exec startw
+			exec startw
 		;;
 		*)
 			echo "Invalid SESSION_TYPE: ${SESSION_TYPE}" >&2
