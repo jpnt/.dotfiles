@@ -3,8 +3,8 @@
 
 disks=$(lsblk -lp | tail -n +2 | cut -d ' ' -f 1)
 
-# selected_disk=$(echo "$disks" | fzf --ansi --header="Select block device to mount:")
-selected_disk=$(echo "$disks" | fzy -p "Select block device to mount:")
+selected_disk=$(echo "$disks" | fzf --ansi --header="Select block device to mount:")
+# selected_disk=$(echo "$disks" | fzy -p "Select block device to mount:")
 
 [ -z "$selected_disk" ] && { echo "No disk selected"; exit 1; }
 
@@ -16,8 +16,8 @@ read -r mount_point
 [ ! -d "$mount_point" ] && sudo mkdir -p "$mount_point"
 
 if sudo mount "$selected_disk" "$mount_point"; then
-    echo "Disk $selected_disk mounted to $mount_point successfully"
+	echo "Disk $selected_disk mounted to $mount_point successfully!"
 else
-    echo "Failed to mount $selected_disk to $mount_point" >&2
-    exit 1
+	echo "Failed to mount $selected_disk to $mount_point" >&2
+	exit 1
 fi
