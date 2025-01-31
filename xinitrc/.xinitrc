@@ -2,10 +2,12 @@
 setxkbmap pt &
 #xrdb ~/.Xresources &
 #nitrogen --restore &
+#sh ~/.screenlayout/dualscreen2.sh
 bgs ~/Imagens/Wallpaper/wallhaven-nkvg86.png &
 #urxvtd --quiet --opendisplay --fork &
 #xinput set-prop 10 341 1 &
 xset r rate 200 30 &
+#xset s off -dpms
 #udiskie &
 #picom &
 #pipewire &

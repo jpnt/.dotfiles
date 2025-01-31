@@ -36,12 +36,6 @@ alias v='vim'
 # Prompt
 PS1='$ \u:[\w]> '
 
-#
-# Extras
-#
-
-eval "$(jump shell)"
-
 sdkman_init() {
 	export SDKMAN_DIR="$HOME/.sdkman"
 	[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"

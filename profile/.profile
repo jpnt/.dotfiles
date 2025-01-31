@@ -23,9 +23,9 @@ if [ -z "${PWD}" ]; then
 	PWD="${HOME}" && export PWD
 fi
 
-# Shell-specific configuration
+# Shell-specific configuration, extract only shell name
 case "${SHELL##*/}" in
-	*ksh*)
+	*ksh)
 		[ -f "${HOME}/.kshrc" ] && [ -r "${HOME}/.kshrc" ] && ENV="${HOME}/.kshrc"
 		export ENV
 	;;
