@@ -1,99 +1,99 @@
-#!/usr/bin/env bash
+#!/bin/sh
 # e(x)tract (f)ile
 
 print_format() {
-  echo "Extracting archive format: $1"
+    echo "Extracting archive format: $1"
 }
 
 check_tool() {
-  command -v "$1" >/dev/null 2>&1 || { echo >&2 "$1 is required but it's not installed"; exit 1; }
+    command -v "$1" >/dev/null 2>&1 || { echo >&2 "$1 is required but it's not installed"; exit 1; }
 }
 
 display_help() {
-  echo "Usage: `basename $0` [FILE]"
-  exit 0
+    echo "Usage: $(basename "$0") [FILE]"
+    exit 0
 }
 
 extract() {
-  if [ "$1" == "" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
-    display_help
-  elif [ -f "$1" ]; then
-    case "$1" in
-      *.tar|*.tar.xz|*.tar.gz|*.tgz|*.tar.bz2|*.tbz2|*.txz)
-        print_format "tar"
-        check_tool tar
-        tar xvf "$1" ;;
-      *.bz2)
-        print_format "bzip2"
-        check_tool bunzip2
-        bunzip2 -v "$1" ;;
-      *.rar)
-        print_format "rar"
-        check_tool unrar
-        unrar x "$1" ;;
-      *.7z)
-        print_format "7z"
-        check_tool 7z
-        7z x "$1" ;;
-      *.gz)
-        print_format "gzip"
-        check_tool gunzip
-        gunzip -v "$1" ;;
-      *.zip)
-        print_format "zip"
-        check_tool unzip
-        unzip "$1" ;;
-      *.lz4)
-        print_format "lz4"
-        check_tool unlz4
-        unlz4 "$1" ;;
-      *.zst)
-        print_format "zstd"
-        check_tool unzstd
-        unzstd "$1" ;;
-      *.xz)
-        print_format "xz"
-        check_tool unxz
-        unxz -v "$1" ;;
-      *.iso)
-        extracted=iso_$(date +%Y-%m-%d_%H-%M-%S)
-        print_format "iso extracted to $extracted"
-        check_tool 7z
-        7z x "$1" -o"$extracted" ;;
-      *.deb)
-        print_format "deb"
-        check_tool dpkg
-        dpkg -x "$1" . ;;
-      *.rpm)
-        print_format "rpm"
-        check_tool rpm2cpio
-        rpm2cpio "$1" | cpio -id ;;
-      *.jar)
-        print_format "jar"
-        check_tool jar
-        jar xf "$1" ;;
-      *.cab)
-        print_format "cab"
-        check_tool cabextract
-        cabextract -v "$1" ;;
-      *.arj)
-        print_format "arj"
-        check_tool arj
-        arj x "$1" ;;
-      *.cpio)
-        print_format "cpio"
-        check_tool cpio
-        cpio -id < "$1" ;;
-      *.Z)
-        print_format "Z"
-        check_tool uncompress
-        uncompress -v "$1" ;;
-      *)
-        echo "'$1' could not be extracted: unsupported file format" ;;
-    esac
-  else
-    echo "'$1' is not a valid file"
-  fi
+    if [ -z "$1" ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+        display_help
+    elif [ -f "$1" ]; then
+        case "$1" in
+            *.tar|*.tar.xz|*.tar.gz|*.tgz|*.tar.bz2|*.tbz2|*.txz)
+                print_format "tar"
+                check_tool tar
+                tar xvf "$1" ;;
+            *.bz2)
+                print_format "bzip2"
+                check_tool bunzip2
+                bunzip2 -v "$1" ;;
+            *.rar)
+                print_format "rar"
+                check_tool unrar
+                unrar x "$1" ;;
+            *.7z)
+                print_format "7z"
+                check_tool 7z
+                7z x "$1" ;;
+            *.gz)
+                print_format "gzip"
+                check_tool gunzip
+                gunzip -v "$1" ;;
+            *.zip)
+                print_format "zip"
+                check_tool unzip
+                unzip "$1" ;;
+            *.lz4)
+                print_format "lz4"
+                check_tool unlz4
+                unlz4 "$1" ;;
+            *.zst)
+                print_format "zstd"
+                check_tool unzstd
+                unzstd "$1" ;;
+            *.xz)
+                print_format "xz"
+                check_tool unxz
+                unxz -v "$1" ;;
+            *.iso)
+                extracted="iso_$(date +%Y-%m-%d_%H-%M-%S)"
+                print_format "iso extracted to $extracted"
+                check_tool 7z
+                7z x "$1" -o"$extracted" ;;
+            *.deb)
+                print_format "deb"
+                check_tool dpkg
+                dpkg -x "$1" . ;;
+            *.rpm)
+                print_format "rpm"
+                check_tool rpm2cpio
+                rpm2cpio "$1" | cpio -id ;;
+            *.jar)
+                print_format "jar"
+                check_tool jar
+                jar xf "$1" ;;
+            *.cab)
+                print_format "cab"
+                check_tool cabextract
+                cabextract -v "$1" ;;
+            *.arj)
+                print_format "arj"
+                check_tool arj
+                arj x "$1" ;;
+            *.cpio)
+                print_format "cpio"
+                check_tool cpio
+                cpio -id < "$1" ;;
+            *.Z)
+                print_format "Z"
+                check_tool uncompress
+                uncompress -v "$1" ;;
+            *)
+                echo "'$1' could not be extracted: unsupported file format" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
 }
 
-extract $1
+extract "$1"

@@ -1,52 +1,76 @@
-#!/bin/bash
+#!/bin/sh
 # booksort: Book library sorting and place on specific folder according to file extension.
-# Use `KEPUB=1 booksort *` to also convert from epub to kepub and place them separatly.
+# Use `KEPUB=1 booksort *` to also convert from epub to kepub and place them separately.
 
-if [[ $# -eq 0 ]]; then
-	echo "Usage: $0 <file>"
-	exit 1
+if [ "$#" -eq 0 ]; then
+    echo "Usage: $0 <file>"
+    exit 1
 fi
 
 for FILE in "$@"; do
-	if [[ ! -f "$FILE" ]]; then
-		echo "Skipping: $FILE (not a valid file)"
-		continue
-	fi
+    if [ ! -f "$FILE" ]; then
+        echo "Skipping: $FILE (not a valid file)"
+        continue
+    fi
 
-	if [[ "$FILE" =~ \.kepub\.epub$ ]]; then
-		FILENAME=$(basename "$FILE")
-		DIRECTORY=$(dirname "$FILE")
-		NORMALIZED_NAME=$(echo "$FILENAME" | sed -E 's/\s+/_/g' | sed -E 's/(^|_)([a-z])/\1\u\2/g')
-		OUTPUT_DIR="$DIRECTORY/kepub"
-		mkdir -p "$OUTPUT_DIR"
-		mv "$FILE" "$OUTPUT_DIR/$NORMALIZED_NAME"
-		echo "Processed: $NORMALIZED_NAME -> $OUTPUT_DIR"
-		continue
-	fi
+    case "$FILE" in
+        *.kepub.epub)
+            FILENAME=$(basename "$FILE")
+            DIRECTORY=$(dirname "$FILE")
+            NORMALIZED_NAME=$(echo "$FILENAME" | sed 's/[[:space:]]\{1,\}/_/g' | awk '{
+                gsub(/_+/, "_")
+                n = split($0, parts, /_/)
+                output = ""
+                for (i = 1; i <= n; i++) {
+                    if (parts[i] == "") continue
+                    first = substr(parts[i], 1, 1)
+                    rest = substr(parts[i], 2)
+                    output = output (i > 1 ? "_" : "") toupper(first) rest
+                }
+                print output
+            }')
+            OUTPUT_DIR="$DIRECTORY/kepub"
+            mkdir -p "$OUTPUT_DIR"
+            mv "$FILE" "$OUTPUT_DIR/$NORMALIZED_NAME"
+            echo "Processed: $NORMALIZED_NAME -> $OUTPUT_DIR"
+            continue
+            ;;
+    esac
 
-	EXTENSION="${FILE##*.}"
-	EXTENSION_LOWER=$(echo "$EXTENSION" | tr '[:upper:]' '[:lower:]')
+    EXTENSION="${FILE##*.}"
+    EXTENSION_LOWER=$(echo "$EXTENSION" | tr '[:upper:]' '[:lower:]')
 
-	if [[ "$EXTENSION_LOWER" != "pdf" && "$EXTENSION_LOWER" != "epub" && "$EXTENSION_LOWER" != "kepub" ]]; then
-		echo "Skipping: $FILE (unsupported file type: $EXTENSION)"
-		continue
-	fi
+    if [ "$EXTENSION_LOWER" != "pdf" ] && [ "$EXTENSION_LOWER" != "epub" ] && [ "$EXTENSION_LOWER" != "kepub" ]; then
+        echo "Skipping: $FILE (unsupported file type: $EXTENSION)"
+        continue
+    fi
 
-	FILENAME=$(basename "$FILE")
-	DIRECTORY=$(dirname "$FILE")
-	NORMALIZED_NAME=$(echo "$FILENAME" | sed -E 's/\s+/_/g' | sed -E 's/(^|_)([a-z])/\1\u\2/g')
+    FILENAME=$(basename "$FILE")
+    DIRECTORY=$(dirname "$FILE")
+    NORMALIZED_NAME=$(echo "$FILENAME" | sed 's/[[:space:]]\{1,\}/_/g' | awk '{
+        gsub(/_+/, "_")
+        n = split($0, parts, /_/)
+        output = ""
+        for (i = 1; i <= n; i++) {
+            if (parts[i] == "") continue
+            first = substr(parts[i], 1, 1)
+            rest = substr(parts[i], 2)
+            output = output (i > 1 ? "_" : "") toupper(first) rest
+        }
+        print output
+    }')
 
-	OUTPUT_DIR="$DIRECTORY/$EXTENSION_LOWER"
-	mkdir -p "$OUTPUT_DIR"
+    OUTPUT_DIR="$DIRECTORY/$EXTENSION_LOWER"
+    mkdir -p "$OUTPUT_DIR"
 
-	if [[ "$EXTENSION_LOWER" == "epub" && "${KEPUB:-0}" -eq 1 ]]; then
-		KEPUB_NAME="${NORMALIZED_NAME%.*}.kepub.epub"
-		KEPUB_DIR="$DIRECTORY/kepub"
-		mkdir -p "$KEPUB_DIR"
-		kepubify "$FILE" -o "$KEPUB_DIR/$KEPUB_NAME"
-		echo "Processed: $KEPUB_NAME -> $KEPUB_DIR"
-	fi
+    if [ "$EXTENSION_LOWER" = "epub" ] && [ "${KEPUB:-0}" -eq 1 ]; then
+        KEPUB_NAME=$(echo "$NORMALIZED_NAME" | sed 's/\.[^.]*$//').kepub.epub
+        KEPUB_DIR="$DIRECTORY/kepub"
+        mkdir -p "$KEPUB_DIR"
+        kepubify "$FILE" -o "$KEPUB_DIR/$KEPUB_NAME"
+        echo "Processed: $KEPUB_NAME -> $KEPUB_DIR"
+    fi
 
-	mv "$FILE" "$OUTPUT_DIR/$NORMALIZED_NAME"
-	echo "Processed: $NORMALIZED_NAME -> $OUTPUT_DIR"
+    mv "$FILE" "$OUTPUT_DIR/$NORMALIZED_NAME"
+    echo "Processed: $NORMALIZED_NAME -> $OUTPUT_DIR"
 done
