@@ -1,81 +1,61 @@
 #!/bin/sh
-# startw - Wayland session starter (POSIX-compliant)
-# Usage: startw [options] [client-args...]
+# startw: Wayland session starter (POSIX-compliant)
 
 VERSION="1.0"
 DEFAULT_CONFIG="${HOME}/.winitrc"
-COMPOSITOR="sway"  # Default compositor if not specified in config
 
-# Environment setup
+# Base Wayland environment
 export XDG_SESSION_TYPE=wayland
 export GDK_BACKEND=wayland
 export QT_QPA_PLATFORM=wayland-egl
 export MOZ_ENABLE_WAYLAND=1
 
 # POSIX-compliant error handling
-die() {
-    printf "%s\n" "$*" >&2
-    exit 1
+die() { printf "%s\n" "$*" >&2; exit 1; }
+
+validate_session() {
+    [ -n "$WAYLAND_DISPLAY" ] || [ -n "$DISPLAY" ] && \
+        die "Already in a graphical session!"
+    case $(tty) in
+        /dev/tty[0-9]*) return ;;
+        *) die "Must be run from virtual terminal" ;;
+    esac
 }
 
-# POSIX-compliant version check
-version() {
-    printf "startw version %s\n" "$VERSION"
-    exit 0
+setup_xdg_runtime() {
+    [ -z "$XDG_RUNTIME_DIR" ] && {
+        XDG_RUNTIME_DIR="/tmp/$(id -u)-runtime"
+        mkdir -p -m 0700 "$XDG_RUNTIME_DIR" 2>/dev/null || \
+            die "Failed to create XDG_RUNTIME_DIR"
+        export XDG_RUNTIME_DIR
+    }
 }
 
-usage() {
-    printf "Usage: %s [-v] [-h] [-c config] [-- compositor-args...]\n" "$0"
-    printf "Options:\n"
-    printf "  -h          Show this help\n"
-    printf "  -v          Show version\n"
-    printf "  -c config   Use specified config file\n"
-    exit 0
+load_config() {
+    [ -f "$1" ] && . "$1" || {
+        printf "No config found at %s\n" "$1" >&2
+        return 1
+    }
 }
 
-# Parse arguments
 while getopts ":hvc:" opt; do
     case $opt in
-        h) usage ;;
-        v) version ;;
-        c) DEFAULT_CONFIG=$OPTARG ;;
+        h) printf "Usage: %s [-hv] [-c config]\n" "$0"; exit 0 ;;
+        v) printf "startw v%s\n" "$VERSION"; exit 0 ;;
+        c) DEFAULT_CONFIG="$OPTARG" ;;
         \?) die "Invalid option: -$OPTARG" ;;
-        :) die "Option -$OPTARG requires an argument" ;;
+        :) die "Option -$OPTARG requires argument" ;;
     esac
 done
 shift $((OPTIND - 1))
 
-# Session validation
-if [ -n "$WAYLAND_DISPLAY" ] || [ -n "$DISPLAY" ]; then
-    die "Already in a graphical session!"
-fi
+# Session initialization
+validate_session
+setup_xdg_runtime
+load_config "$DEFAULT_CONFIG" || die "Configuration failed"
 
-# TTY check
-tty_device=$(tty) || die "Cannot determine TTY device"
-case $tty_device in
-    /dev/tty[0-9]*);;
-    *) die "Must be run from a virtual terminal (tty)" ;;
-esac
+# Verify config executed a compositor
+[ -z "$_WAYLAND_COMPOSITOR_EXECUTED" ] && \
+    die "Config file didn't launch compositor (missing exec?)"
 
-# XDG runtime directory setup
-if [ -z "$XDG_RUNTIME_DIR" ]; then
-    XDG_RUNTIME_DIR="/tmp/$(id -u)-runtime-dir"
-    mkdir -p -m 0700 "$XDG_RUNTIME_DIR" || die "Failed to create XDG_RUNTIME_DIR"
-    export XDG_RUNTIME_DIR
-fi
-
-# Load user config if exists
-if [ -f "$DEFAULT_CONFIG" ]; then
-    . "$DEFAULT_CONFIG"
-else
-    printf "No config found at %s, using defaults\n" "$DEFAULT_CONFIG" >&2
-fi
-
-# Find compositor
-if ! command -v "$COMPOSITOR" >/dev/null 2>&1; then
-    die "Compositor '%s' not found in PATH" "$COMPOSITOR"
-fi
-
-# Start compositor with remaining arguments
-printf "Starting %s Wayland compositor...\n" "$COMPOSITOR"
-exec "$COMPOSITOR" "$@"
+exit 0
