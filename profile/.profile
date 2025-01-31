@@ -3,7 +3,6 @@
 # ~/.profile - Unified configuration for login shells
 
 # Environment variables
-SESSION_TYPE="x11" # x11 || wayland
 PATH="${PATH}:${HOME}/.local/bin"
 EDITOR=vis
 PAGER=less
@@ -37,13 +36,14 @@ esac
 
 
 # Graphical session autostart
+SESSION_TYPE="x11"
 if [ -z "${DISPLAY}" ] && [ "$(tty)" = "/dev/tty1" ]; then
 	case "${SESSION_TYPE}" in
-		wayland)
-			[ -n "${WAYLAND_DISPLAY}" ] || exec startw
-		;;
 		x11)
 			exec startx
+		;;
+		wayland)
+			[ -n "${WAYLAND_DISPLAY}" ] || exec startw
 		;;
 		*)
 			echo "Invalid SESSION_TYPE: ${SESSION_TYPE}" >&2
