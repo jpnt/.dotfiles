@@ -2,7 +2,8 @@
 # BTW, shebang is just for clarity.
 # ~/.profile - Unified configuration for login shells
 
-# Common environment variables
+# Environment variables
+SESSION_TYPE="x11" # x11 || wayland
 PATH="${PATH}:${HOME}/.local/bin"
 EDITOR=vis
 PAGER=less
@@ -34,11 +35,18 @@ case "${SHELL##*/}" in
 	;;
 esac
 
+
 # Graphical session autostart
 if [ -z "${DISPLAY}" ] && [ "$(tty)" = "/dev/tty1" ]; then
-	if [ -z "${WAYLAND_DISPLAY}" ]; then
-		exec startw >/dev/null 2>&1
-	else
-		exec startx >/dev/null 2>&1
-	fi
+	case "${SESSION_TYPE}" in
+		wayland)
+			[ -n "${WAYLAND_DISPLAY}" ] || exec startw
+		;;
+		x11)
+			exec startx
+		;;
+		*)
+			echo "Invalid SESSION_TYPE: ${SESSION_TYPE}" >&2
+		;;
+	esac
 fi
