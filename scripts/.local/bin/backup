@@ -29,10 +29,6 @@ configure_backup_dir() {
 }
 
 backup() {
-    if [ "$#" -ne 2 ]; then
-        display_help
-    fi
-
     input=$(echo "$1" | sed 's/\/$//') # Remove last trailing /
     compression=$2
     timestamp=$(date +'%F-%Hh%M')
@@ -99,4 +95,9 @@ backup() {
 set -e
 check_dependencies
 configure_backup_dir
+
+if [ "$#" -ne 2 ]; then
+    display_help
+fi
+
 backup "$1" "$2"
