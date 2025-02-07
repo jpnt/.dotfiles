@@ -3,13 +3,13 @@
 # ~/.profile - Unified configuration for login shells
 
 # Environment variables
-PATH="${PATH}:${HOME}/.local/bin"
+GOPATH="${HOME}/.local/go"
+PATH="${PATH}:${GOPATH}/bin:${HOME}/.local/bin"
 EDITOR=vis
 PAGER=less
 BROWSER=chromium
 LESS='-R --use-color -Dd+r$Du+b$'
-
-export PATH EDITOR PAGER BROWSER LESS
+export GOPATH PATH EDITOR PAGER BROWSER LESS
 
 # Create user runtime directory if not exists
 if [ -z "${XDG_RUNTIME_DIR}" ]; then

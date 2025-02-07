@@ -1,6 +1,6 @@
 #!/bin/sh
 
-GTK_THEME="Numix"
+GTK_THEME="Arc-Dark"
 QT5_THEME="Fusion"
 QT6_THEME="Fusion"
 
