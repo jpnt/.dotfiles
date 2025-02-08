@@ -1,1 +1,1 @@
-core_services="dbus"
+core_services="dbus-user"

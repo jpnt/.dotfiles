@@ -6,3 +6,4 @@ vim/
 !vim/.config/vim/pack/jetpack/opt/vim-jetpack/plugin/jetpack.vim
 vis/.config/vis/plugins
 supervise
+service-turnstile-runit/.config/service/*/1

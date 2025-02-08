@@ -53,7 +53,7 @@ Check the `dwlchild` script for an example.
 
 ### Services
 
-- dbus
+- dbus-user
 - pipewire
 - gammastep
 - syncthing
