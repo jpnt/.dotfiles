@@ -57,3 +57,4 @@ Check the `dwlchild` script for an example.
 - pipewire
 - gammastep
 - syncthing
+- foot-server
