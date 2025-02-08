@@ -2,6 +2,8 @@
 # BTW, shebang is just for clarity.
 # ~/.profile - Unified configuration for login shells
 
+SESSION_TYPE="wayland"
+
 # Environment variables
 export GOPATH="${HOME}/.local/go"
 export PATH="${PATH}:${GOPATH}/bin:${HOME}/.local/bin"
@@ -10,6 +12,14 @@ export EDITOR=vis
 export PAGER=less
 export BROWSER=firefox
 export _JAVA_AWT_WM_NONREPARENTING=1
+
+if [ "${SESSION_TYPE}" = "wayland" ]; then
+	export XKB_DEFAULT_LAYOUT=pt
+	export XDG_SESSION_TYPE=wayland
+	export GDK_BACKEND=wayland
+	export QT_QPA_PLATFORM=wayland-egl
+	export MOZ_ENABLE_WAYLAND=1
+fi
 
 # Create user runtime directory if not exists
 if [ -z "${XDG_RUNTIME_DIR}" ]; then
@@ -36,7 +46,6 @@ esac
 
 
 # Graphical session autostart
-SESSION_TYPE="wayland"
 if [ -z "${DISPLAY}" ] && [ "$(tty)" = "/dev/tty1" ]; then
 	case "${SESSION_TYPE}" in
 		x11)
@@ -44,11 +53,6 @@ if [ -z "${DISPLAY}" ] && [ "$(tty)" = "/dev/tty1" ]; then
 			# exec sx
 			;;
 		wayland)
-			export XKB_DEFAULT_LAYOUT=pt
-			export XDG_SESSION_TYPE=wayland
-			export GDK_BACKEND=wayland
-			export QT_QPA_PLATFORM=wayland-egl
-			export MOZ_ENABLE_WAYLAND=1
 			exec dwl -s 'dwlchild'
 			;;
 		*)

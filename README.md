@@ -51,7 +51,7 @@ and the lack of dependency management in runit I still run some processes as chi
 processes of dwl instead of having services to not overcomplicate things.
 Check the `dwlchild` script for an example.
 
-### Services
+### User Services
 
 - dbus-user
 - pipewire
