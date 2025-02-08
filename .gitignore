@@ -7,3 +7,4 @@ vim/
 vis/.config/vis/plugins
 supervise
 service-turnstile-runit/.config/service/*/1
+service-turnstile-runit/.config/service/turnstile-ready/run
