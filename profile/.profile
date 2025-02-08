@@ -3,13 +3,13 @@
 # ~/.profile - Unified configuration for login shells
 
 # Environment variables
-GOPATH="${HOME}/.local/go"
-PATH="${PATH}:${GOPATH}/bin:${HOME}/.local/bin"
-EDITOR=vis
-PAGER=less
-BROWSER=chromium
-LESS='-R --use-color -Dd+r$Du+b$'
-export GOPATH PATH EDITOR PAGER BROWSER LESS
+export GOPATH="${HOME}/.local/go"
+export PATH="${PATH}:${GOPATH}/bin:${HOME}/.local/bin"
+export LESS='-R --use-color -Dd+r$Du+b$'
+export EDITOR=vis
+export PAGER=less
+export BROWSER=firefox
+export _JAVA_AWT_WM_NONREPARENTING=1
 
 # Create user runtime directory if not exists
 if [ -z "${XDG_RUNTIME_DIR}" ]; then
@@ -36,17 +36,23 @@ esac
 
 
 # Graphical session autostart
-SESSION_TYPE="x11"
+SESSION_TYPE="wayland"
 if [ -z "${DISPLAY}" ] && [ "$(tty)" = "/dev/tty1" ]; then
 	case "${SESSION_TYPE}" in
 		x11)
 			exec startx
-		;;
+			# exec sx
+			;;
 		wayland)
-			exec startw
-		;;
+			export XKB_DEFAULT_LAYOUT=pt
+			export XDG_SESSION_TYPE=wayland
+			export GDK_BACKEND=wayland
+			export QT_QPA_PLATFORM=wayland-egl
+			export MOZ_ENABLE_WAYLAND=1
+			exec dwl -s 'dwlchild'
+			;;
 		*)
 			echo "Invalid SESSION_TYPE: ${SESSION_TYPE}" >&2
-		;;
+			;;
 	esac
 fi

@@ -1,0 +1,3 @@
+#!/bin/sh
+# exec ts '%Y-%m-%d %H:%M:%.S%z' >> "$HOME/.local/log/gammastep.log"
+exec vlogger -t gammastep-$(id -u) -p daemon

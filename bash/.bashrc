@@ -27,7 +27,7 @@ alias ..='cd ..'
 alias nv='nvim'
 alias straceps='strace -ftt -o straceps.log -e trace=%process,%signal'
 alias stracerw='strace -ftt -o stracerw.log -e trace=read,write'
-alias gb='git branch'
+alias gb='git branch --all'
 
 # Prompt
 PS1='$ \u:[\w]> '

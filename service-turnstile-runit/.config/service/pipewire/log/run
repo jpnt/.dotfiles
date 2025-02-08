@@ -1,0 +1,3 @@
+#!/bin/sh
+# exec ts '%Y-%m-%d %H:%M:%.S%z' >> "$HOME/.local/log/pipewire.log"
+exec vlogger -t pipewire-$(id -u) -p daemon

@@ -4,3 +4,5 @@
 vim/
 !vim/.config/vim/vimrc
 !vim/.config/vim/pack/jetpack/opt/vim-jetpack/plugin/jetpack.vim
+vis/.config/vis/plugins
+supervise
