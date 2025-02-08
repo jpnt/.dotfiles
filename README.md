@@ -19,7 +19,8 @@ This folder contains user-specific services using turnstile w/ runit backend
 ### Resources
 
 Please refer to docs: https://docs.voidlinux.org/config/services/user-services.html#turnstile
-Other resources/ what motivated me:
+
+Other resources + what motivated me:
   - https://forum.artixlinux.org/index.php/topic,3268.0.html
   - https://forum.artixlinux.org/index.php/topic,3067
   - https://codeberg.org/dwl/dwl/#running-dwl
