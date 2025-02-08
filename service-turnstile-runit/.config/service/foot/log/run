@@ -1,0 +1,2 @@
+#!/bin/sh
+exec vlogger -t foot-$(id -u) -p daemon
