@@ -19,6 +19,7 @@ if [ "${SESSION_TYPE}" = "wayland" ]; then
 	export GDK_BACKEND=wayland
 	export QT_QPA_PLATFORM=wayland-egl
 	export MOZ_ENABLE_WAYLAND=1
+	export CLUTTER_BACKEND=wayland
 fi
 
 # Create user runtime directory if not exists
@@ -46,14 +47,14 @@ esac
 
 
 # Graphical session autostart
-if [ -z "${DISPLAY}" ] && [ "$(tty)" = "/dev/tty1" ]; then
+if { [ -z "${DISPLAY}" ] || [ -z "${WAYLAND_DISPLAY}" ]; } && [ "$(tty)" = "/dev/tty1" ]; then
 	case "${SESSION_TYPE}" in
 		x11)
 			exec startx
 			# exec sx
 			;;
 		wayland)
-			exec dwl -s 'dwlchild'
+			exec sh -c 'slstatus -s | dwl'
 			;;
 		*)
 			echo "Invalid SESSION_TYPE: ${SESSION_TYPE}" >&2
