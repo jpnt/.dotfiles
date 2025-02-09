@@ -54,7 +54,7 @@ if { [ -z "${DISPLAY}" ] || [ -z "${WAYLAND_DISPLAY}" ]; } && [ "$(tty)" = "/dev
 			# exec sx
 			;;
 		wayland)
-			exec sh -c 'slstatus -s | dwl'
+			exec sh -c 'slstatus -s | dwl -s dwlchild'
 			;;
 		*)
 			echo "Invalid SESSION_TYPE: ${SESSION_TYPE}" >&2
