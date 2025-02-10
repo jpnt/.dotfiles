@@ -5,7 +5,7 @@
 ```sh
 cd $HOME && git clone https://github.com/jpnt/.dotfiles && cd .dotfiles
 
-stow *
+stow [dir]
 ```
 
 ---
