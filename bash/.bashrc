@@ -34,7 +34,7 @@ PS1='$ \u:[\w]> '
 
 sdkman_init() {
 	export SDKMAN_DIR="$HOME/.sdkman"
-	[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+	. "$HOME/.sdkman/bin/sdkman-init.sh"
 }
 
 dotnet_init() {
@@ -45,5 +45,9 @@ dotnet_init() {
 
 nvm_init() {
 	export NVM_DIR="$HOME/.nvm"
-	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+	. "$NVM_DIR/nvm.sh"
+}
+
+cargo_init() {
+	. "$HOME/.cargo/env"
 }
