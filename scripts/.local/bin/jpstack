@@ -1,0 +1,30 @@
+#!/bin/sh
+# jpstack - install set of fine software
+
+set -e
+
+JPSTACK_DIR="${HOME}/Coding/jpstack"
+mkdir -p "${JPSTACK_DIR}"
+cd "${JPSTACK_DIR}"
+
+build_repo() {
+	REPO_URL="$1"
+	REPO_NAME=$(basename "$REPO_URL" .git)
+
+	if [ ! -d "$REPO_NAME" ]; then
+		git clone --depth=1 "$REPO_URL"
+	fi
+
+	cd "$REPO_NAME"
+
+	make clean
+	make -j$(nproc)
+
+	#sudo make install
+
+	cd ..
+}
+
+build_repo "https://github.com/jpnt/dwl"
+build_repo "https://github.com/jpnt/slstatus"
+build_repo "https://github.com/afify/sfm" #TODO: fork
