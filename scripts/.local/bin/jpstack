@@ -1,30 +1,33 @@
 #!/bin/sh
-# jpstack - install set of fine software
+# jpstack - install set of software I use
 
 set -e
+
+# TODO: after clean install, check what is missing
+PKG_STACK_XBPS="foot dtach xdg-desktop-portal-wlr wlroots0.18-devel \
+ wbg socklog-void wmenu pcmanfm grim slurp pipewire pavucontrol qpwgraph \
+ alsa-pipewire alsa-utils seatd turnstile cmus socat NetworkManager"  
 
 JPSTACK_DIR="${HOME}/Coding/jpstack"
 mkdir -p "${JPSTACK_DIR}"
 cd "${JPSTACK_DIR}"
 
-build_repo() {
+pkg_install_xbps() { sudo xbps-install -Suvy "$@" ; }
+
+make_clean_install() {
 	REPO_URL="$1"
 	REPO_NAME=$(basename "$REPO_URL" .git)
-
-	if [ ! -d "$REPO_NAME" ]; then
-		git clone --depth=1 "$REPO_URL"
-	fi
-
+	[ ! -d "$REPO_NAME" ] && git clone --depth=1 "$REPO_URL"
 	cd "$REPO_NAME"
-
 	make clean
+	git pull
 	make -j$(nproc)
-
 	#sudo make install
-
 	cd ..
 }
 
-build_repo "https://github.com/jpnt/dwl"
-build_repo "https://github.com/jpnt/slstatus"
-build_repo "https://github.com/afify/sfm" #TODO: fork
+pkg_install_xbps $PKG_STACK_XBPS
+
+make_clean_install "https://github.com/jpnt/dwl"
+make_clean_install "https://github.com/jpnt/slstatus"
+make_clean_install "https://github.com/afify/sfm" #TODO: fork my own, pre-configured to my liking

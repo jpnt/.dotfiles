@@ -16,6 +16,7 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 if [ "${SESSION_TYPE}" = "wayland" ]; then
 	export XKB_DEFAULT_LAYOUT=pt
 	export XDG_SESSION_TYPE=wayland
+	export XDG_CURRENT_DESKTOP=sway
 	export GDK_BACKEND=wayland
 	export QT_QPA_PLATFORM=wayland-egl
 	export MOZ_ENABLE_WAYLAND=1
