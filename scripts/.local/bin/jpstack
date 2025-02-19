@@ -5,7 +5,7 @@ set -e
 
 # TODO: after clean install, check what is missing
 PKG_STACK_XBPS="foot dtach xdg-desktop-portal-wlr wlroots0.18-devel \
- wbg socklog-void wmenu pcmanfm grim slurp pipewire pavucontrol qpwgraph \
+ wbg socklog-void pcmanfm grim slurp pipewire pavucontrol qpwgraph \
  alsa-pipewire alsa-utils seatd turnstile cmus socat NetworkManager"  
 
 JPSTACK_DIR="${HOME}/Coding/jpstack"
@@ -22,7 +22,18 @@ make_clean_install() {
 	make clean
 	git pull
 	make -j$(nproc)
-	#sudo make install
+	sudo make install
+	cd ..
+}
+
+meson_ninja_install() {
+	REPO_URL="$1"
+	REPO_NAME=$(basename "$REPO_URL" .git)
+	[ ! -d "$REPO_NAME" ] && git clone --depth=1 "$REPO_URL"
+	cd "$REPO_NAME"
+	meson setup build
+	ninja -C build
+	ninja -C build install
 	cd ..
 }
 
@@ -30,4 +41,7 @@ pkg_install_xbps $PKG_STACK_XBPS
 
 make_clean_install "https://github.com/jpnt/dwl"
 make_clean_install "https://github.com/jpnt/slstatus"
-make_clean_install "https://github.com/afify/sfm" #TODO: fork my own, pre-configured to my liking
+make_clean_install "https://github.com/afify/sfm" #TODO: fork 
+
+meson_ninja_install "https://codeberg.org/adnano/wmenu" #TODO: fork
+

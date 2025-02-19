@@ -1,26 +1,26 @@
 -- base16-vis (https://github.com/pshevtsov/base16-vis)
 -- by Petr Shevtsov
--- Gruvbox dark, hard scheme by Dawid Kurek (dawikur@gmail.com), morhetz (https://github.com/morhetz/gruvbox)
+-- Brewer scheme by Timothée Poisot (http://github.com/tpoisot)
 
 local lexers = vis.lexers
 
 local colors = {
-	['base00'] = '#1d2021',
-	['base01'] = '#3c3836',
-	['base02'] = '#504945',
-	['base03'] = '#665c54',
-	['base04'] = '#bdae93',
-	['base05'] = '#d5c4a1',
-	['base06'] = '#ebdbb2',
-	['base07'] = '#fbf1c7',
-	['base08'] = '#fb4934',
-	['base09'] = '#fe8019',
-	['base0A'] = '#fabd2f',
-	['base0B'] = '#b8bb26',
-	['base0C'] = '#8ec07c',
-	['base0D'] = '#83a598',
-	['base0E'] = '#d3869b',
-	['base0F'] = '#d65d0e',
+	['base00'] = '#0c0d0e',
+	['base01'] = '#2e2f30',
+	['base02'] = '#515253',
+	['base03'] = '#737475',
+	['base04'] = '#959697',
+	['base05'] = '#b7b8b9',
+	['base06'] = '#dadbdc',
+	['base07'] = '#fcfdfe',
+	['base08'] = '#e31a1c',
+	['base09'] = '#e6550d',
+	['base0A'] = '#dca060',
+	['base0B'] = '#31a354',
+	['base0C'] = '#80b1d3',
+	['base0D'] = '#3182bd',
+	['base0E'] = '#756bb1',
+	['base0F'] = '#b15928',
 }
 
 lexers.colors = colors
