@@ -2,9 +2,11 @@
 exec 2>&1
 
 : "${WAYLAND_DISPLAY:=wayland-0}"
+: "${DISPLAY:=:0}"
 
 if [ -d "$TURNSTILE_ENV_DIR" ]; then
 	echo "$WAYLAND_DISPLAY" > "$TURNSTILE_ENV_DIR"/WAYLAND_DISPLAY
+	echo "$DISPLAY" > "$TURNSTILE_ENV_DIR"/DISPLAY
 fi
 
 [ -r "$HOME/.profile" ] && . "$HOME/.profile"
