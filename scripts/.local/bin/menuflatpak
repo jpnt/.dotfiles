@@ -1,11 +1,6 @@
 #!/bin/sh
 
 apps=$(flatpak list --app --columns=application)
-
 chosen_app=$(echo "$apps" | wmenu -i -p "Select Flatpak App:")
 
-if [ -n "$chosen_app" ]; then
-	flatpak run "$chosen_app"
-else
-	echo "No app selected"
-fi
+[ -n "$chosen_app" ] && flatpak run "$chosen_app"
