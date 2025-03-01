@@ -3,4 +3,4 @@
 apps=$(flatpak list --app --columns=application)
 chosen_app=$(echo "$apps" | wmenu -i -p "Select Flatpak App:")
 
-[ -n "$chosen_app" ] && flatpak run "$chosen_app"
+[ -n "$chosen_app" ] && flatpak run "$chosen_app" &

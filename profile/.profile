@@ -5,7 +5,7 @@
 SESSION_TYPE="wayland"
 
 # Environment variables
-export GOPATH="${HOME}/.local/go"
+export GOPATH="${HOME}/.local/share/go"
 export PATH="${PATH}:${GOPATH}/bin:${HOME}/.local/bin"
 export LESS='-R --use-color -Dd+r$Du+b$'
 export EDITOR=vis
