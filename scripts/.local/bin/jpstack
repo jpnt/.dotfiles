@@ -6,7 +6,8 @@ set -e
 # TODO: after clean install, check what is missing
 PKG_STACK_XBPS="foot dtach xdg-desktop-portal-wlr wlroots0.18-devel \
  wbg socklog-void pcmanfm grim slurp pipewire pavucontrol qpwgraph \
- alsa-pipewire alsa-utils seatd turnstile cmus socat NetworkManager"  
+ alsa-pipewire alsa-utils seatd turnstile cmus socat NetworkManager \
+ qt5-wayland qt6-wayland"
 
 JPSTACK_DIR="${HOME}/Coding/jpstack"
 mkdir -p "${JPSTACK_DIR}"
