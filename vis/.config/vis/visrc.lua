@@ -35,4 +35,10 @@ vis.events.subscribe(vis.events.WIN_OPEN, function(win)
 	end
 end)
 
-plugged.require_all_plugins()
+vis.events.subscribe(vis.events.FILE_SAVE_PRE, function(file, path)
+	if not path then return end
+	local ext = path:match("^.+(%..+)$")
+	if ext and (ext == ".rs" or ext == ".go" or ext == ".py") then
+		vis:command("lspc-format")
+	end
+end)

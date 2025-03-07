@@ -1,5 +1,3 @@
-#!/bin/sh -
-# BTW, shebang is just for clarity.
 # ~/.profile - Unified configuration for login shells
 
 SESSION_TYPE="wayland"
