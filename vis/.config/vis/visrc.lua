@@ -14,6 +14,7 @@ plugged.add_plugin("https://github.com/jpnt/vis-shout")
 plugged.add_plugin("https://github.com/kupospelov/vis-ctags")
 plugged.add_plugin("https://github.com/fischerling/vis-lspc")
 plugged.add_plugin("https://github.com/jpnt/vis-autopairs")
+plugged.require_all_plugins()
 
 vis.events.subscribe(vis.events.INIT, function()
 	vis:command("set theme base16-brewer")
