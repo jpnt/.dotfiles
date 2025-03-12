@@ -1,10 +1,9 @@
 #!/bin/sh
 # fmnt - Fuzzy mount disks
 
-disks=$(lsblk -lp | tail -n +2 | cut -d ' ' -f 1)
+disks=$(lsblk -lp | awk '/^\/dev/ && $1 ~ /[0-9]$/ {print $1}')
 
 selected_disk=$(echo "$disks" | fzf --ansi --header="Select block device to mount:")
-# selected_disk=$(echo "$disks" | fzy -p "Select block device to mount:")
 
 [ -z "$selected_disk" ] && { echo "No disk selected"; exit 1; }
 
