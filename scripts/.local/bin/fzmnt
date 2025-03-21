@@ -2,7 +2,6 @@
 # fmnt - Fuzzy mount disks
 
 disks=$(lsblk -lp | awk '/^\/dev/ && $1 ~ /[0-9]$/ {print $1}')
-
 selected_disk=$(echo "$disks" | fzf --ansi --header="Select block device to mount:")
 
 [ -z "$selected_disk" ] && { echo "No disk selected"; exit 1; }
@@ -11,12 +10,6 @@ printf "Enter the mount point (e.g., /mnt): "
 read -r mount_point
 
 [ -z "$mount_point" ] && { echo "No mount point provided, defaulting to /mnt"; mount_point="/mnt"; }
-
 [ ! -d "$mount_point" ] && sudo mkdir -p "$mount_point"
 
-if sudo mount "$selected_disk" "$mount_point"; then
-	echo "Disk $selected_disk mounted to $mount_point successfully!"
-else
-	echo "Failed to mount $selected_disk to $mount_point" >&2
-	exit 1
-fi
+mount "$selected_disk" "$mount_point"

@@ -3,7 +3,7 @@
 
 set -e
 
-LOG_FILE="$HOME/upkg.log"
+LOG_FILE="$HOME/.local/share/upkg.log"
 
 log() {
 	local message="$1"
@@ -24,7 +24,7 @@ update_packages() {
 
 	if command -v flatpak >/dev/null 2>&1; then
 		log "Updating packages with 'flatpak' ..."
-		FLATPAK_TTY_PROGRESS=0 flatpak update -y 2>&1 | tee -a "$LOG_FILE"
+		FLATPAK_FANCY_OUTPUT=0 flatpak update -y 2>&1 | tee -a "$LOG_FILE"
 	else
 		log "Package manager 'flatpak' is not installed."
 	fi
