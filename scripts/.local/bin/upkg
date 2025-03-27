@@ -3,7 +3,7 @@
 
 set -e
 
-LOG_FILE="$HOME/.local/share/upkg.log"
+LOG_FILE="$HOME/.local/state/upkg.log"
 
 log() {
 	local message="$1"

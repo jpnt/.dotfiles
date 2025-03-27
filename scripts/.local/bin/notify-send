@@ -1,0 +1,2 @@
+#!/bin/sh
+echo "$(date '+%Y-%m-%dT%H:%M:%S.%6N') $1: $2" >> ~/.local/state/notify-send.log
