@@ -6,7 +6,7 @@ selected_disk=$(echo "$disks" | fzf --ansi --header="Select block device to moun
 
 [ -z "$selected_disk" ] && { echo "No disk selected"; exit 1; }
 
-printf "Enter the mount point (e.g., /mnt): "
+printf "Enter the mount point [/mnt]: "
 read -r mount_point
 
 [ -z "$mount_point" ] && { echo "No mount point provided, defaulting to /mnt"; mount_point="/mnt"; }
