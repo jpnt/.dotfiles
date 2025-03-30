@@ -17,7 +17,7 @@ plugged.add_plugin("https://github.com/jpnt/vis-autopairs")
 plugged.require_all_plugins()
 
 vis.events.subscribe(vis.events.INIT, function()
-	vis:command("set theme base16-brewer")
+	--vis:command("set theme base16-brewer")
 end)
 
 vis.events.subscribe(vis.events.WIN_OPEN, function(win)

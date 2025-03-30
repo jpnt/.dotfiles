@@ -1,6 +1,6 @@
 #!/bin/sh
 # POSIX shell
-# e(x)tract (f)ile(s)
+# e(x)tract (f)iles
 
 print_format() {
     echo "Extracting archive format: $1"
