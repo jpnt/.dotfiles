@@ -1,11 +1,14 @@
 #!/bin/sh
 # jpstack: install my collection of software, no fancy stuff
+# made to work on Void Linux after a fresh install
+# !!!!!!!!!!!!!!!!!!!!!!!!
 # !!! WORK IN PROGRESS !!!
+# !!!!!!!!!!!!!!!!!!!!!!!!
 
 set -e
 
 # TODO
-# PKG_STACK_XBPS="xtools git tig vis xdg-user-dirs fcft-devel tlp powertop lm_sensors gammastep foot dtach xdg-desktop-portal-wlr wlroots0.18-devel xorg-server-xwayland wlr-randr wl-clipboard dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk noto-fonts-emoji nerd-fonts-ttf socklog-void pcmanfm grim slurp pipewire flatpak alsa-pipewire alsa-utils seatd turnstile cmus socat NetworkManager qt5-wayland qt6-wayland tofi ripgrep fzf podman mpv ffmpeg cronie ntpd-rs catgirl pcmanfm htop btop nvtop uv"
+# PKG_STACK_XBPS="xtools tealdeer bash-completion git tig vis imv xdg-user-dirs fcft-devel tlp powertop lm_sensors gammastep foot dtach xdg-desktop-portal-wlr wlroots0.18-devel xorg-server-xwayland xwininfo wlr-randr wl-clipboard dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk noto-fonts-emoji nerd-fonts-ttf socklog-void pcmanfm grim slurp pipewire flatpak alsa-utils pulsemixer seatd turnstile cmus socat NetworkManager qt5-wayland qt6-wayland tofi ripgrep fzf podman mpv ffmpeg cronie ntpd-rs catgirl pcmanfm htop btop nvtop uv trash-cli nwg-look"
 # GPU_AMD="mesa-dri vulkan-loader mesa-vulkan-radeon mesa-vaapi mesa-vdpau"
 
 USER=$(whoami)

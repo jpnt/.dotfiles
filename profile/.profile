@@ -5,9 +5,11 @@ SESSION_TYPE="wayland"
 # Environment variables
 export GOPATH="${HOME}/.local/share/go"
 export PATH="${HOME}/.local/bin:${GOPATH}/bin:${PATH}"
-export LESS='-R --use-color -Dd+r$Du+b$'
+export XDG_CONFIG_HOME="${HOME}/.config"
+export TERMINAL=footclient
 export EDITOR=vis
 export PAGER=less
+export LESS='-R --use-color -Dd+r$Du+b$'
 export BROWSER=firefox
 export _JAVA_AWT_WM_NONREPARENTING=1
 
