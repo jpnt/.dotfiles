@@ -11,6 +11,8 @@ export EDITOR=vis
 export PAGER=less
 export LESS='-R --use-color -Dd+r$Du+b$'
 export BROWSER=firefox
+export GTK_THEME=Adwaita:dark
+export QT_STYLE_OVERRIDE=Adwaita-Dark
 export _JAVA_AWT_WM_NONREPARENTING=1
 
 if [ "${SESSION_TYPE}" = "wayland" ]; then

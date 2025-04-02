@@ -1,6 +1,6 @@
 #!/bin/sh
 # jpstack: install my collection of software, no fancy stuff
-# made to work on Void Linux after a fresh install
+# made for Void Linux after a fresh install
 # !!!!!!!!!!!!!!!!!!!!!!!!
 # !!! WORK IN PROGRESS !!!
 # !!!!!!!!!!!!!!!!!!!!!!!!
@@ -8,7 +8,8 @@
 set -e
 
 # TODO
-# PKG_STACK_XBPS="xtools tealdeer bash-completion git tig vis imv xdg-user-dirs fcft-devel tlp powertop lm_sensors gammastep foot dtach xdg-desktop-portal-wlr wlroots0.18-devel xorg-server-xwayland xwininfo wlr-randr wl-clipboard dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk noto-fonts-emoji nerd-fonts-ttf socklog-void pcmanfm grim slurp pipewire flatpak alsa-utils pulsemixer seatd turnstile cmus socat NetworkManager qt5-wayland qt6-wayland tofi ripgrep fzf podman mpv ffmpeg cronie ntpd-rs catgirl pcmanfm htop btop nvtop uv trash-cli nwg-look"
+# PKG_STACK_XBPS="stow xtools tealdeer handlr bash-completion git tig vis imv dragon fcft-devel tlp powertop lm_sensors gammastep foot dtach xdg-user-dirs xdg-desktop-portal-wlr xdg-desktop-portal-gtk wlroots0.18-devel xorg-server-xwayland xwininfo wlr-randr wl-clipboard dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk noto-fonts-emoji nerd-fonts-ttf socklog-void pcmanfm grim slurp pipewire flatpak alsa-utils seatd turnstile cmus socat NetworkManager qt5-wayland qt6-wayland adwaita-qt adwaita-qt6 tofi ripgrep fzf podman mpv ffmpeg cronie ntpd-rs catgirl pcmanfm htop btop nvtop uv trash-cli cmus syncthing keepassxc tcpdump strace zathura-pdf-mupdf"
+
 # GPU_AMD="mesa-dri vulkan-loader mesa-vulkan-radeon mesa-vaapi mesa-vdpau"
 
 USER=$(whoami)
@@ -20,7 +21,6 @@ JPSTACK_DIR="${HOME}/Coding/jpstack"
 make_clean_install() {
 	cd "$1"
 	make clean
-	git pull
 	make -j$(nproc)
 	sudo make install
 	cd ..
@@ -41,33 +41,34 @@ sudo xbps-install -Suvy "$@"
 xdg-user-dirs-update
 
 # Add user to groups
-# todo: for GROUP in GROUPS
-usermod -aG ${GROUP} ${USER}
-
+# todo: for group in GROUPS
+usermod -aG ${group} ${USER}
 
 # Disable services
-[ -h /var/service/${SERVICE} ] && sudo sv stop ${SERVICE} && sudo unlink /var/service/${SERVICE}
-# if service not found print some simple message so the user knows
+# todo: for service in DISABLE_SERVICES
+[ -h /var/service/${service} ] && sudo sv stop ${service} && sudo unlink /var/service/${service}
 
 # Enable services
+# todo: for service in ENABLE_SERVICES
 [ ! -h /var/service/${SERVICE} ] && sudo ln -s /etc/sv/${SERVICE} /var/service/${SERVICE} && sudo start ${SERVICE}
 
 # Install flatpak packages
 flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 flatpak install flathub com.github.tchx86.Flatseal
 flatpak install flathub io.gitlab.librewolf-community
+flatpak install flathub com.saivert.pwvucontrol
+flatpak install flathub io.github.dimtpap.coppwr
 
 # Create directory for compiled packages
 mkdir -p "${JPSTACK_DIR}"
 cd "${JPSTACK_DIR}"
 
-git clone "https://github.com/jpnt/dwl"
-make_clean_install dwl
+git clone "https://github.com/jpnt/sfm"
+make_clean_install sfm
 
 git clone "https://github.com/jpnt/slstatus"
 make_clean_install slstatus
 
-git clone "https://github.com/jpnt/sfm"
-make_clean_install sfm
-
+git clone "https://github.com/jpnt/dwl"
+make_clean_install dwl
 
