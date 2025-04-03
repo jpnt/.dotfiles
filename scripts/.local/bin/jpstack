@@ -13,8 +13,8 @@ GPU_AMD_PKG="mesa-dri vulkan-loader mesa-vulkan-radeon mesa-vaapi mesa-vdpau"
 
 USER=$(whoami)
 GROUPS="_seatd input video socklog"
-DISABLE_SERVICES="dhcpcd wpa_supplicant agetty-tty4 agetty-tty5 agetty-tt6 agetty"
-ENABLE_SERVICES="NetworkManager"
+DISABLE_SERVICES="dhcpcd wpa_supplicant agetty-tty4 agetty-tty5 agetty-tt6"
+ENABLE_SERVICES="dbus NetworkManager cronie ntpd-rs seatd turnstiled nanoklogd socklog-unix"
 
 JPSTACK_PKGS="${BASE_PKG}"
 JPSTACK_DIR="${HOME}/Coding/jpstack"
