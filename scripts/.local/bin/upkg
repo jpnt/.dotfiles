@@ -17,14 +17,14 @@ update_packages() {
 
 	if command -v xbps-install >/dev/null 2>&1; then
 		log "Updating packages with 'xbps' ..."
-		sudo xbps-install -Suy 2>&1 | tee -a "$LOG_FILE"
+		sudo xbps-install -Suvy 2>&1 | tee -a "$LOG_FILE"
 	else
 		log "Package manager 'xbps' is not installed."
 	fi
 
 	if command -v flatpak >/dev/null 2>&1; then
 		log "Updating packages with 'flatpak' ..."
-		FLATPAK_FANCY_OUTPUT=0 flatpak update -y 2>&1 | tee -a "$LOG_FILE"
+		flatpak update --noninteractive -y 2>&1 | tee -a "$LOG_FILE"
 	else
 		log "Package manager 'flatpak' is not installed."
 	fi
