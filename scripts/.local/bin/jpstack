@@ -8,15 +8,16 @@
 set -e
 
 # TODO
-BASE_PKG="stow xtools tealdeer handlr bash-completion git tig vis imv dragon fcft-devel tlp-rdw smartmontools powertop lm_sensors dmidecode gammastep foot dtach xdg-user-dirs xdg-desktop-portal-wlr xdg-desktop-portal-gtk wlroots0.18-devel xorg-server-xwayland xwininfo wlr-randr wl-clipboard dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk noto-fonts-emoji nerd-fonts-ttf socklog-void pcmanfm grim slurp pipewire flatpak alsa-utils seatd turnstile cmus socat NetworkManager qt5-wayland qt6-wayland adwaita-qt adwaita-qt6 tofi ripgrep fzf podman mpv ffmpeg cronie ntpd-rs catgirl pcmanfm htop btop nvtop uv trash-cli cmus syncthing keepassxc tcpdump strace zathura-pdf-mupdf"
-GPU_AMD_PKG="mesa-dri vulkan-loader mesa-vulkan-radeon mesa-vaapi mesa-vdpau"
+CORE_PKG="stow xtools tealdeer handlr bash-completion git tig vis imv dragon fcft-devel tlp-rdw smartmontools powertop lm_sensors dmidecode gammastep foot dtach xdg-user-dirs xdg-desktop-portal-wlr xdg-desktop-portal-gtk wlroots0.18-devel xorg-server-xwayland xwininfo wlr-randr wl-clipboard dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk noto-fonts-emoji nerd-fonts-ttf socklog-void pcmanfm grim slurp pipewire flatpak alsa-utils seatd turnstile cmus socat NetworkManager qt5-wayland qt6-wayland adwaita-qt adwaita-qt6 tofi ripgrep fzf mpv ffmpeg cronie ntpd-rs catgirl pcmanfm htop btop nvtop uv trash-cli strace zathura-pdf-mupdf qalculate"
+AMDGPU_PKG="mesa-dri vulkan-loader mesa-vulkan-radeon mesa-vaapi mesa-vdpau"
+EXTRA_PKG="podman tlp-rdw keepassxc syncthing tcpdump cmus"
 
 USER=$(whoami)
 GROUPS="_seatd input video socklog"
 DISABLE_SERVICES="dhcpcd wpa_supplicant agetty-tty4 agetty-tty5 agetty-tt6"
 ENABLE_SERVICES="dbus NetworkManager cronie ntpd-rs seatd turnstiled nanoklogd socklog-unix"
 
-JPSTACK_PKGS="${BASE_PKG} ${GPU_AMD_PKG}"
+JPSTACK_PKGS="${CORE_PKG} ${AMDGPU_PKG} ${EXTRA_PKG}"
 JPSTACK_DIR="${HOME}/Coding/jpstack"
 
 make_clean_install() {
@@ -80,5 +81,36 @@ make_clean_install slstatus
 
 [ ! -d "dwl" ] && git clone "https://github.com/jpnt/dwl"
 make_clean_install dwl
+
+# Sysctl configuration
+cat > /tmp/99-custom.conf << 'EOF'
+# -- Memory management --
+vm.swappiness = 30
+vm.vfs_cache_pressure = 50
+vm.dirty_ratio = 10
+vm.dirty_background_ratio = 5
+# vm.max_map_count = 1048576
+
+# -- Network optimization --
+net.ipv4.tcp_keepalive_time = 300
+net.ipv4.tcp_keepalive_intvl = 60
+net.ipv4.tcp_keepalive_probes = 5
+net.ipv4.tcp_slow_start_after_idle = 0
+
+# -- Security hardening --
+net.ipv4.tcp_syncookies = 1
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv4.conf.default.accept_redirects = 0
+net.ipv6.conf.all.accept_redirects = 0
+net.ipv6.conf.default.accept_redirects = 0
+net.ipv4.conf.all.send_redirects = 0
+net.ipv4.conf.default.send_redirects = 0
+
+# -- File system performance --
+fs.file-max = 2097152
+EOF
+
+sudo mv /tmp/99-custom.conf /usr/lib/sysctl.d/99-custom.conf
+sudo sysctl --system
 
 echo "Done."
