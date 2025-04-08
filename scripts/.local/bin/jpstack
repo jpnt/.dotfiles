@@ -8,9 +8,9 @@
 set -e
 
 # TODO
-CORE_PKG="stow xtools tealdeer handlr bash-completion git tig vis imv dragon fcft-devel tlp-rdw smartmontools powertop lm_sensors dmidecode gammastep foot dtach xdg-user-dirs xdg-desktop-portal-wlr xdg-desktop-portal-gtk wlroots0.18-devel xorg-server-xwayland xwininfo wlr-randr wl-clipboard dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk noto-fonts-emoji nerd-fonts-ttf socklog-void pcmanfm grim slurp pipewire flatpak alsa-utils seatd turnstile cmus socat NetworkManager qt5-wayland qt6-wayland adwaita-qt adwaita-qt6 tofi ripgrep fzf mpv ffmpeg cronie ntpd-rs catgirl pcmanfm htop btop nvtop uv trash-cli strace zathura-pdf-mupdf qalculate"
+CORE_PKG="stow xtools tealdeer handlr bash-completion git tig vis imv dragon fcft-devel tlp-rdw smartmontools powertop lm_sensors dmidecode gammastep foot dtach xdg-user-dirs xdg-desktop-portal-wlr xdg-desktop-portal-gtk wlroots0.18-devel xorg-server-xwayland xwininfo wlr-randr wdisplays wl-clipboard dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk noto-fonts-emoji nerd-fonts-ttf socklog-void pcmanfm grim slurp pipewire alsa-pipewire flatpak alsa-utils seatd turnstile cmus ldns bind-utils socat NetworkManager dnscrypt-proxy qt5-wayland qt6-wayland adwaita-qt adwaita-qt6 tofi ripgrep fzf mpv ffmpeg cronie ntpd-rs catgirl pcmanfm htop btop nvtop uv trash-cli strace zathura-pdf-mupdf qalculate ImageMagick"
 AMDGPU_PKG="mesa-dri vulkan-loader mesa-vulkan-radeon mesa-vaapi mesa-vdpau"
-EXTRA_PKG="podman tlp-rdw keepassxc syncthing tcpdump cmus"
+EXTRA_PKG="bluez libspa-bluetooth podman tlp-rdw keepassxc syncthing tcpdump cmus"
 
 USER=$(whoami)
 GROUPS="_seatd input video socklog"
