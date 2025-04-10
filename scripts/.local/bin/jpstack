@@ -18,7 +18,7 @@ pipewire alsa-pipewire flatpak alsa-utils seatd turnstile ldns \
 bind-utils socat NetworkManager dnscrypt-proxy qt5-wayland qt6-wayland \
 adwaita-qt adwaita-qt6 tofi ripgrep fzf mpv ffmpeg cronie ntpd-rs \
 catgirl htop btop nvtop uv trash-cli strace zathura-pdf-mupdf \
-qalculate ImageMagick"
+qalculate ImageMagick jq"
 EXTRA_PKG="\
 bluez libspa-bluetooth podman powertop tlp-rdw keepassxc \
 syncthing tcpdump cmus cmus-faad cmus-flac"
@@ -85,7 +85,7 @@ make_clean_install() {
 echo "Superuser privileges are required. You might need to enter your sudo password."
 
 # Install system packages
-sudo xbps-install -Suvy ${JPSTACK_PKGS}
+sudo xbps-install -Suy ${JPSTACK_PKGS}
 
 # Create XDG user directories
 xdg-user-dirs-update
