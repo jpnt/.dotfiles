@@ -7,83 +7,44 @@
 
 set -e
 
-# TODO
-CORE_PKG="stow xtools tealdeer handlr bash-completion git tig vis imv dragon fcft-devel tlp-rdw smartmontools powertop lm_sensors dmidecode gammastep foot dtach xdg-user-dirs xdg-desktop-portal-wlr xdg-desktop-portal-gtk wlroots0.18-devel xorg-server-xwayland xwininfo wlr-randr wdisplays wl-clipboard dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk noto-fonts-emoji nerd-fonts-ttf socklog-void pcmanfm grim slurp pipewire alsa-pipewire flatpak alsa-utils seatd turnstile cmus ldns bind-utils socat NetworkManager dnscrypt-proxy qt5-wayland qt6-wayland adwaita-qt adwaita-qt6 tofi ripgrep fzf mpv ffmpeg cronie ntpd-rs catgirl pcmanfm htop btop nvtop uv trash-cli strace zathura-pdf-mupdf qalculate ImageMagick"
-AMDGPU_PKG="mesa-dri vulkan-loader mesa-vulkan-radeon mesa-vaapi mesa-vdpau"
-EXTRA_PKG="bluez libspa-bluetooth podman tlp-rdw keepassxc syncthing tcpdump cmus"
+CORE_PKG="\
+stow xtools tealdeer handlr bash-completion git tig vis imv dragon \
+fcft-devel smartmontools lm_sensors dmidecode gammastep foot dtach \
+xdg-user-dirs xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
+wlroots0.18-devel xorg-server-xwayland xwininfo wlr-randr wdisplays \
+wl-clipboard dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk \
+noto-fonts-emoji nerd-fonts-ttf socklog-void pcmanfm grim slurp \
+pipewire alsa-pipewire flatpak alsa-utils seatd turnstile ldns \
+bind-utils socat NetworkManager dnscrypt-proxy qt5-wayland qt6-wayland \
+adwaita-qt adwaita-qt6 tofi ripgrep fzf mpv ffmpeg cronie ntpd-rs \
+catgirl htop btop nvtop uv trash-cli strace zathura-pdf-mupdf \
+qalculate ImageMagick"
+EXTRA_PKG="\
+bluez libspa-bluetooth podman powertop tlp-rdw keepassxc \
+syncthing tcpdump cmus cmus-faad cmus-flac"
+# TODO: test mesa-vulkan-readeon vs amdvlk
+AMDGPU_PKG="\
+linux-firmware-amd mesa-dri vulkan-loader mesa-vulkan-radeon \
+mesa-vaapi mesa-vdpau"
+INTELGPU_PKG="\
+linux-firmware-intel mesa-dri vulkan-loader mesa-vulkan-intel \
+intel-video-accel"
+# TODO: switch to open source nvidia driver
+NVIDIAGPU_PKG="\
+nvidia nvidia-libs-32bit libgcc-32bit libstdc++-32bit \
+libdrm-32bit libglvnd-32bit"
 
+# Set packages here vvv
+JPSTACK_PKGS="${CORE_PKG}"
+JPSTACK_DIR="${HOME}/Coding/jpstack"
+# Set groups and services here vvv
 USER=$(whoami)
 GROUPS="_seatd input video socklog"
-DISABLE_SERVICES="dhcpcd wpa_supplicant agetty-tty4 agetty-tty5 agetty-tt6"
+DISABLE_SERVICES="dhcpcd wpa_supplicant agetty-tty4 agetty-tty5 agetty-tty6"
 ENABLE_SERVICES="dbus NetworkManager cronie ntpd-rs seatd turnstiled nanoklogd socklog-unix"
 
-JPSTACK_PKGS="${CORE_PKG} ${AMDGPU_PKG} ${EXTRA_PKG}"
-JPSTACK_DIR="${HOME}/Coding/jpstack"
-
-make_clean_install() {
-	cd "$1"
-	make clean
-	make -j$(nproc)
-	sudo make install
-	cd ..
-}
-
-# unused
-# meson_ninja_install() {
-	# cd "$1"
-	# meson setup build
-	# ninja -C build
-	# ninja -C build install
-	# cd ..
-# }
-
-echo "Superuser privileges are required. You might need to enter your sudo password."
-
-# Install system packages
-sudo xbps-install -Suvy ${JPSTACK_PKGS}
-
-# Create XDG user directories
-xdg-user-dirs-update
-
-# Add user to groups
-for group in ${GROUPS}; do
-	sudo usermod -aG ${group} ${USER}
-done
-
-# Disable services
-for service in ${DISABLE_SERVICES}; do
-	[ -h /var/service/${service} ] && echo "disabling ${service} ..." \
-	  && sudo sv stop ${service} && sudo unlink /var/service/${service}
-done
-
-# Enable services
-for service in ${ENABLE_SERVICES}; do
-	[ ! -d /var/service/${service} ] && echo "enabling ${service} ..." \
-	  && sudo ln -s /etc/sv/${service} /var/service/${service} && sudo start ${service}
-done
-
-# Install flatpak packages
-flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-flatpak install --user --noninteractive --or-update flathub com.github.tchx84.Flatseal
-flatpak install --user --noninteractive --or-update flathub io.gitlab.librewolf-community
-flatpak install --user --noninteractive --or-update flathub com.saivert.pwvucontrol
-flatpak install --user --noninteractive --or-update flathub io.github.dimtpap.coppwr
-
-# Create directory for compiled packages
-mkdir -p "${JPSTACK_DIR}"
-cd "${JPSTACK_DIR}"
-
-[ ! -d "sfm" ] && git clone "https://github.com/jpnt/sfm"
-make_clean_install sfm
-
-[ ! -d "slstatus" ] && git clone "https://github.com/jpnt/slstatus"
-make_clean_install slstatus
-
-[ ! -d "dwl" ] && git clone "https://github.com/jpnt/dwl"
-make_clean_install dwl
-
-# Sysctl configuration
-cat > /tmp/99-custom.conf << 'EOF'
+configure_sysctl() {
+	sudo tee /usr/lib/syctl.d/99-jpstack.conf << 'EOF'
 # -- Memory management --
 vm.swappiness = 30
 vm.vfs_cache_pressure = 50
@@ -110,7 +71,62 @@ net.ipv4.conf.default.send_redirects = 0
 fs.file-max = 2097152
 EOF
 
-sudo mv /tmp/99-custom.conf /usr/lib/sysctl.d/99-custom.conf
-sudo sysctl --system
+	sudo sysctl --system
+}
+
+make_clean_install() {
+	cd "$1"
+	make clean
+	make -j$(nproc)
+	sudo make install
+	cd ..
+}
+
+echo "Superuser privileges are required. You might need to enter your sudo password."
+
+# Install system packages
+sudo xbps-install -Suvy ${JPSTACK_PKGS}
+
+# Create XDG user directories
+xdg-user-dirs-update
+
+# Add user to groups
+for group in ${GROUPS}; do
+	sudo usermod -aG ${group} ${USER}
+done
+
+# Disable services
+for service in "${DISABLE_SERVICES}"; do
+	[ -h /var/service/${service} ] && echo "disabling ${service} ..." \
+	  && sudo sv stop ${service} && sudo unlink /var/service/${service}
+done
+
+# Enable services
+for service in "${ENABLE_SERVICES}"; do
+	[ ! -d /var/service/${service} ] && echo "enabling ${service} ..." \
+	  && sudo ln -s /etc/sv/${service} /var/service/${service} && sudo sv start ${service}
+done
+
+# Install flatpak packages
+flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+flatpak install --user --noninteractive --or-update flathub com.github.tchx84.Flatseal
+flatpak install --user --noninteractive --or-update flathub io.gitlab.librewolf-community
+flatpak install --user --noninteractive --or-update flathub com.saivert.pwvucontrol
+flatpak install --user --noninteractive --or-update flathub io.github.dimtpap.coppwr
+
+# Create directory for compiled packages
+mkdir -p "${JPSTACK_DIR}"
+cd "${JPSTACK_DIR}"
+
+[ ! -d "sfm" ] && git clone "https://github.com/jpnt/sfm"
+make_clean_install sfm
+
+[ ! -d "slstatus" ] && git clone "https://github.com/jpnt/slstatus"
+make_clean_install slstatus
+
+[ ! -d "dwl" ] && git clone "https://github.com/jpnt/dwl"
+make_clean_install dwl
+
+configure_sysctl
 
 echo "Done."
