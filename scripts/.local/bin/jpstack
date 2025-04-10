@@ -44,7 +44,7 @@ DISABLE_SERVICES="dhcpcd wpa_supplicant agetty-tty4 agetty-tty5 agetty-tty6"
 ENABLE_SERVICES="dbus NetworkManager cronie ntpd-rs seatd turnstiled nanoklogd socklog-unix"
 
 configure_sysctl() {
-	sudo tee /usr/lib/syctl.d/99-jpstack.conf << 'EOF'
+	sudo tee /usr/lib/sysctl.d/99-jpstack.conf >/dev/null << 'EOF'
 # -- Memory management --
 vm.swappiness = 30
 vm.vfs_cache_pressure = 50
@@ -96,15 +96,15 @@ for group in ${GROUPS}; do
 done
 
 # Disable services
-for service in "${DISABLE_SERVICES}"; do
-	[ -h /var/service/${service} ] && echo "disabling ${service} ..." \
-	  && sudo sv stop ${service} && sudo unlink /var/service/${service}
+for service in ${DISABLE_SERVICES}; do
+	[ -h "/var/service/${service}" ] && echo "disabling ${service} ..." \
+	  && sudo sv stop "${service}" && sudo unlink "/var/service/${service}"
 done
 
 # Enable services
-for service in "${ENABLE_SERVICES}"; do
-	[ ! -d /var/service/${service} ] && echo "enabling ${service} ..." \
-	  && sudo ln -s /etc/sv/${service} /var/service/${service} && sudo sv start ${service}
+for service in ${ENABLE_SERVICES}; do
+	[ ! -d "/var/service/${service}" ] && echo "enabling ${service} ..." \
+	  && sudo ln -s "/etc/sv/${service}" "/var/service/${service}" && sudo sv start "${service}"
 done
 
 # Install flatpak packages
@@ -129,4 +129,4 @@ make_clean_install dwl
 
 configure_sysctl
 
-echo "Done."
+echo "done."
