@@ -16,9 +16,9 @@ wl-clipboard dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk \
 noto-fonts-emoji nerd-fonts-ttf socklog-void pcmanfm grim slurp \
 pipewire alsa-pipewire flatpak alsa-utils seatd turnstile ldns \
 bind-utils socat NetworkManager dnscrypt-proxy qt5-wayland qt6-wayland \
-adwaita-qt adwaita-qt6 tofi ripgrep fzf mpv ffmpeg cronie ntpd-rs \
+adwaita-qt adwaita-qt6 tofi ripgrep fd fzf mpv ffmpeg cronie ntpd-rs \
 catgirl htop btop nvtop uv trash-cli strace zathura-pdf-mupdf \
-qalculate ImageMagick jq"
+qalculate ImageMagick jq gdu broot"
 EXTRA_PKG="\
 bluez libspa-bluetooth podman powertop tlp-rdw keepassxc \
 syncthing tcpdump cmus cmus-faad cmus-flac"

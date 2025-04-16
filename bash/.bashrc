@@ -18,6 +18,7 @@ fi
 # Aliases
 alias v='vis'
 alias d='dtach -A'
+alias br='broot'
 alias ..='cd ..'
 alias gb='git branch --all'
 alias ls='ls --color=always'
