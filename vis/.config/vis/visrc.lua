@@ -26,7 +26,8 @@ plugged.add_plugin("https://github.com/fischerling/vis-lspc")
 plugged.require_all_plugins()
 
 vis.events.subscribe(vis.events.INIT, function()
-  vis:command("set theme base16-brewer")
+  vis:command("set theme twodark")
+  -- vis:command("set theme base16-ashes")
 end)
 
 vis.events.subscribe(vis.events.WIN_OPEN, function(win)
@@ -45,6 +46,6 @@ vis.events.subscribe(vis.events.FILE_SAVE_PRE, function(file, path)
   if not path then return end
   local ext = path:match("^.+(%..+)$")
   if ext and (ext == ".rs" or ext == ".go" or ext == ".py" or ext == ".lua") then
-   vis:command("lspc-format")
+    vis:command("lspc-format")
   end
 end)
