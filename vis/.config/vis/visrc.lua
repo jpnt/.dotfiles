@@ -19,15 +19,15 @@ local tab_settings = {
 
 plugged.add_plugin("https://github.com/lutobler/vis-commentary")
 plugged.add_plugin("https://git.sr.ht/~mcepl/vis-fzf-open")
-plugged.add_plugin("https://github.com/jpnt/vis-shout")
 plugged.add_plugin("https://github.com/kupospelov/vis-ctags")
 plugged.add_plugin("https://github.com/fischerling/vis-lspc")
--- plugged.add_plugin("https://github.com/jpnt/vis-autopairs")
+plugged.add_plugin("https://github.com/jpnt/vis-shout")
+plugged.add_plugin("https://github.com/jpnt/vis-autopairs")
 plugged.require_all_plugins()
 
 vis.events.subscribe(vis.events.INIT, function()
   vis:command("set theme twodark")
-  -- vis:command("set theme base16-ashes")
+  vis:map(vis.modes.NORMAL, '<C-p>', ':fzf<Enter>')
 end)
 
 vis.events.subscribe(vis.events.WIN_OPEN, function(win)
