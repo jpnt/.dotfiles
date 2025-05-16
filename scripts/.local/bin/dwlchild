@@ -11,3 +11,4 @@ display=$(wlr-randr | tr ' ' '\n' | head -n1)
           # --output HDMI-A-1 --mode 1920x1080@74.973000Hz \
             # --transform 90 --pos 0,0 &
 # wlr-randr --output "${display}" --mode 2560x1600@60.001999Hz --scale 1.5
+# wlr-randr --output "${display}" --mode 2560x1600@165.000000Hz --scale 1.5

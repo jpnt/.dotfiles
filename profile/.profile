@@ -23,6 +23,7 @@ if [ "${SESSION_TYPE}" = "wayland" ]; then
 	export QT_QPA_PLATFORM=wayland-egl
 	export MOZ_ENABLE_WAYLAND=1
 	export CLUTTER_BACKEND=wayland
+	export SDL_VIDEODRIVER=wayland
 fi
 
 # Create user runtime directory if not exists

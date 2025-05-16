@@ -18,10 +18,11 @@ pipewire alsa-pipewire flatpak alsa-utils seatd turnstile ldns \
 bind-utils socat NetworkManager dnscrypt-proxy qt5-wayland qt6-wayland \
 adwaita-qt adwaita-qt6 tofi ripgrep fd fzf mpv ffmpeg cronie ntpd-rs \
 catgirl htop btop nvtop uv trash-cli strace zathura-pdf-mupdf \
-qalculate ImageMagick jq gdu broot"
+qalculate ImageMagick jq gdu broot zstd man-pages-devel"
 EXTRA_PKG="\
 bluez libspa-bluetooth podman powertop tlp-rdw keepassxc \
-syncthing tcpdump cmus cmus-faad cmus-flac glxinfo pcmanfm"
+syncthing tcpdump cmus cmus-faad cmus-flac glxinfo pcmanfm \
+libvirt qemu virt-manager"
 # TODO: test mesa-vulkan-readeon vs amdvlk
 AMDGPU_PKG="\
 linux-firmware-amd mesa-dri vulkan-loader mesa-vulkan-radeon \
@@ -39,9 +40,10 @@ JPSTACK_PKGS="${CORE_PKG}"
 JPSTACK_DIR="${HOME}/Coding/jpstack"
 # Set groups and services here vvv
 USER=$(whoami)
-GROUPS="_seatd input video socklog"
+GROUPS="_seatd input video socklog libvirt"
 DISABLE_SERVICES="dhcpcd wpa_supplicant agetty-tty4 agetty-tty5 agetty-tty6"
-ENABLE_SERVICES="dbus NetworkManager cronie ntpd-rs seatd turnstiled nanoklogd socklog-unix"
+ENABLE_SERVICES="dbus NetworkManager cronie ntpd-rs seatd turnstiled nanoklogd \
+socklog-unix libvirtd virtlockd virtlogd"
 
 configure_dracut() {
 	sudo tee /etc/dracut.conf.d/99-jpstack.conf >/dev/null << 'EOF'
