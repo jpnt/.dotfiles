@@ -15,9 +15,7 @@ require("lazy").setup({
 
   {
     "lewis6991/gitsigns.nvim",
-    cond = function()
-      return vim.loop.fs_stat(vim.loop.cwd() .. "/.git")
-    end,
+    event = "BufReadPost",
   },
 
   {
