@@ -100,7 +100,7 @@ vim.opt.number         = true
 vim.opt.relativenumber = true
 
 -- lsp setup
-vim.lsp.enable({ 'clangd', 'luals' })
+vim.lsp.enable({ 'clangd', 'luals', 'pyright', 'gopls' })
 
 vim.diagnostic.config({ virtual_lines = { current_line = true } })
 
