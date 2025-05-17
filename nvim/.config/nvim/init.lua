@@ -99,13 +99,14 @@ end, 1)
 vim.opt.number         = true
 vim.opt.relativenumber = true
 
--- lsp setup
-vim.lsp.enable({ 'clangd', 'luals', 'pyright', 'gopls' })
+-- lsp setup (native)
+vim.lsp.enable({ 'clangd', 'luals', 'pyright', 'gopls', 'rust-analyzer' })
 
 vim.diagnostic.config({ virtual_lines = { current_line = true } })
 
 vim.api.nvim_create_autocmd('LspAttach', {
   vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "Go to Definition" }),
+  vim.keymap.set("i", "<C-space>", function() vim.lsp.completion.get() end),
 
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
