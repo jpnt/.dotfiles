@@ -11,12 +11,7 @@ vim.opt.rtp:prepend(lazypath)
 
 -- plugin setup
 require("lazy").setup({
-  { "rebelot/kanagawa.nvim", lazy = false },
-
-  {
-    "lewis6991/gitsigns.nvim",
-    event = "BufReadPost",
-  },
+  { "rebelot/kanagawa.nvim",       lazy = false },
 
   {
     "Darazaki/indent-o-matic",
@@ -39,6 +34,10 @@ require("lazy").setup({
     event = "VeryLazy",
     opts = {},
   },
+
+  { 'echasnovski/mini.statusline', version = '*', opts = {} },
+  { 'echasnovski/mini-git',        version = '*', main = 'mini.git', opts = {} },
+  { 'echasnovski/mini.diff',       version = '*', opts = {} },
 
   {
     "nvim-telescope/telescope.nvim",
@@ -87,7 +86,6 @@ require("lazy").setup({
     },
     dependencies = {
       "MunifTanjim/nui.nvim",
-      "rcarriga/nvim-notify",
     }
   },
 })
@@ -98,10 +96,11 @@ vim.defer_fn(function()
 end, 1)
 vim.opt.number         = true
 vim.opt.relativenumber = true
+vim.opt.completeopt    = "menuone,noselect,popup"
+vim.keymap.set("i", "<cr>", "pumvisible() ? '<C-y>' : '<cr>'", { expr = true })
 
 -- lsp setup (native)
 vim.lsp.enable({ 'clangd', 'luals', 'pyright', 'gopls', 'rust-analyzer' })
-
 vim.diagnostic.config({ virtual_lines = { current_line = true } })
 
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -116,5 +115,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
 
     require("lsp-format").on_attach(client, ev.buf)
+  end,
+})
+
+-- terminal setup TODO
+vim.api.nvim_create_autocmd('TermOpen', {
+  callback = function()
+    vim.bo.number = false
+    vim.bo.relativenumber = false
   end,
 })
