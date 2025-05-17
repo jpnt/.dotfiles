@@ -105,6 +105,8 @@ vim.lsp.enable({ 'clangd', 'luals', 'pyright', 'gopls' })
 vim.diagnostic.config({ virtual_lines = { current_line = true } })
 
 vim.api.nvim_create_autocmd('LspAttach', {
+  vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "Go to Definition" }),
+
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
 
