@@ -12,6 +12,7 @@ set -o vi
 
 # Aliases
 alias v='vis'
+alias nv='nvim'
 alias d='dtach -A'
 alias br='broot'
 alias ..='cd ..'

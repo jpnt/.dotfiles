@@ -11,60 +11,94 @@ vim.opt.rtp:prepend(lazypath)
 
 -- plugin setup
 require("lazy").setup({
-  "lewis6991/gitsigns.nvim",
+  { "rebelot/kanagawa.nvim", lazy = false },
 
-  "mg979/vim-visual-multi",
+  {
+    "lewis6991/gitsigns.nvim",
+    cond = function()
+      return vim.loop.fs_stat(vim.loop.cwd() .. "/.git")
+    end,
+  },
 
-  "rebelot/kanagawa.nvim",
+  {
+    "Darazaki/indent-o-matic",
+    event = "BufReadPre",
+  },
 
-  "Darazaki/indent-o-matic",
+  {
+    "mg979/vim-visual-multi",
+    keys = "<C-n>",
+  },
 
-  { "lukas-reineke/lsp-format.nvim", opts = {} },
+  {
+    "lukas-reineke/lsp-format.nvim",
+    event = "LspAttach",
+    opts = {},
+  },
+
+  {
+    "vladdoster/remember.nvim",
+    event = "VeryLazy",
+    opts = {},
+  },
 
   {
     "nvim-telescope/telescope.nvim",
-    config = function()
-      local builtin = require("telescope.builtin")
-      vim.keymap.set("n", "<C-p>", builtin.find_files, { noremap = true })
-      vim.keymap.set("n", "<C-o>", builtin.oldfiles, { noremap = true })
-      vim.keymap.set("n", "<leader>rg", builtin.live_grep, { noremap = true })
-    end
+    cmd = "Telescope",
+    keys = { { "<C-p>", "<cmd>Telescope find_files<cr>" },
+      { "<C-o>",      "<cmd>Telescope oldfiles<cr>" },
+      { "<leader>rg", "<cmd>Telescope live_grep<cr>" } },
+    dependencies = { "nvim-lua/plenary.nvim" },
   },
 
   {
     "stevearc/overseer.nvim",
+    cmd = { "OverseerRun", "OverseerToggle" },
+    keys = { { "<leader>cc", "<cmd>OverseerRun<cr>" },
+      { "<leader>cu", "<cmd>OverseerToggle<cr>" } },
     opts = {},
-    config = function()
-      vim.keymap.set("n", "<leader>rr", "<cmd>OverseerRun<cr>")
-      vim.keymap.set("n", "<leader>rt", function() require("overseer").toggle() end)
-    end
   },
 
   {
     "mfussenegger/nvim-dap",
-    config = function()
-      require("dap_config")
-    end
+    event = "VeryLazy",
+    config = function() require("dap_config") end,
   },
 
   {
     "miroshQa/debugmaster.nvim",
     dependencies = { "mfussenegger/nvim-dap" },
+    keys = { { "<leader>d", mode = { "n", "v" }, desc = "Toggle DEBUG" } },
     config = function()
       local dm = require("debugmaster")
       vim.keymap.set({ "n", "v" }, "<leader>d", dm.mode.toggle, { nowait = true })
-      vim.keymap.set("t", "<C-/>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
       vim.api.nvim_set_hl(0, "dCursor", { bg = "#FF2C2C" })
-      dm.plugins.cursor_hl.enabled = true
-      dm.plugins.ui_auto_toggle.enabled = true
     end
+  },
 
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    opts = {
+      lsp = {
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+        },
+      },
+    },
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+    }
   },
 })
 
--- basic options
-vim.cmd "colorscheme kanagawa"
-vim.opt.number = true
+-- some options
+vim.defer_fn(function()
+  vim.cmd("colorscheme kanagawa")
+end, 1)
+vim.opt.number         = true
 vim.opt.relativenumber = true
 
 -- lsp setup
