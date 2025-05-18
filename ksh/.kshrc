@@ -14,7 +14,7 @@ set -o vi
 alias v='vis'
 alias nv='nvim'
 alias d='dtach -A'
-alias br='broot'
+alias tr='tree | less'
 alias ..='cd ..'
 alias gb='git branch --all'
 alias ls='ls --color=always'

@@ -35,8 +35,9 @@ require("lazy").setup({
     opts = {},
   },
 
-  { 'echasnovski/mini.statusline', version = '*', opts = {} },
-  { 'echasnovski/mini-git',        version = '*', main = 'mini.git', opts = {} },
+  { 'echasnovski/mini.statusline', version = '*', event = "VeryLazy", opts = {} },
+  { 'echasnovski/mini.pairs',      version = '*', event = "VeryLazy", opts = {} },
+  { 'echasnovski/mini-git',        version = '*', main = 'mini.git',  opts = {} },
   { 'echasnovski/mini.diff',       version = '*', opts = {} },
 
   {
@@ -54,6 +55,14 @@ require("lazy").setup({
     keys = { { "<leader>cc", "<cmd>OverseerRun<cr>" },
       { "<leader>cu", "<cmd>OverseerToggle<cr>" } },
     opts = {},
+  },
+
+  {
+    "stevearc/oil.nvim",
+    opts = {
+      columns = { "permissions", "size", "mtime", "icon" },
+    },
+    dependencies = { { "echasnovski/mini.icons", opts = {} } },
   },
 
   {
@@ -86,6 +95,7 @@ require("lazy").setup({
     },
     dependencies = {
       "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
     }
   },
 })
@@ -98,6 +108,14 @@ vim.opt.number         = true
 vim.opt.relativenumber = true
 vim.opt.completeopt    = "menuone,noselect,popup"
 vim.keymap.set("i", "<cr>", "pumvisible() ? '<C-y>' : '<cr>'", { expr = true })
+vim.keymap.set("n", "-", "<cmd>Oil<cr>")
+
+-- terminal setup
+vim.keymap.set("n", "<leader>\\", function()
+  vim.cmd.vnew()
+  vim.cmd.term()
+  vim.cmd.wincmd("J")
+end)
 
 -- lsp setup (native)
 vim.lsp.enable({ 'clangd', 'luals', 'pyright', 'gopls', 'rust-analyzer' })
@@ -115,13 +133,5 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
 
     require("lsp-format").on_attach(client, ev.buf)
-  end,
-})
-
--- terminal setup TODO
-vim.api.nvim_create_autocmd('TermOpen', {
-  callback = function()
-    vim.bo.number = false
-    vim.bo.relativenumber = false
   end,
 })

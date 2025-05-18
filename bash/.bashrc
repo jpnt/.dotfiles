@@ -18,8 +18,8 @@ fi
 # Aliases
 alias v='vis'
 alias nv='nvim'
+alias tr='tree | less'
 alias d='dtach -A'
-alias br='broot'
 alias ..='cd ..'
 alias gb='git branch --all'
 alias ls='ls --color=always'

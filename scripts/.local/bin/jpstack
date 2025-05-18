@@ -18,19 +18,18 @@ pipewire alsa-pipewire flatpak alsa-utils seatd turnstile ldns \
 bind-utils socat NetworkManager dnscrypt-proxy qt5-wayland qt6-wayland \
 adwaita-qt adwaita-qt6 tofi ripgrep fd fzf mpv ffmpeg cronie ntpd-rs \
 catgirl htop btop nvtop uv trash-cli strace zathura-pdf-mupdf \
-qalculate ImageMagick jq gdu broot zstd man-pages-devel"
+qalculate ImageMagick jq gdu zstd man-pages-devel keychain"
 EXTRA_PKG="\
 bluez libspa-bluetooth podman powertop tlp-rdw keepassxc \
 syncthing tcpdump cmus cmus-faad cmus-flac glxinfo pcmanfm \
 libvirt qemu virt-manager"
-# TODO: test mesa-vulkan-readeon vs amdvlk
 AMDGPU_PKG="\
 linux-firmware-amd mesa-dri vulkan-loader mesa-vulkan-radeon \
 mesa-vaapi mesa-vdpau"
+#AMDVLK_PKG="" # TODO
 INTELGPU_PKG="\
 linux-firmware-intel mesa-dri vulkan-loader mesa-vulkan-intel \
 intel-video-accel"
-# TODO: switch to open source nvidia driver
 NVIDIAGPU_PKG="\
 nvidia nvidia-libs-32bit libgcc-32bit libstdc++-32bit \
 libdrm-32bit libglvnd-32bit"
