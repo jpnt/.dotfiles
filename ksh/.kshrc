@@ -4,7 +4,9 @@
 
 # If not running interactively, don't do anything
 case $- in
-  *i*) ;;
+  *i*)
+    eval "$(keychain --eval --quiet --agents ssh github_jpnt bitbucket)"
+    ;;
   *) return ;;
 esac
 

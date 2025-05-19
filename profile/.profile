@@ -1,15 +1,9 @@
 # ~/.profile – unified login‐shell config
 
-# 1. Session type (default to wayland if not set)
+# Session type (default to wayland if not set)
 : "${SESSION_TYPE:=wayland}"
 
-# 2. Keychain – SSH key management
-if [ -t 1 ]; then
-  # Only run in interactive shells
-  eval "$(keychain --eval --agents ssh github_jpnt bitbucket)"
-fi
-
-# 3. Environment variables
+# Environment variables
 export \
   GOPATH="${HOME}/.local/share/go" \
   XDG_CONFIG_HOME="${HOME}/.config" \
@@ -33,7 +27,7 @@ export PATH="${HOME}/.local/bin:${GOPATH}/bin:${PATH}"
 # LESS options (color + nicer scrolling)
 export LESS='-R --use-color -Dd+r$Du+b$'
 
-# 4. Wayland‐specific settings
+# Wayland‐specific settings
 if [ "$SESSION_TYPE" = "wayland" ]; then
   export \
     XKB_DEFAULT_LAYOUT=pt \
@@ -46,11 +40,11 @@ if [ "$SESSION_TYPE" = "wayland" ]; then
     SDL_VIDEODRIVER=wayland
 fi
 
-# 5. Ensure PWD is set (rarely needed)
+# Ensure PWD is set (rarely needed)
 : "${PWD:=$HOME}"
 export PWD
 
-# 6. Shell‐specific setup
+# Shell‐specific setup
 case "${SHELL##*/}" in
   ksh)
     ENV="${HOME}/.kshrc"
@@ -61,7 +55,7 @@ case "${SHELL##*/}" in
     ;;
 esac
 
-# 7. Graphical login from tty1
+# Graphical login from tty1
 if [ -z "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ] && [ "$(tty)" = /dev/tty1 ]; then
   case "$SESSION_TYPE" in
     x11)    exec startx ;;
