@@ -1,7 +1,7 @@
 -- requires neovim >=0.11
 vim.g.mapleader = ' '
 
--- lazy.nvim bootstrap
+-- lazy.nvim plugin manager bootstrap
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({ "git", "clone", "--filter=blob:none",
