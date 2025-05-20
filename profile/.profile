@@ -22,7 +22,7 @@ if [ ! -d "$XDG_RUNTIME_DIR" ]; then
 fi
 
 # PATH
-export PATH="${HOME}/.local/bin:${GOPATH}/bin:${PATH}"
+export PATH="${HOME}/.local/bin:${GOPATH}/bin:/usr/local/bin:${PATH}"
 
 # LESS options (color + nicer scrolling)
 export LESS='-R --use-color -Dd+r$Du+b$'
