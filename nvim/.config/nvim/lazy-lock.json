@@ -1,5 +1,6 @@
 {
   "autoclose.nvim": { "branch": "main", "commit": "b2077aa2c83df7ebc19b2a20a3a0654b24ae9c8f" },
+  "confirm-quit.nvim": { "branch": "main", "commit": "a1dbd9b553e8d6770cd6a879a3ee8ffad292c70c" },
   "debugmaster.nvim": { "branch": "main", "commit": "7250329de0ce13ee500e0d4d7b31340cdefbec01" },
   "guess-indent.nvim": { "branch": "main", "commit": "84a4987ff36798c2fc1169cbaff67960aed9776f" },
   "kanagawa.nvim": { "branch": "master", "commit": "4de88d695634a8776c687af8e7436cfa074aa0c0" },
