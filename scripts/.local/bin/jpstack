@@ -1,45 +1,57 @@
 #!/bin/sh
-# jpstack: install my collection of software, no fancy stuff
-# made for Void Linux after a fresh install
-# !!!!!!!!!!!!!!!!!!!!!!!!
-# !!! WORK IN PROGRESS !!!
-# !!!!!!!!!!!!!!!!!!!!!!!!
+# jpstack: "minimal" post-install script for Void Linux
+# installs my personal selection of tools, no BS
+# =========================================
+# !!! THIS SCRIPT IS A WORK IN PROGRESS !!!
+# =========================================
 
 set -e
 
-CORE_PKG="\
-stow xtools tealdeer handlr bash-completion git tig vis imv dragon \
-fcft-devel smartmontools lm_sensors dmidecode gammastep foot dtach \
-xdg-user-dirs xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
-wlroots0.18-devel xorg-server-xwayland xwininfo wlr-randr wdisplays \
-wl-clipboard dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk \
-noto-fonts-emoji nerd-fonts-ttf socklog-void grim slurp \
-pipewire alsa-pipewire flatpak alsa-utils seatd turnstile ldns \
-bind-utils socat NetworkManager dnscrypt-proxy qt5-wayland qt6-wayland \
-adwaita-qt adwaita-qt6 tofi ripgrep fd fzf mpv ffmpeg cronie ntpd-rs \
-catgirl htop btop nvtop uv trash-cli strace zathura-pdf-mupdf \
-qalculate ImageMagick jq gdu zstd man-pages-devel keychain mako swaylock"
+CORE_DESKTOP_PKG="\
+dragon fcft-devel gammastep foot xdg-user-dirs xdg-desktop-portal-wlr \
+xdg-desktop-portal-gtk wlroots0.18-devel xorg-server-xwayland wlr-randr \
+wdisplays wl-clipboard grim slurp seatd turnstile NetworkManager \
+qt5-wayland qt6-wayland adwaita-qt adwaita-qt6 tofi trash-cli mako \
+swaylock swaybg"
+CORE_UTILS_PKG="\
+neovim stow handlr bash-completion dtach socklog-void ripgrep fd fzf cronie ntpd-rs \
+qalculate zstd keychain" 
+FONTS_PKG="dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk noto-fonts-emoji\
+nerd-fonts-ttf nerd-fonts-emoji "
+MEDIA_PKG="\
+imv pipewire alsa-pipewire alsa-utils ffmpeg zathura-pdf-mupdf ImageMagick \
+cmus cmus-faad cmus-flac"
+BLUETOOTH_PKG="bluez libspa-bluetooth"
+VIRT_PKG="\
+flatpak podman libvirt qemu virt-manager"
 EXTRA_PKG="\
-bluez libspa-bluetooth podman powertop tlp-rdw keepassxc \
-syncthing tcpdump cmus cmus-faad cmus-flac glxinfo pcmanfm \
-libvirt qemu virt-manager"
-AMDGPU_PKG="\
+xtools smartmontools lm_sensors dmidecode xwininfo dnscrypt-proxy \
+catgirl htop btop nvtop tlp tlp-rdw keepassxc syncthing glxinfo
+git tig vis tealdeer ldns bind-utils socat uv strace jq gdu \
+man-pages-devel tcpdump"
+AMD_GPU_MESA="\
 linux-firmware-amd mesa-dri vulkan-loader mesa-vulkan-radeon \
 mesa-vaapi mesa-vdpau"
-#AMDVLK_PKG="" # TODO
-INTELGPU_PKG="\
+AMD_GPU_VLK="{AMD_GPU_MESA} amdvlk"
+INTEL_GPU="\
 linux-firmware-intel mesa-dri vulkan-loader mesa-vulkan-intel \
 intel-video-accel"
-NVIDIAGPU_PKG="\
+NVIDIA_GPU_PKG="\
 nvidia nvidia-libs-32bit libgcc-32bit libstdc++-32bit \
 libdrm-32bit libglvnd-32bit"
+ALL_PKG_EXCEPT_GPU="${CORE_DESKTOP_PKG} ${CORE_UTILS_PKG} ${FONTS_PKG} ${MEDIA_PKG} \
+${BLUETOOTH_PKG} ${VIRT_PKG} ${EXTRA_PKG}"
 
-JPSTACK_PKGS="${CORE_PKG}"
+JPSTACK_PKGS="${ALL_PKG_EXCEPT_GPU}"
 JPSTACK_DIR="${HOME}/Coding/jpstack"
+REPOSITORIES="\
+void-repo-nonfree void-repo-multilib void-repo-multilib-nonfree"
 USER=$(whoami)
 GROUPS="_seatd input video socklog libvirt"
-DISABLE_SERVICES="dhcpcd wpa_supplicant agetty-tty4 agetty-tty5 agetty-tty6"
-ENABLE_SERVICES="dbus NetworkManager cronie ntpd-rs seatd turnstiled nanoklogd \
+DISABLE_SERVICES="\
+dhcpcd wpa_supplicant agetty-tty4 agetty-tty5 agetty-tty6"
+ENABLE_SERVICES="\
+dbus NetworkManager cronie ntpd-rs seatd turnstiled nanoklogd \
 socklog-unix libvirtd virtlockd virtlogd"
 
 configure_dracut() {
@@ -89,6 +101,9 @@ make_clean_install() {
 }
 
 echo "Superuser privileges are required. You might need to enter your sudo password."
+
+# Install repository packages
+sudo xbps-install -Suy ${REPOSITORIES}
 
 # Install system packages
 sudo xbps-install -Suy ${JPSTACK_PKGS}
