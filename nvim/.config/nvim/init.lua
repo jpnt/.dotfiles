@@ -21,6 +21,8 @@ vim.opt.relativenumber = true
 vim.opt.completeopt    = "menuone,noselect,popup"
 vim.keymap.set("i", "<cr>", "pumvisible() ? '<C-y>' : '<cr>'", { expr = true })
 vim.keymap.set("n", "-", "<cmd>Oil<cr>")
+vim.keymap.set("n", "<tab>", "<cmd>bnext<cr>")
+vim.keymap.set("n", "<S-tab>", "<cmd>bprevious<cr>")
 
 -- terminal setup
 vim.keymap.set("n", "<leader>\\", function()
