@@ -8,6 +8,7 @@ export \
   GOPATH="${HOME}/.local/share/go" \
   XDG_CONFIG_HOME="${HOME}/.config" \
   XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/tmp/$(id -u)-runtime-dir}" \
+  XKB_DEFAULT_LAYOUT=pt \
   TERMINAL=footclient \
   EDITOR=nvim \
   PAGER=less \
@@ -30,14 +31,14 @@ export LESS='-R --use-color -Dd+r$Du+b$'
 # Wayland‐specific settings
 if [ "$SESSION_TYPE" = "wayland" ]; then
   export \
-    XKB_DEFAULT_LAYOUT=pt \
     XDG_SESSION_TYPE=wayland \
     XDG_CURRENT_DESKTOP=sway \
     GDK_BACKEND=wayland \
     QT_QPA_PLATFORM=wayland-egl \
     MOZ_ENABLE_WAYLAND=1 \
     CLUTTER_BACKEND=wayland \
-    SDL_VIDEODRIVER=wayland
+    SDL_VIDEODRIVER=wayland \
+    ELM_DISPLAY=wl
 fi
 
 # Ensure PWD is set (rarely needed)
