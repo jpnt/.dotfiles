@@ -3,14 +3,11 @@
 #
 
 # If not running interactively, don't do anything
-case $- in
-  *i*)
-    eval "$(keychain --eval --quiet --agents ssh github_jpnt bitbucket)"
-    ;;
-  *) return ;;
-esac
+[[ $- != *i* ]] && return
 
 set -o vi
+
+eval "$(keychain --eval --quiet --agents ssh github_jpnt bitbucket)"
 
 # Aliases
 alias v='vis'

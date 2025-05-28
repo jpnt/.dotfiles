@@ -3,14 +3,11 @@
 #
 
 # If not running interactively, don't do anything
-case $- in
-    *i*)
-        eval "$(keychain --eval --quiet --agents ssh github_jpnt bitbucket)"
-        ;;
-    *) return ;;
-esac
+[[ $- != *i* ]] && return
 
 set -o vi
+
+eval "$(keychain --eval --quiet github_jpnt bitbucket)"
 
 # Enable bash-completion
 if [ -f /etc/bash_completion ]; then
