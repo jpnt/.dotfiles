@@ -25,7 +25,7 @@ imv pipewire alsa-pipewire alsa-utils ffmpeg zathura-pdf-mupdf ImageMagick \
 cmus cmus-pulseaudio cmus-faad cmus-flac"
 BLUETOOTH_PKG="bluez libspa-bluetooth"
 VIRT_PKG="\
-flatpak podman libvirt qemu virt-manager"
+flatpak podman catatonit libvirt qemu virt-manager"
 EXTRA_PKG="\
 xtools smartmontools lm_sensors dmidecode xwininfo dnscrypt-proxy \
 catgirl htop btop nvtop tlp tlp-rdw keepassxc syncthing glxinfo
