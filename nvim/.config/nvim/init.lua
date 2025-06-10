@@ -30,7 +30,6 @@ vim.opt.completeopt = "menuone,noselect,popup"
 -- ╭─────────────────╮
 -- │ General keymaps │
 -- ╰─────────────────╯
-
 vim.keymap.set("n", "-", "<cmd>Oil<CR>", {
   desc = "Open Oil file explorer",
 })
@@ -54,7 +53,7 @@ end, {
 -- ╭──────────────────╮
 -- │ Native LSP setup │
 -- ╰──────────────────╯
-vim.lsp.enable({ "clangd", "luals", "pyright", "gopls", "rust-analyzer" })
+vim.lsp.enable({ "clangd", "luals", "tsls", "pyright", "gopls", "rust-analyzer" })
 
 vim.diagnostic.config({
   virtual_lines = { current_line = true },
