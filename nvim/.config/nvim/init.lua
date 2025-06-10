@@ -30,10 +30,6 @@ vim.opt.completeopt = "menuone,noselect,popup"
 -- ╭─────────────────╮
 -- │ General keymaps │
 -- ╰─────────────────╯
-vim.keymap.set("i", "<CR>", "pumvisible() ? '<C-y>' : '<CR>'", {
-  expr = true,
-  desc = "Confirm Completion or Newline",
-})
 
 vim.keymap.set("n", "-", "<cmd>Oil<CR>", {
   desc = "Open Oil file explorer",
@@ -78,17 +74,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
       buffer = bufnr,
       desc = "Code Action",
     })
-
-    vim.keymap.set("i", "<C-Space>", function()
-      vim.lsp.completion.get()
-    end, {
-      buffer = bufnr,
-      desc = "Trigger Completion",
-    })
-
-    if client and client.supports_method("textDocument/completion") then
-      vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = false })
-    end
 
     require("lsp-format").on_attach(client, bufnr)
   end,

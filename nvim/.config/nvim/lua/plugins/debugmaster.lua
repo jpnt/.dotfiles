@@ -7,5 +7,4 @@ return {
         vim.keymap.set({ "n", "v" }, "<leader>d", dm.mode.toggle, { nowait = true })
         vim.api.nvim_set_hl(0, "dCursor", { bg = "#FF2C2C" })
     end
-
 }
