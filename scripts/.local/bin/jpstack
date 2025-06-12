@@ -1,14 +1,28 @@
 #!/bin/sh
-# jpstack: "minimal" post-install script for Void Linux
-# installs my personal selection of tools, no BS
-# =========================================
-# !!! THIS SCRIPT IS A WORK IN PROGRESS !!!
-# =========================================
+# jpstack: minimal post-install script with dialog interface for Void Linux
+# TODO: replace runit -> s6 + s6-rc + 66?
+# TODO: replace agetty + turnstile -> greetd
+# TODO: replace NetworkManager -> dhcpcd, iwd, ifupdown-ng
+# TODO: test mdevd compared to udevd
+# TODO: wifi TUI: impala?
+# TODO: bluetooth TUI: bluetui?
 
 set -e
 
-# TODO: replace agetty* + .profile session madness with greetd
-# TODO: replace runit + turnstile with s6 + 66
+# Requirements
+command -v dialog >/dev/null 2>&1 || { echo "dialog is required. Run: sudo xbps-install -y dialog"; exit 1; }
+
+# Variables
+TITLE="jpstack setup"
+TMP_OUT=$(mktemp)
+trap 'rm -f "$TMP_OUT"' EXIT # ensure temp file cleanup
+
+USER="${SUDO_USER:-$(whoami)}"
+JPSTACK_DIR="${HOME}/Coding/jpstack"
+
+REPOSITORIES="void-repo-nonfree void-repo-multilib void-repo-multilib-nonfree"
+
+# Package Groups
 CORE_DESKTOP_PKG="\
 dragon fcft-devel gammastep foot xdg-user-dirs xdg-desktop-portal-wlr \
 xdg-desktop-portal-gtk wlroots0.18-devel xorg-server-xwayland wlr-randr \
@@ -18,8 +32,8 @@ swaylock swaybg"
 CORE_UTILS_PKG="\
 neovim stow handlr bash-completion dtach socklog-void ripgrep fd fzf cronie ntpd-rs \
 qalculate zstd keychain" 
-FONTS_PKG="dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk noto-fonts-emoji\
-nerd-fonts-ttf nerd-fonts-emoji "
+FONTS_PKG="dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk noto-fonts-emoji \
+nerd-fonts-ttf"
 MEDIA_PKG="\
 imv pipewire alsa-pipewire alsa-utils ffmpeg zathura-pdf-mupdf ImageMagick \
 cmus cmus-pulseaudio cmus-faad cmus-flac"
@@ -30,126 +44,150 @@ EXTRA_PKG="\
 xtools smartmontools lm_sensors dmidecode xwininfo dnscrypt-proxy \
 catgirl htop btop nvtop tlp tlp-rdw keepassxc syncthing glxinfo
 git tig vis tealdeer ldns bind-utils socat uv strace jq gdu \
-man-pages-devel tcpdump"
+tcpdump psmisc procs man-pages-devel"
 AMD_GPU_MESA="\
 linux-firmware-amd mesa-dri vulkan-loader mesa-vulkan-radeon \
 mesa-vaapi mesa-vdpau"
-AMD_GPU_VLK="{AMD_GPU_MESA} amdvlk"
+AMD_GPU_VLK="${AMD_GPU_MESA} amdvlk"
 INTEL_GPU="\
 linux-firmware-intel mesa-dri vulkan-loader mesa-vulkan-intel \
 intel-video-accel"
 NVIDIA_GPU_PKG="\
 nvidia nvidia-libs-32bit libgcc-32bit libstdc++-32bit \
 libdrm-32bit libglvnd-32bit"
-ALL_PKG_EXCEPT_GPU="${CORE_DESKTOP_PKG} ${CORE_UTILS_PKG} ${FONTS_PKG} ${MEDIA_PKG} \
-${BLUETOOTH_PKG} ${VIRT_PKG} ${EXTRA_PKG}"
 
-JPSTACK_PKGS="${ALL_PKG_EXCEPT_GPU}"
-JPSTACK_DIR="${HOME}/Coding/jpstack"
-REPOSITORIES="\
-void-repo-nonfree void-repo-multilib void-repo-multilib-nonfree"
-USER=$(whoami)
-GROUPS="_seatd input video socklog libvirt"
-DISABLE_SERVICES="\
-dhcpcd wpa_supplicant agetty-tty4 agetty-tty5 agetty-tty6"
-ENABLE_SERVICES="\
-dbus NetworkManager cronie ntpd-rs seatd turnstiled nanoklogd \
-socklog-unix libvirtd virtlockd virtlogd"
+
+GROUPS="_seatd wheel input video socklog libvirt"
+DISABLE_SERVICES="dhcpcd wpa_supplicant agetty-tty4 agetty-tty5 agetty-tty6"
+ENABLE_SERVICES="dbus NetworkManager cronie ntpd-rs seatd turnstiled nanoklogd socklog-unix libvirtd virtlockd virtlogd"
+
+# Functions
+confirm() {
+    dialog --yesno "$1" 7 50
+    return $?
+}
+
+info_box() {
+    dialog --title "$TITLE" --infobox "$1" 5 50
+    sleep 1
+}
 
 configure_dracut() {
-	sudo tee /etc/dracut.conf.d/99-jpstack.conf >/dev/null << 'EOF'
+    info_box "Configuring dracut..."
+    sudo tee /etc/dracut.conf.d/99-jpstack.conf >/dev/null << EOF
 hostonly=yes
 EOF
 }
 
-# has to be in /usr/lib because it gives a error if its in /etc
 configure_sysctl() {
-	sudo tee /usr/lib/sysctl.d/99-jpstack.conf >/dev/null << 'EOF'
-# -- Memory management --
-vm.swappiness = 30
-vm.vfs_cache_pressure = 50
-vm.dirty_ratio = 10
-vm.dirty_background_ratio = 5
-# vm.max_map_count = 1048576
-
-# -- Network optimization --
-net.ipv4.tcp_keepalive_time = 300
-net.ipv4.tcp_keepalive_intvl = 60
-net.ipv4.tcp_keepalive_probes = 5
-net.ipv4.tcp_slow_start_after_idle = 0
-
-# -- Security hardening --
-net.ipv4.tcp_syncookies = 1
-net.ipv4.conf.all.accept_redirects = 0
-net.ipv4.conf.default.accept_redirects = 0
-net.ipv6.conf.all.accept_redirects = 0
-net.ipv6.conf.default.accept_redirects = 0
-net.ipv4.conf.all.send_redirects = 0
-net.ipv4.conf.default.send_redirects = 0
-
-# -- File system performance --
-fs.file-max = 2097152
+    info_box "Configuring sysctl..."
+    sudo tee /usr/lib/sysctl.d/99-jpstack.conf >/dev/null << EOF
+vm.swappiness = 10
+vm.max_map_count = 1048576
 EOF
-
-	sudo sysctl --system
+    sudo sysctl --system
 }
 
 make_clean_install() {
-	cd "$1"
-	make clean
-	make -j$(nproc)
-	sudo make install
-	cd ..
+    cd "$1"
+    make clean
+    make -j$(nproc)
+    sudo make install
+    cd ..
 }
 
-echo "Superuser privileges are required. You might need to enter your sudo password."
+install_packages() {
+    info_box "Updating system and installing repositories..."
+    echo "Superuser privileges are required. You might need to enter your sudo password."
+    sudo xbps-install -Suy ${REPOSITORIES}
 
-# Install repository packages
-sudo xbps-install -Suy ${REPOSITORIES}
+    dialog --checklist "Select optional package groups:" 20 60 10 \
+        fonts "Install fonts" off \
+        media "Media tools" off \
+        bluetooth "Bluetooth stack" off \
+        virtualization "VM/containers" off \
+        extra "Extra tools" off 2>"$TMP_OUT"
 
-# Install system packages
-sudo xbps-install -Suy ${JPSTACK_PKGS}
+    CHOICES=$(cat "$TMP_OUT")
+    JPSTACK_PKGS="$CORE_DESKTOP_PKG $CORE_UTILS_PKG"
 
-# Create XDG user directories
-xdg-user-dirs-update
+    case "$CHOICES" in
+        *fonts*) JPSTACK_PKGS="$JPSTACK_PKGS $FONTS_PKG" ;;
+        *media*) JPSTACK_PKGS="$JPSTACK_PKGS $MEDIA_PKG" ;;
+        *bluetooth*) JPSTACK_PKGS="$JPSTACK_PKGS $BLUETOOTH_PKG" ;;
+        *virtualization*) JPSTACK_PKGS="$JPSTACK_PKGS $VIRT_PKG" ;;
+        *extra*) JPSTACK_PKGS="$JPSTACK_PKGS $EXTRA_PKG" ;;
+    esac
 
-# Add user to groups
-for group in ${GROUPS}; do
-	sudo usermod -aG ${group} ${USER}
-done
+    dialog --checklist "Select GPU drivers to install:" 15 60 6 \
+        amd "AMD (Mesa-based)" off \
+        amdvlk "AMD (with AMDVLK)" off \
+        intel "Intel" off \
+        nvidia "NVIDIA proprietary" off 2>"$TMP_OUT"
 
-# Disable services
-for service in ${DISABLE_SERVICES}; do
-	[ -h "/var/service/${service}" ] && echo "disabling ${service} ..." \
-	  && sudo sv stop "${service}" && sudo unlink "/var/service/${service}"
-done
+    GPU_CHOICE=$(cat "$TMP_OUT")
 
-# Enable services
-for service in ${ENABLE_SERVICES}; do
-	[ ! -d "/var/service/${service}" ] && echo "enabling ${service} ..." \
-	  && sudo ln -s "/etc/sv/${service}" "/var/service/${service}" && sudo sv start "${service}"
-done
+    case "$GPU_CHOICE" in
+        amdgpu)  JPSTACK_PKGS="$JPSTACK_PKGS $AMD_GPU_MESA" ;;
+        amdvlk)  JPSTACK_PKGS="$JPSTACK_PKGS $AMD_GPU_VLK" ;;
+        intel)   JPSTACK_PKGS="$JPSTACK_PKGS $INTEL_GPU" ;;
+        nvidia)  JPSTACK_PKGS="$JPSTACK_PKGS $NVIDIA_GPU_PKG" ;;
+    esac
 
-# Install flatpak packages
-flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-flatpak install --user --noninteractive --or-update flathub com.github.tchx84.Flatseal
-flatpak install --user --noninteractive --or-update flathub com.saivert.pwvucontrol
-# flatpak install --user --noninteractive --or-update flathub io.github.dimtpap.coppwr
+    info_box "Installing selected packages..."
+    sudo xbps-install -Sy $JPSTACK_PKGS
+}
 
-# Create directory for compiled packages
-mkdir -p "${JPSTACK_DIR}"
-cd "${JPSTACK_DIR}"
+post_install() {
+    info_box "Creating XDG directories..."
+    xdg-user-dirs-update
 
-[ ! -d "sfm" ] && git clone "https://github.com/jpnt/sfm"
-make_clean_install sfm
+    info_box "Adding user to groups..."
+    for group in ${GROUPS}; do
+        sudo usermod -aG ${group} ${USER}
+    done
 
-[ ! -d "slstatus" ] && git clone "https://github.com/jpnt/slstatus"
-make_clean_install slstatus
+    info_box "Managing services..."
+    for service in ${DISABLE_SERVICES}; do
+        [ -h "/var/service/${service}" ] && sudo sv stop "${service}" && sudo unlink "/var/service/${service}"
+    done
+    for service in ${ENABLE_SERVICES}; do
+        [ ! -d "/var/service/${service}" ] && sudo ln -s "/etc/sv/${service}" "/var/service/${service}" && sudo sv start "${service}"
+    done
 
-[ ! -d "dwl" ] && git clone "https://github.com/jpnt/dwl"
-make_clean_install dwl
+    info_box "Installing Flatpak apps..."
+    flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+    flatpak install --user --noninteractive --or-update flathub com.github.tchx84.Flatseal
+    flatpak install --user --noninteractive --or-update flathub com.saivert.pwvucontrol
 
-configure_dracut
-configure_sysctl
+    info_box "Compiling custom packages..."
+    mkdir -p "$JPSTACK_DIR"
+    cd "$JPSTACK_DIR"
 
-echo "done."
+    [ ! -d "sfm" ] && git clone "https://github.com/jpnt/sfm"
+    make_clean_install sfm
+
+    [ ! -d "slstatus" ] && git clone "https://github.com/jpnt/slstatus"
+    make_clean_install slstatus
+
+    [ ! -d "dwl" ] && git clone "https://github.com/jpnt/dwl"
+    make_clean_install dwl
+
+    configure_dracut
+    configure_sysctl
+
+    dialog --title "$TITLE" --msgbox "jpstack installation complete." 7 50
+    rm -f "$TMP_OUT"
+    clear
+}
+
+main() {
+    dialog --title "$TITLE" --yesno "Start jpstack system setup now?" 7 50
+    [ $? -eq 0 ] || { echo "Aborted."; exit 1; }
+
+    install_packages
+    post_install
+}
+
+main
+
