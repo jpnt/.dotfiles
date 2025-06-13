@@ -17,8 +17,8 @@ TITLE="jpstack setup"
 TMP_OUT=$(mktemp)
 trap 'rm -f "$TMP_OUT"' EXIT # ensure temp file cleanup
 
-USER="${SUDO_USER:-$(whoami)}"
-JPSTACK_DIR="${HOME}/Coding/jpstack"
+USER_HOME=$(eval echo "~$USER")
+JPSTACK_DIR="${USER_HOME}/Coding/jpstack"
 
 REPOSITORIES="void-repo-nonfree void-repo-multilib void-repo-multilib-nonfree"
 
@@ -28,7 +28,7 @@ dragon fcft-devel gammastep foot xdg-user-dirs xdg-desktop-portal-wlr \
 xdg-desktop-portal-gtk wlroots0.18-devel xorg-server-xwayland wlr-randr \
 wdisplays wl-clipboard grim slurp seatd turnstile NetworkManager \
 qt5-wayland qt6-wayland adwaita-qt adwaita-qt6 tofi trash-cli mako \
-swaylock swaybg"
+swaylock swaybg librewolf"
 CORE_UTILS_PKG="\
 neovim stow handlr bash-completion dtach socklog-void ripgrep fd fzf cronie ntpd-rs \
 qalculate zstd keychain" 
@@ -89,6 +89,7 @@ EOF
 }
 
 make_clean_install() {
+    info_box "Compiling $1..."
     cd "$1"
     make clean
     make -j$(nproc)
@@ -97,8 +98,13 @@ make_clean_install() {
 }
 
 install_packages() {
-    info_box "Updating system and installing repositories..."
+    info_box "Adding custom repositories..."
     echo "Superuser privileges are required. You might need to enter your sudo password."
+    [ -f /etc/xbps.d/20-librewolf.conf ] || \
+        echo 'repository=https://github.com/index-0/librewolf-void/releases/latest/download/' | \
+        sudo tee /etc/xbps.d/20-librewolf.conf > /dev/null
+
+    info_box "Updating system and installing repositories..."
     sudo xbps-install -Suy ${REPOSITORIES}
 
     dialog --checklist "Select optional package groups:" 20 60 10 \
@@ -111,13 +117,11 @@ install_packages() {
     CHOICES=$(cat "$TMP_OUT")
     JPSTACK_PKGS="$CORE_DESKTOP_PKG $CORE_UTILS_PKG"
 
-    case "$CHOICES" in
-        *fonts*) JPSTACK_PKGS="$JPSTACK_PKGS $FONTS_PKG" ;;
-        *media*) JPSTACK_PKGS="$JPSTACK_PKGS $MEDIA_PKG" ;;
-        *bluetooth*) JPSTACK_PKGS="$JPSTACK_PKGS $BLUETOOTH_PKG" ;;
-        *virtualization*) JPSTACK_PKGS="$JPSTACK_PKGS $VIRT_PKG" ;;
-        *extra*) JPSTACK_PKGS="$JPSTACK_PKGS $EXTRA_PKG" ;;
-    esac
+    echo "$CHOICES" | grep -q fonts && JPSTACK_PKGS="$JPSTACK_PKGS $FONTS_PKG"
+    echo "$CHOICES" | grep -q media && JPSTACK_PKGS="$JPSTACK_PKGS $MEDIA_PKG"
+    echo "$CHOICES" | grep -q bluetooth && JPSTACK_PKGS="$JPSTACK_PKGS $BLUETOOTH_PKG"
+    echo "$CHOICES" | grep -q virtualization && JPSTACK_PKGS="$JPSTACK_PKGS $VIRT_PKG"
+    echo "$CHOICES" | grep -q extra && JPSTACK_PKGS="$JPSTACK_PKGS $EXTRA_PKG"
 
     dialog --checklist "Select GPU drivers to install:" 15 60 6 \
         amd "AMD (Mesa-based)" off \
@@ -127,15 +131,18 @@ install_packages() {
 
     GPU_CHOICE=$(cat "$TMP_OUT")
 
-    case "$GPU_CHOICE" in
-        amdgpu)  JPSTACK_PKGS="$JPSTACK_PKGS $AMD_GPU_MESA" ;;
-        amdvlk)  JPSTACK_PKGS="$JPSTACK_PKGS $AMD_GPU_VLK" ;;
-        intel)   JPSTACK_PKGS="$JPSTACK_PKGS $INTEL_GPU" ;;
-        nvidia)  JPSTACK_PKGS="$JPSTACK_PKGS $NVIDIA_GPU_PKG" ;;
-    esac
+    echo "$GPU_CHOICE" | grep -q amdvlk && JPSTACK_PKGS="$JPSTACK_PKGS $AMD_GPU_VLK"
+    echo "$GPU_CHOICE" | grep -q amd && JPSTACK_PKGS="$JPSTACK_PKGS $AMD_GPU_MESA"
+    echo "$GPU_CHOICE" | grep -q intel && JPSTACK_PKGS="$JPSTACK_PKGS $INTEL_GPU"
+    echo "$GPU_CHOICE" | grep -q nvidia && JPSTACK_PKGS="$JPSTACK_PKGS $NVIDIA_GPU_PKG"
 
     info_box "Installing selected packages..."
     sudo xbps-install -Sy $JPSTACK_PKGS
+
+    info_box "Installing Flatpak apps..."
+    flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+    flatpak install --user --noninteractive --or-update flathub com.github.tchx84.Flatseal
+    flatpak install --user --noninteractive --or-update flathub com.saivert.pwvucontrol
 }
 
 post_install() {
@@ -147,18 +154,19 @@ post_install() {
         sudo usermod -aG ${group} ${USER}
     done
 
-    info_box "Managing services..."
+    info_box "Disabling services..."
     for service in ${DISABLE_SERVICES}; do
-        [ -h "/var/service/${service}" ] && sudo sv stop "${service}" && sudo unlink "/var/service/${service}"
-    done
-    for service in ${ENABLE_SERVICES}; do
-        [ ! -d "/var/service/${service}" ] && sudo ln -s "/etc/sv/${service}" "/var/service/${service}" && sudo sv start "${service}"
+        [ -h "/var/service/${service}" ] && \
+            sudo sv stop "${service}" && \
+            sudo unlink "/var/service/${service}"
     done
 
-    info_box "Installing Flatpak apps..."
-    flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-    flatpak install --user --noninteractive --or-update flathub com.github.tchx84.Flatseal
-    flatpak install --user --noninteractive --or-update flathub com.saivert.pwvucontrol
+    info_box "Enabling services..."
+    for service in ${ENABLE_SERVICES}; do
+        [ ! -d "/var/service/${service}" ] && \
+            sudo ln -s "/etc/sv/${service}" "/var/service/${service}" && \
+            sudo sv start "${service}"
+    done
 
     info_box "Compiling custom packages..."
     mkdir -p "$JPSTACK_DIR"
