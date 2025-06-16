@@ -1,110 +1,179 @@
-#!/bin/sh
-# jpstack: minimal post-install script with dialog interface for Void Linux
-# TODO: "post-install" make it so that this script works like "pacstrap". should be bootstraper
-# TODO: mako service is always polling files. replace it
+# #!/usr/bin/env bash
+# jpstack – Void‑Linux post‑install helper
+
+# TODO: ifupdown-ng: doesnt use iwd, also I want to use builtin iwd dhcp client. patch upstream
+# TODO: "post-install" make it so that this script works just after install. bootstrapping my dotfiles, etc...
+# TODO: mako service is always polling files. replace it (*) or patch upstream
+# * options:
+#     - https://github.com/Toqozz/wired-notify
+#     - https://blog.orhun.dev/introducing-runst/
+#     - https://codeberg.org/dnkl/fnott
 # TODO: replace agetty + turnstile -> greetd
 # TODO: replace runit -> s6 + s6-rc (+ 66?)
-# TODO: test mdevd compared to udevd
+# TODO: test mdevd -> compare to udevd
+# TODO: test ouch -> compress/decompress tool
+# TODO: test xh -> similar to httpie and alternative to curl
 
-set -e
+set -Eeuo pipefail
+IFS=$'\n\t'
+shopt -s failglob
 
-# Requirements
-command -v dialog >/dev/null 2>&1 || { echo "dialog is required. Run: sudo xbps-install -y dialog"; exit 1; }
-
-# Variables
-TITLE="jpstack setup"
+###############################################################################
+# Error handling & cleanup                                                    #
+###############################################################################
 TMP_OUT=$(mktemp)
-trap 'rm -f "$TMP_OUT"' EXIT # ensure temp file cleanup
+LOG_FILE=${LOG_FILE:-"/tmp/jpstack.$(date +%s).log"}
 
-USER_HOME=$(eval echo "~$USER")
-JPSTACK_DIR="${USER_HOME}/Coding/jpstack"
+cleanup() {
+    rm -f "$TMP_OUT"
+}
+trap cleanup EXIT
 
-REPOSITORIES="void-repo-nonfree void-repo-multilib void-repo-multilib-nonfree"
+error_trap() {
+    local line=$1 rc=$2
+    echo "[jpstack] ERROR line $line – exit $rc" | tee -a "$LOG_FILE" >&2
+    exit "$rc"
+}
+trap 'error_trap $LINENO $?' ERR
 
-# Package Groups
-CORE_DESKTOP_PKG="\
-dragon fcft-devel gammastep foot xdg-user-dirs xdg-desktop-portal-wlr \
-xdg-desktop-portal-gtk wlroots0.18-devel xorg-server-xwayland wlr-randr \
-wdisplays wl-clipboard grim slurp seatd turnstile dhcpcd ifupdown-ng \
-qt5-wayland qt6-wayland adwaita-qt adwaita-qt6 tofi trash-cli mako \
-swaylock swaybg librewolf"
-CORE_UTILS_PKG="\
-neovim stow handlr bash-completion dtach socklog-void ripgrep fd fzf cronie eza \
-ntpd-rs qalculate zstd keychain" 
-FONTS_PKG="dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk noto-fonts-emoji \
-nerd-fonts-ttf"
-MEDIA_PKG="\
-imv pipewire alsa-pipewire alsa-utils ffmpeg zathura-pdf-mupdf ImageMagick \
-cmus cmus-pulseaudio cmus-faad cmus-flac"
-WIFI_PKG="iwd impala"
-BLUETOOTH_PKG="bluez libspa-bluetooth bluetui"
-VIRT_PKG="flatpak podman catatonit libvirt qemu virt-manager"
-EXTRA_PKG="\
-xtools smartmontools lm_sensors dmidecode xwininfo dnscrypt-proxy \
-catgirl htop btop nvtop tlp tlp-rdw keepassxc syncthing glxinfo
-git tig vis tealdeer ldns bind-utils socat uv strace jq gdu \
-tcpdump psmisc procs man-pages-devel"
-AMD_GPU_MESA="\
-linux-firmware-amd mesa-dri vulkan-loader mesa-vulkan-radeon \
-mesa-vaapi mesa-vdpau"
-AMD_GPU_VLK="${AMD_GPU_MESA} amdvlk"
-INTEL_GPU="\
-linux-firmware-intel mesa-dri vulkan-loader mesa-vulkan-intel \
-intel-video-accel"
-NVIDIA_GPU_PKG="\
-nvidia nvidia-libs-32bit libgcc-32bit libstdc++-32bit \
-libdrm-32bit libglvnd-32bit"
+###############################################################################
+# Constants                                                                   #
+###############################################################################
+TITLE="jpstack setup"
+REPOSITORIES=(void-repo-nonfree void-repo-multilib void-repo-multilib-nonfree)
+
+# Package groups (arrays)
+CORE_DESKTOP=(\
+  dragon fcft-devel gammastep foot xdg-user-dirs xdg-desktop-portal-wlr \
+  xdg-desktop-portal-gtk wlroots0.18-devel xorg-server-xwayland wlr-randr \
+  wdisplays wl-clipboard grim slurp seatd turnstile keyd dhcpcd ifupdown-ng \
+  qt5-wayland qt6-wayland adwaita-qt adwaita-qt6 tofi trash-cli mako \
+  swaylock swaybg librewolf)
+
+CORE_UTILS=(\
+  neovim stow handlr bash-completion dtach socklog-void ripgrep fd fzf \
+  cronie eza ntpd-rs qalculate zstd keychain)
+
+FONTS=(dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk noto-fonts-emoji nerd-fonts-ttf)
+MEDIA=(imv pipewire alsa-pipewire alsa-utils ffmpeg zathura-pdf-mupdf ImageMagick \
+        cmus cmus-pulseaudio cmus-faad cmus-flac)
+WIFI=(iwd impala)
+BLUETOOTH=(bluez libspa-bluetooth bluetui)
+VIRT=(flatpak podman catatonit libvirt qemu virt-manager)
+EXTRA=(\
+  xtools smartmontools lm_sensors dmidecode xwininfo dnscrypt-proxy \
+  catgirl htop btop nvtop tlp tlp-rdw keepassxc syncthing glxinfo \
+  git tig vis tealdeer ldns bind-utils socat uv strace jq dua-cli \
+  tcpdump psmisc procs man-pages-devel)
+
+AMD_GPU_MESA=(linux-firmware-amd mesa-dri vulkan-loader mesa-vulkan-radeon mesa-vaapi mesa-vdpau)
+AMD_GPU_VLK=("${AMD_GPU_MESA[@]}" amdvlk)
+INTEL_GPU=(linux-firmware-intel mesa-dri vulkan-loader mesa-vulkan-intel intel-video-accel)
+NVIDIA_GPU=(nvidia nvidia-libs-32bit libgcc-32bit libstdc++-32bit libdrm-32bit libglvnd-32bit)
+
+GROUPS=(seatd wheel input video socklog libvirt)
+DISABLE_SERVICES=(dhcpcd wpa_supplicant agetty-tty4 agetty-tty5 agetty-tty6)
+ENABLE_SERVICES=(keyd dbus cronie ntpd-rs seatd turnstiled nanoklogd socklog-unix libvirtd virtlockd virtlogd)
+
+# Required commands
+REQUIRED_CMDS=(dialog xbps-install git make sudo)
 
 
-GROUPS="_seatd wheel input video socklog libvirt"
-DISABLE_SERVICES="dhcpcd wpa_supplicant agetty-tty4 agetty-tty5 agetty-tty6"
-ENABLE_SERVICES="dbus cronie ntpd-rs seatd turnstiled nanoklogd socklog-unix libvirtd virtlockd virtlogd"
+###############################################################################
+# Helper functions                                                            #
+###############################################################################
+require_cmd() {
+    command -v "$1" &>/dev/null || { echo "[jpstack] '$1' missing; abort." >&2; exit 1; }
+}
 
-# Functions
-confirm() {
-    dialog --yesno "$1" 7 50
-    return $?
+join_by_space() { # prints array elements separated by spaces
+    local IFS=' '
+    echo "$*"
 }
 
 info_box() {
-    dialog --title "$TITLE" --infobox "$1" 5 50
-    sleep 1
+    dialog --title "$TITLE" --infobox "$1" 5 60 && sleep 0.8
 }
 
+make_clean_install() {
+    local repo=$1
+    info_box "Compiling $repo..."
+    pushd "$repo" >/dev/null
+    make clean
+    make -j"$(getconf _NPROCESSORS_ONLN)"
+    sudo make install
+    popd >/dev/null
+}
+
+link_sv() {
+    local action=$1 svc=$2
+    local dst="/var/service/$svc" src="/etc/sv/$svc"
+    case $action in
+        enable)
+            info_box "Enabling service: $svc..."
+            [[ -e $dst ]] || { sudo ln -s "$src" "$dst"; sudo sv start "$svc"; } ;;
+        disable)
+            info_box "Disabling service: $svc..."
+            if [[ -h $dst ]]; then
+                sudo sv stop "$svc"
+                sudo unlink "$dst"
+            fi
+            ;;
+    esac
+}
+
+###############################################################################
+# System configuration snippets                                               #
+###############################################################################
 configure_dracut() {
     info_box "Configuring dracut..."
-    sudo tee /etc/dracut.conf.d/99-jpstack.conf >/dev/null << EOF
+    sudo install -Dm644 /dev/stdin /etc/dracut.conf.d/99-jpstack.conf <<'EOF'
 hostonly=yes
 EOF
 }
 
 configure_sysctl() {
     info_box "Configuring sysctl..."
-    sudo tee /usr/lib/sysctl.d/99-jpstack.conf >/dev/null << EOF
+    sudo install -Dm644 /dev/stdin /etc/sysctl.d/99-jpstack.conf <<'EOF'
 vm.swappiness = 10
-# vm.max_map_count = 1048576
 EOF
     sudo sysctl --system
 }
 
-make_clean_install() {
-    info_box "Compiling $1..."
-    cd "$1"
-    make clean
-    make -j$(nproc)
-    sudo make install
-    cd ..
+configure_iwd_dhcp() {
+    info_box "Enabling iwd dhcp client..."
+    sudo install -Dm644 /dev/stdin /etc/iwd/main.conf <<'EOF'
+[General]
+EnableNetworkConfiguration=true
+EOF
 }
 
+configure_keyd() {
+    info_box "Configuring keyd..."
+    sudo install -Dm644 /dev/stdin /etc/keyd/default.conf <<'EOF'
+[ids]
+*
+
+[main]
+capslock = esc
+esc = capslock
+EOF
+}
+
+
+###############################################################################
+# Install‑phase                                                               #
+###############################################################################
 install_packages() {
     info_box "Adding custom repositories..."
-    [ -f /etc/xbps.d/20-librewolf.conf ] || \
+    [[ -f /etc/xbps.d/20-librewolf.conf ]] || \
         echo 'repository=https://github.com/index-0/librewolf-void/releases/latest/download/' | \
-        sudo tee /etc/xbps.d/20-librewolf.conf > /dev/null
+        sudo tee /etc/xbps.d/20-librewolf.conf >/dev/null
 
-    info_box "Updating system and installing repositories..."
-    sudo xbps-install -Suy ${REPOSITORIES}
+    info_box "Syncing XBPS repositories..."
+    sudo xbps-install -Suy "${REPOSITORIES[@]}"
 
+    # ----- Optional package groups (dialog) -----
     dialog --checklist "Select optional package groups:" 20 60 10 \
         fonts "Install fonts" off \
         media "Media tools" off \
@@ -112,90 +181,95 @@ install_packages() {
         bluetooth "Bluetooth stack" off \
         virtualization "VM/containers" off \
         extra "Extra tools" off 2>"$TMP_OUT"
+    mapfile -t CHOICES <"$TMP_OUT"
 
-    CHOICES=$(cat "$TMP_OUT")
-    JPSTACK_PKGS="$CORE_DESKTOP_PKG $CORE_UTILS_PKG"
+    declare -a PKGS=("${CORE_DESKTOP[@]}" "${CORE_UTILS[@]}")
 
-    echo "$CHOICES" | grep -q fonts && JPSTACK_PKGS="$JPSTACK_PKGS $FONTS_PKG"
-    echo "$CHOICES" | grep -q media && JPSTACK_PKGS="$JPSTACK_PKGS $MEDIA_PKG"
-    echo "$CHOICES" | grep -q wifi && JPSTACK_PKGS="$JPSTACK_PKGS $WIFI_PKG"
-    echo "$CHOICES" | grep -q bluetooth && JPSTACK_PKGS="$JPSTACK_PKGS $BLUETOOTH_PKG"
-    echo "$CHOICES" | grep -q virtualization && JPSTACK_PKGS="$JPSTACK_PKGS $VIRT_PKG"
-    echo "$CHOICES" | grep -q extra && JPSTACK_PKGS="$JPSTACK_PKGS $EXTRA_PKG"
+    for choice in "${CHOICES[@]}"; do
+        case $choice in
+            fonts)          PKGS+=("${FONTS[@]}") ;;
+            media)          PKGS+=("${MEDIA[@]}") ;;
+            wifi)           PKGS+=("${WIFI[@]}") ;;
+            bluetooth)      PKGS+=("${BLUETOOTH[@]}") ;;
+            virtualization) PKGS+=("${VIRT[@]}") ;;
+            extra)          PKGS+=("${EXTRA[@]}") ;;
+        esac
+    done
 
+    # ----- GPU drivers -----
     dialog --checklist "Select GPU drivers to install:" 15 60 6 \
-        amd "AMD (Mesa-based)" off \
-        amdvlk "AMD (with AMDVLK)" off \
+        amd "AMD (Mesa)" off \
+        amdvlk "AMD (Mesa + AMDVLK)" off \
         intel "Intel" off \
         nvidia "NVIDIA proprietary" off 2>"$TMP_OUT"
+    mapfile -t GPU_CHOICE <"$TMP_OUT"
 
-    GPU_CHOICE=$(cat "$TMP_OUT")
+    for gpu in "${GPU_CHOICE[@]}"; do
+        case $gpu in
+            amd)     PKGS+=("${AMD_GPU_MESA[@]}") ;;
+            amdvlk)  PKGS+=("${AMD_GPU_VLK[@]}") ;;
+            intel)   PKGS+=("${INTEL_GPU[@]}") ;;
+            nvidia)  PKGS+=("${NVIDIA_GPU[@]}") ;;
+        esac
+    done
 
-    echo "$GPU_CHOICE" | grep -q amdvlk && JPSTACK_PKGS="$JPSTACK_PKGS $AMD_GPU_VLK"
-    echo "$GPU_CHOICE" | grep -q amd && JPSTACK_PKGS="$JPSTACK_PKGS $AMD_GPU_MESA"
-    echo "$GPU_CHOICE" | grep -q intel && JPSTACK_PKGS="$JPSTACK_PKGS $INTEL_GPU"
-    echo "$GPU_CHOICE" | grep -q nvidia && JPSTACK_PKGS="$JPSTACK_PKGS $NVIDIA_GPU_PKG"
+    info_box "Installing selected packages... (this may take a while)"
+    sudo xbps-install -Sy "${PKGS[@]}"
 
-    info_box "Installing selected packages..."
-    sudo xbps-install -Sy $JPSTACK_PKGS
-
-    info_box "Installing Flatpak apps..."
-    flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-    flatpak install --user --noninteractive --or-update flathub com.github.tchx84.Flatseal
-    flatpak install --user --noninteractive --or-update flathub com.saivert.pwvucontrol
+    # Flatpak extras
+    if command -v flatpak &>/dev/null; then
+        info_box "Installing Flatpak apps..."
+        flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+        flatpak install --user --noninteractive --or-update flathub \
+            com.github.tchx84.Flatseal com.saivert.pwvucontrol
+    fi
 }
 
+###############################################################################
+# Post‑install phase                                                          #
+###############################################################################
 post_install() {
-    info_box "Creating XDG directories..."
+    info_box "Creating XDG user dirs..."
     xdg-user-dirs-update
 
-    info_box "Adding user to groups..."
-    for group in ${GROUPS}; do
-        sudo usermod -aG ${group} ${USER}
+    info_box "Adding user $(whoami) to groups..."
+    for grp in "${GROUPS[@]}"; do
+        sudo usermod -aG "$grp" "$(whoami)"
     done
 
-    info_box "Disabling services..."
-    for service in ${DISABLE_SERVICES}; do
-        [ -h "/var/service/${service}" ] && \
-            sudo sv stop "${service}" && \
-            sudo unlink "/var/service/${service}"
+    info_box "Toggling services..."
+    for svc in "${DISABLE_SERVICES[@]}";   do link_sv disable "$svc"; done
+    for svc in "${ENABLE_SERVICES[@]}";    do link_sv enable  "$svc";  done
+
+    # --- Build personal suckless tools ---
+    local CODING_DIR="$HOME/Coding/jpstack"
+    mkdir -p "$CODING_DIR" && pushd "$CODING_DIR" >/dev/null
+
+    for repo in sfm slstatus dwl; do
+        [[ -d $repo ]] || git clone "https://github.com/jpnt/$repo"
+        make_clean_install "$repo"
     done
 
-    info_box "Enabling services..."
-    for service in ${ENABLE_SERVICES}; do
-        [ ! -d "/var/service/${service}" ] && \
-            sudo ln -s "/etc/sv/${service}" "/var/service/${service}" && \
-            sudo sv start "${service}"
-    done
+    popd >/dev/null
 
-    info_box "Compiling custom packages..."
-    mkdir -p "$JPSTACK_DIR"
-    cd "$JPSTACK_DIR"
-
-    [ ! -d "sfm" ] && git clone "https://github.com/jpnt/sfm"
-    make_clean_install sfm
-
-    [ ! -d "slstatus" ] && git clone "https://github.com/jpnt/slstatus"
-    make_clean_install slstatus
-
-    [ ! -d "dwl" ] && git clone "https://github.com/jpnt/dwl"
-    make_clean_install dwl
-
+    # --- System configs ---
     configure_dracut
     configure_sysctl
+    configure_iwd_dhcp
+    configure_keyd
 
     dialog --title "$TITLE" --msgbox "jpstack installation complete." 7 50
-    rm -f "$TMP_OUT"
-    clear
 }
 
+###############################################################################
+# Main                                                                        #
+###############################################################################
 main() {
-    dialog --title "$TITLE" --yesno "Start jpstack system setup now?" 7 50
-    [ $? -eq 0 ] || { echo "Aborted."; exit 1; }
+    for cmd in "${REQUIRED_CMDS[@]}"; do require_cmd "$cmd"; done
 
+    dialog --title "$TITLE" --yesno "Start jpstack system setup now?" 7 50 || { echo "[jpstack] aborted."; exit 0; }
     install_packages
     post_install
 }
 
-main
-
+main "$@"
