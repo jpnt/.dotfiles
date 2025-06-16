@@ -1,11 +1,10 @@
 #!/bin/sh
 # jpstack: minimal post-install script with dialog interface for Void Linux
-# TODO: replace runit -> s6 + s6-rc + 66?
+# TODO: "post-install" make it so that this script works like "pacstrap". should be bootstraper
+# TODO: mako service is always polling files. replace it
 # TODO: replace agetty + turnstile -> greetd
-# TODO: replace NetworkManager -> dhcpcd, iwd, ifupdown-ng
+# TODO: replace runit -> s6 + s6-rc (+ 66?)
 # TODO: test mdevd compared to udevd
-# TODO: wifi TUI: impala?
-# TODO: bluetooth TUI: bluetui?
 
 set -e
 
@@ -26,20 +25,20 @@ REPOSITORIES="void-repo-nonfree void-repo-multilib void-repo-multilib-nonfree"
 CORE_DESKTOP_PKG="\
 dragon fcft-devel gammastep foot xdg-user-dirs xdg-desktop-portal-wlr \
 xdg-desktop-portal-gtk wlroots0.18-devel xorg-server-xwayland wlr-randr \
-wdisplays wl-clipboard grim slurp seatd turnstile NetworkManager \
+wdisplays wl-clipboard grim slurp seatd turnstile dhcpcd ifupdown-ng \
 qt5-wayland qt6-wayland adwaita-qt adwaita-qt6 tofi trash-cli mako \
 swaylock swaybg librewolf"
 CORE_UTILS_PKG="\
-neovim stow handlr bash-completion dtach socklog-void ripgrep fd fzf cronie ntpd-rs \
-qalculate zstd keychain" 
+neovim stow handlr bash-completion dtach socklog-void ripgrep fd fzf cronie eza \
+ntpd-rs qalculate zstd keychain" 
 FONTS_PKG="dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk noto-fonts-emoji \
 nerd-fonts-ttf"
 MEDIA_PKG="\
 imv pipewire alsa-pipewire alsa-utils ffmpeg zathura-pdf-mupdf ImageMagick \
 cmus cmus-pulseaudio cmus-faad cmus-flac"
-BLUETOOTH_PKG="bluez libspa-bluetooth"
-VIRT_PKG="\
-flatpak podman catatonit libvirt qemu virt-manager"
+WIFI_PKG="iwd impala"
+BLUETOOTH_PKG="bluez libspa-bluetooth bluetui"
+VIRT_PKG="flatpak podman catatonit libvirt qemu virt-manager"
 EXTRA_PKG="\
 xtools smartmontools lm_sensors dmidecode xwininfo dnscrypt-proxy \
 catgirl htop btop nvtop tlp tlp-rdw keepassxc syncthing glxinfo
@@ -59,7 +58,7 @@ libdrm-32bit libglvnd-32bit"
 
 GROUPS="_seatd wheel input video socklog libvirt"
 DISABLE_SERVICES="dhcpcd wpa_supplicant agetty-tty4 agetty-tty5 agetty-tty6"
-ENABLE_SERVICES="dbus NetworkManager cronie ntpd-rs seatd turnstiled nanoklogd socklog-unix libvirtd virtlockd virtlogd"
+ENABLE_SERVICES="dbus cronie ntpd-rs seatd turnstiled nanoklogd socklog-unix libvirtd virtlockd virtlogd"
 
 # Functions
 confirm() {
@@ -83,7 +82,7 @@ configure_sysctl() {
     info_box "Configuring sysctl..."
     sudo tee /usr/lib/sysctl.d/99-jpstack.conf >/dev/null << EOF
 vm.swappiness = 10
-vm.max_map_count = 1048576
+# vm.max_map_count = 1048576
 EOF
     sudo sysctl --system
 }
@@ -99,7 +98,6 @@ make_clean_install() {
 
 install_packages() {
     info_box "Adding custom repositories..."
-    echo "Superuser privileges are required. You might need to enter your sudo password."
     [ -f /etc/xbps.d/20-librewolf.conf ] || \
         echo 'repository=https://github.com/index-0/librewolf-void/releases/latest/download/' | \
         sudo tee /etc/xbps.d/20-librewolf.conf > /dev/null
@@ -110,6 +108,7 @@ install_packages() {
     dialog --checklist "Select optional package groups:" 20 60 10 \
         fonts "Install fonts" off \
         media "Media tools" off \
+        wifi "Wireless networking" off \
         bluetooth "Bluetooth stack" off \
         virtualization "VM/containers" off \
         extra "Extra tools" off 2>"$TMP_OUT"
@@ -119,6 +118,7 @@ install_packages() {
 
     echo "$CHOICES" | grep -q fonts && JPSTACK_PKGS="$JPSTACK_PKGS $FONTS_PKG"
     echo "$CHOICES" | grep -q media && JPSTACK_PKGS="$JPSTACK_PKGS $MEDIA_PKG"
+    echo "$CHOICES" | grep -q wifi && JPSTACK_PKGS="$JPSTACK_PKGS $WIFI_PKG"
     echo "$CHOICES" | grep -q bluetooth && JPSTACK_PKGS="$JPSTACK_PKGS $BLUETOOTH_PKG"
     echo "$CHOICES" | grep -q virtualization && JPSTACK_PKGS="$JPSTACK_PKGS $VIRT_PKG"
     echo "$CHOICES" | grep -q extra && JPSTACK_PKGS="$JPSTACK_PKGS $EXTRA_PKG"
