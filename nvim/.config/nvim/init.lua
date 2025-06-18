@@ -1,6 +1,6 @@
 -- global variables
 vim.g.mapleader = ' '
-vim.g.native_lsp_autocomplete = true
+vim.g.native_lsp_autocomplete = false
 
 -- bootstrap lazy.nvim if not installed
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
