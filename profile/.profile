@@ -59,8 +59,9 @@ esac
 # Graphical login from tty1
 if [ -z "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ] && [ "$(tty)" = /dev/tty1 ]; then
   case "$SESSION_TYPE" in
-    x11)    exec startx ;;
     wayland) exec sh -c 'slstatus -s | dwl -s dwlchild' ;;
+    #TODO: wayland) exec dbus-run-session -- sh -c 'slstatus -s | dwl -s dwlchild'
+    x11)    exec startx ;;
     *)      echo "Invalid SESSION_TYPE: $SESSION_TYPE" >&2 ;;
   esac
 fi

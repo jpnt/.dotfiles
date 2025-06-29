@@ -9,6 +9,8 @@ autocmd("LspAttach", {
     if vim.g.native_lsp_autocomplete and client
         and client.supports_method("textDocument/completion")
     then
+      -- vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = false })
+
       vim.keymap.set("i", "<C-Space>", function()
         vim.lsp.completion.get()
       end, {

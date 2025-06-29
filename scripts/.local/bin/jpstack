@@ -1,6 +1,22 @@
 # #!/usr/bin/env bash
-# jpstack – Void‑Linux post‑install helper
+# jpstack – Void Linux application layer stack setup script
+# very opinionated, intended to work the way I like to use Linux
 
+# TODOS for summer:
+# TODO(general): identify and remove main points of bloat in the system.
+# TODO(general): indentify errors in the system and increase robustness.
+# TODO: configure_fstrim function
+# TODO: mimetype robust configuration for applications that I use. Everything must be expected and statically configured
+#       https://docs.windswept.digital/nixos/mimetypes something like this would be amazing
+# TODO: test mksh
+# TODO: test: sway: see if it is more reliable than current (dwl) https://github.com/julmajustus/dwl-deep-dive
+# TODO: create my own wayland compositor? use Louvre library
+# TODO: test: xdg-desktop-portal some times fails: use services?
+# TODO: test: HDMI port not working
+# TODO: more granular logging, output what is being done: more transparency
+# TODO: Linux Kernel Manager: kman
+# TODO: test DNS: dnscrypt-proxy vs unbound vs s6-networking + s6-dns: latency
+# TODO: GUI file manager that integrates with other tools: crabcmd
 # TODO: ifupdown-ng: doesnt use iwd, also I want to use builtin iwd dhcp client. patch upstream
 # TODO: "post-install" make it so that this script works just after install. bootstrapping my dotfiles, etc...
 # TODO: mako service is always polling files. replace it (*) or patch upstream
@@ -9,10 +25,19 @@
 #     - https://blog.orhun.dev/introducing-runst/
 #     - https://codeberg.org/dnkl/fnott
 # TODO: replace agetty + turnstile -> greetd
-# TODO: replace runit -> s6 + s6-rc (+ 66?)
+# TODO: replace runit -> s6 + s6-rc (+ 66?/ s6-frontend). I like runit's approach to services being "just a shell script"
+# TODO: test wlsunset and wl-gammactl-rs -> replace gammastep?
 # TODO: test mdevd -> compare to udevd
 # TODO: test ouch -> compress/decompress tool
 # TODO: test xh -> similar to httpie and alternative to curl
+# TODO: test oryx vs bandwhich -> use both?
+# TODO: test https://github.com/Chleba/netscanner
+# TODO: test https://github.com/e-tho/iwmenu
+# TODO: test nftables
+# TODO: test MAC spoofing
+# TODO: test integrity check in Void Linux, restic, aide, borg
+# TODO: test fuseoverlay-fs
+# TODO: test readonly root
 
 set -Eeuo pipefail
 IFS=$'\n\t'
@@ -44,7 +69,7 @@ REPOSITORIES=(void-repo-nonfree void-repo-multilib void-repo-multilib-nonfree)
 
 # Package groups (arrays)
 CORE_DESKTOP=(\
-  dragon fcft-devel gammastep foot xdg-user-dirs xdg-desktop-portal-wlr \
+  dragon fcft-devel foot xdg-user-dirs xdg-desktop-portal-wlr \
   xdg-desktop-portal-gtk wlroots0.18-devel xorg-server-xwayland wlr-randr \
   wdisplays wl-clipboard grim slurp seatd turnstile keyd dhcpcd ifupdown-ng \
   qt5-wayland qt6-wayland adwaita-qt adwaita-qt6 tofi trash-cli mako \
@@ -52,19 +77,24 @@ CORE_DESKTOP=(\
 
 CORE_UTILS=(\
   neovim stow handlr bash-completion dtach socklog-void ripgrep fd fzf \
-  cronie eza ntpd-rs qalculate zstd keychain)
+  cronie eza ntpd-rs qalculate zstd keychain bandwhich gammastep)
 
-FONTS=(dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk noto-fonts-emoji nerd-fonts-ttf)
-MEDIA=(imv pipewire alsa-pipewire alsa-utils ffmpeg zathura-pdf-mupdf ImageMagick \
-        cmus cmus-pulseaudio cmus-faad cmus-flac)
-WIFI=(iwd impala)
-BLUETOOTH=(bluez libspa-bluetooth bluetui)
-VIRT=(flatpak podman catatonit libvirt qemu virt-manager)
 EXTRA=(\
   xtools smartmontools lm_sensors dmidecode xwininfo dnscrypt-proxy \
   catgirl htop btop nvtop tlp tlp-rdw keepassxc syncthing glxinfo \
-  git tig vis tealdeer ldns bind-utils socat uv strace jq dua-cli \
-  tcpdump psmisc procs man-pages-devel)
+  git tig vis tealdeer ldns socat uv strace jq dua-cli \
+  tcpdump psmisc procs man-pages-devel cpufrequtils)
+
+FONTS=(dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk noto-fonts-emoji nerd-fonts-ttf)
+
+MEDIA=(imv pipewire alsa-pipewire alsa-utils ffmpeg zathura-pdf-mupdf ImageMagick \
+        cmus cmus-pulseaudio cmus-faad cmus-flac)
+
+WIFI=(iwd impala)
+
+BLUETOOTH=(bluez libspa-bluetooth bluetui)
+
+VIRT=(flatpak podman catatonit libvirt qemu virt-manager)
 
 AMD_GPU_MESA=(linux-firmware-amd mesa-dri vulkan-loader mesa-vulkan-radeon mesa-vaapi mesa-vdpau)
 AMD_GPU_VLK=("${AMD_GPU_MESA[@]}" amdvlk)
@@ -105,6 +135,7 @@ make_clean_install() {
     popd >/dev/null
 }
 
+# TODO: if s6 stuff doesnt exist then use runit. make this generic
 link_sv() {
     local action=$1 svc=$2
     local dst="/var/service/$svc" src="/etc/sv/$svc"
@@ -141,7 +172,7 @@ EOF
 }
 
 configure_iwd_dhcp() {
-    info_box "Enabling iwd dhcp client..."
+    info_box "Configuring iwd..."
     sudo install -Dm644 /dev/stdin /etc/iwd/main.conf <<'EOF'
 [General]
 EnableNetworkConfiguration=true

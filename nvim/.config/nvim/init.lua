@@ -18,13 +18,14 @@ require("core.options")
 require("core.keymaps")
 require("core.autocmds")
 
+-- https://github.com/neovim/nvim-lspconfig/tree/master/lsp
 vim.lsp.enable({
   "clangd",
-  "luals",
-  "tsls",
+  "lua_ls",
+  "ts_ls",
   "pyright",
   "gopls",
-  "rust-analyzer",
+  "rust_analyzer",
 })
 
 vim.diagnostic.config({
