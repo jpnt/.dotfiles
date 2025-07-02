@@ -1,5 +1,6 @@
 {
   "autoclose.nvim": { "branch": "main", "commit": "b2077aa2c83df7ebc19b2a20a3a0654b24ae9c8f" },
+  "bigfile.nvim": { "branch": "main", "commit": "33eb067e3d7029ac77e081cfe7c45361887a311a" },
   "blink.cmp": { "branch": "main", "commit": "9bcb14b43852a6f2bfd5ac9ef29cb5cf09b1b39b" },
   "confirm-quit.nvim": { "branch": "main", "commit": "a1dbd9b553e8d6770cd6a879a3ee8ffad292c70c" },
   "debugmaster.nvim": { "branch": "main", "commit": "aeae4c324be259856a3e9e436db89875421b78ca" },
