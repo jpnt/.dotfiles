@@ -26,6 +26,7 @@ vim.lsp.enable({
   "pyright",
   "gopls",
   "rust_analyzer",
+  "zls",
 })
 
 vim.diagnostic.config({
