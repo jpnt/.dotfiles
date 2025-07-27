@@ -2,12 +2,15 @@
 # jpstack – Void Linux application layer stack setup script
 # very opinionated, intended to work the way I like to use Linux
 
+# TODO: test wlroots with vulkan: if not working try installing: Vulkan-ValidationLayers
+# TODO. test btrfs exaushtively
 # TODO: run the entire thing as root?
-# TODO: mimetype robust configuration for applications that I use. Everything must be expected and statically configured. if not suggest
+# TODO: mimetype robust configuration for applications that I use.
+#       Everything must be expected and explicitly static configured. if not then suggest
 #     - https://docs.windswept.digital/nixos/mimetypes
 # TODO: test DNS: dnscrypt-proxy vs unbound vs s6-networking + s6-dns: latency
 # TODO: ifupdown-ng: doesnt use iwd, also I want to use builtin iwd dhcp client. patch upstream
-# TODO: mako service is always polling files. replace it (*) or patch upstream
+# TODO: mako service is always polling files. replace it or patch upstream
 #     - https://github.com/Toqozz/wired-notify
 #     - https://blog.orhun.dev/introducing-runst/
 #     - https://codeberg.org/dnkl/fnott
@@ -15,7 +18,6 @@
 #     - https://github.com/void-linux/void-packages/pull/45578
 #     - https://github.com/void-linux/void-packages/pulls?q=s6-rc
 # TODO: replace agetty + turnstile -> greetd
-# TODO: test: HDMI port not working
 # TODO: test: xdg-desktop-portal some times fails: use services?
 # TODO: test mdevd -> compare to udevd
 # TODO: test oryx vs bandwhich -> use both?
@@ -23,7 +25,7 @@
 # TODO: test https://github.com/e-tho/iwmenu
 # TODO: test nftables
 # TODO: test MAC spoofing
-# TODO: test integrity check in Void Linux, restic, aide, borg
+# TODO: test integrity check in Void Linux, restic, aide, borg. wtf?
 # TODO: test fuseoverlay-fs
 
 set -Eeuo pipefail
@@ -69,7 +71,7 @@ CORE_DESKTOP=(\
   xdg-desktop-portal-gtk wlroots0.18-devel xorg-server-xwayland wlr-randr \
   wdisplays wl-clipboard grim slurp seatd turnstile keyd dhcpcd ifupdown-ng \
   qt5-wayland qt6-wayland adwaita-qt adwaita-qt6 tofi trash-cli mako \
-  swaylock swaybg wlsunset librewolf)
+  swaylock swaybg gammastep librewolf)
 
 CORE_UTILS=(\
   neovim stow handlr bash-completion abduco socklog-void ripgrep fd fzf \
@@ -149,6 +151,15 @@ make_clean_install() {
     popd >/dev/null
 }
 
+install_librewolf_repo() {
+    info_box "Installing Librewolf repository..."
+    sudo install -Dm644 /dev/stdin /etc/xbps.d/20-librewolf.conf <<'EOF'
+repository=https://github.com/index-0/librewolf-void/releases/latest/download/
+EOF
+}
+
+# TODO: create a shell script of this.
+#   - https://docs.freebsd.org/en/books/handbook/config/#configtuning-starting-services
 service() {
     local action=$1 svc=$2
     local svc_backend=""
@@ -189,7 +200,7 @@ service() {
 ###############################################################################
 install_packages() {
     info_box "Adding custom repositories..."
-    configure_librewolf_repo
+    install_librewolf_repo
 
     info_box "Syncing XBPS repositories..."
     log_cmd sudo xbps-install -Suy "${REPOSITORIES[@]}"
@@ -279,7 +290,7 @@ configure_btrfs() {
     local ROOT_MNT="/mnt" # temp mountpoint
     local SUBVOLS=("@" "@home" "@snapshots" "@cache" "@log") # subvolume layout
     local MOUNTPOINTS=("/" "/home" "/snapshots" "/var/cache" "/var/log") # corresponding mountpoints
-    local OPTIONS="compress=zstd,noatime,discard=async,space_cache=v2"
+    local OPTIONS="compress=zstd,noatime,discard=async,space_cache=v2" # TODO: is autodefrag good?
 
     # mount full btrfs volume read-only to inspect/create subvolumes
     log_cmd sudo mkdir -p "$ROOT_MNT"
@@ -402,7 +413,7 @@ EOF
     log_cmd sudo sysctl --system
 }
 
-configure_iwd_dhcp() {
+configure_iwd() {
     info_box "Configuring iwd..."
     sudo install -Dm644 /dev/stdin /etc/iwd/main.conf <<'EOF'
 [General]
@@ -419,13 +430,6 @@ configure_keyd() {
 [main]
 capslock = esc
 esc = capslock
-EOF
-}
-
-configure_librewolf_repo() {
-    info_box "Configuring Librewolf repository..."
-    sudo install -Dm644 /dev/stdin /etc/xbps.d/20-librewolf.conf <<'EOF'
-repository=https://github.com/index-0/librewolf-void/releases/latest/download/
 EOF
 }
 
@@ -447,7 +451,7 @@ configure_system() {
             fstrim)    configure_fstrim ;;
             dracut)    configure_dracut ;;
             sysctl)    configure_sysctl ;;
-            iwd)       configure_iwd_dhcp ;;
+            iwd)       configure_iwd ;;
             keyd)      configure_keyd ;;
         esac
     done
@@ -469,7 +473,10 @@ post_install() {
     for svc in "${DISABLE_SERVICES[@]}";   do service disable "$svc"; done
     for svc in "${ENABLE_SERVICES[@]}";    do service enable  "$svc";  done
 
-    dialog --title "$TITLE" --msgbox "jpstack installation complete." 7 50
+    # TODO: create update-initrd generic POSIX shell script? or is it too similar to update-initramfs from initramfs-tools?
+    # log_cmd sudo /etc/kernel.d/post-install/20-initramfs jpstack "$(uname -r)" TODO: this doesnt work
+    log_cmd sudo update-grub
+    log_cmd sudo vkpurge rm all
 }
 
 ###############################################################################
@@ -484,6 +491,7 @@ main() {
     configure_system
     post_install
 
+    dialog --title "$TITLE" --msgbox "jpstack installation complete." 7 50
     log "jpstack completed successfully at $(date)"
 }
 

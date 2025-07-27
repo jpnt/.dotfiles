@@ -12,4 +12,4 @@ read -r mount_point
 [ -z "$mount_point" ] && { echo "No mount point provided, defaulting to /mnt"; mount_point="/mnt"; }
 [ ! -d "$mount_point" ] && sudo mkdir -p "$mount_point"
 
-mount "$selected_disk" "$mount_point"
+sudo mount "$selected_disk" "$mount_point"
