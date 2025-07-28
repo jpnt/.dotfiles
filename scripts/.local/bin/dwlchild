@@ -4,11 +4,6 @@ exec <&-
 
 display=$(wlr-randr | tr ' ' '\n' | head -n1)
 
-# brightnessctl s 11% &
-# wbg ~/Sync/Wallpaper/naom_5b32b7544a595.jpg &
-# wlr-randr --output DP-2 --mode 1920x1080@144.001007Hz \
-            # --pos 1080,440 \
-          # --output HDMI-A-1 --mode 1920x1080@74.973000Hz \
-            # --transform 90 --pos 0,0 &
-# wlr-randr --output "${display}" --mode 2560x1600@60.001999Hz --scale 1.5
-# wlr-randr --output "${display}" --mode 2560x1600@165.000000Hz --scale 1.5
+wlr-randr --output "${display}" --mode 2560x1600 --scale 1.5 --adaptive-sync enabled
+
+swaybg -i ~/Imagens/Wallpaper/current.png
