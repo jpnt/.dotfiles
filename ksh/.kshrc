@@ -13,7 +13,6 @@ eval "$(keychain --eval --quiet --agents ssh github_jpnt bitbucket)"
 alias v='vis'
 alias nv='nvim'
 alias a='abduco'
-alias tr='tree | less'
 alias ..='cd ..'
 alias gb='git branch --all'
 alias gl='git log --oneline --graph --decorate'

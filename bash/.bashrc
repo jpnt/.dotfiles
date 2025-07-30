@@ -17,7 +17,6 @@ fi
 # Aliases
 alias v='vis'
 alias nv='nvim'
-alias tr='tree | less'
 alias a='abduco'
 alias ..='cd ..'
 alias gb='git branch --all'
