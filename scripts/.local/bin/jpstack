@@ -51,7 +51,7 @@ make_clean_install() {
     info_box "Compiling $repo..."
     cd "$repo"
     log_cmd make clean
-    log_cmd make -j"$(getconf _NPROCESSORS_ONLN)"
+    log_cmd make -j"$(nproc)"
     log_cmd sudo make install
     cd ..
 }
@@ -112,6 +112,7 @@ service_disable() {
 install_packages() {
     info_box "Adding custom repositories..."
     install_librewolf_repo
+    install_ungoogled_chromium_repo
 
     info_box "Syncing XBPS repositories..."
     log_cmd sudo xbps-install -Suy void-repo-nonfree void-repo-multilib void-repo-multilib-nonfree
@@ -143,7 +144,7 @@ install_packages() {
                 PKGS="$PKGS dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk noto-fonts-emoji nerd-fonts-ttf"
                 ;;
             media)
-                PKGS="$PKGS librewolf mpv imv pipewire alsa-pipewire alsa-utils ffmpeg zathura-pdf-mupdf ImageMagick cmus cmus-pulseaudio cmus-faad cmus-flac"
+                PKGS="$PKGS mpv imv pipewire alsa-pipewire alsa-utils ffmpeg zathura-pdf-mupdf ImageMagick cmus cmus-pulseaudio cmus-faad cmus-flac"
                 ;;
             wifi)
                 PKGS="$PKGS iwd impala"

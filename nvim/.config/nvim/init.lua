@@ -1,5 +1,5 @@
 -- nvim 0.12 required
-
+local vim            = vim
 -- Options
 vim.o.number         = true
 vim.o.relativenumber = true
@@ -22,6 +22,7 @@ vim.pack.add({
   { src = "https://github.com/echasnovski/mini.notify" },
   { src = "https://github.com/tpope/vim-fugitive" },
   { src = "https://github.com/neovim/nvim-lspconfig" },
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
   { src = "https://github.com/NMAC427/guess-indent.nvim" },
   { src = "https://github.com/vladdoster/remember.nvim" },
 })
@@ -32,9 +33,14 @@ require("mini.icons").setup()
 require("mini.pick").setup()
 require("mini.surround").setup()
 require("mini.tabline").setup()
-require("mini.notify").setup()
 require("guess-indent").setup()
 require("remember")
+require("mini.notify").setup()
+vim.notify = require("mini.notify").make_notify()
+require("nvim-treesitter.configs").setup({
+  auto_install = true,
+  highlight = { enable = true },
+})
 require("mini.base16").setup({
   palette = {
     base00 = "#000000",
