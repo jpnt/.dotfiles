@@ -1,58 +1,23 @@
-# #!/usr/bin/env bash
-# jpstack – Void Linux application layer stack setup script
-# very opinionated, intended to work the way I like to use Linux
+#!/bin/sh
+# jpstack – collection of software I run on Void Linux
+# POSIX sh - suckless and portable
 
-# TODO: test wlroots with vulkan: if not working try installing: Vulkan-ValidationLayers
-# TODO. test btrfs exaushtively
-# TODO: run the entire thing as root?
-# TODO: mimetype robust configuration for applications that I use.
-#       Everything must be expected and explicitly static configured. if not then suggest
-#     - https://docs.windswept.digital/nixos/mimetypes
-# TODO: test DNS: dnscrypt-proxy vs unbound vs s6-networking + s6-dns: latency
-# TODO: ifupdown-ng: doesnt use iwd, also I want to use builtin iwd dhcp client. patch upstream
-# TODO: mako service is always polling files. replace it or patch upstream
-#     - https://github.com/Toqozz/wired-notify
-#     - https://blog.orhun.dev/introducing-runst/
-#     - https://codeberg.org/dnkl/fnott
-# TODO: replace runit -> s6 + s6-rc (+ 66?/ s6-frontend). I like runit's approach to services being "just a shell script"
-#     - https://github.com/void-linux/void-packages/pull/45578
-#     - https://github.com/void-linux/void-packages/pulls?q=s6-rc
-# TODO: replace agetty + turnstile -> greetd
-# TODO: test: xdg-desktop-portal some times fails: use services?
-# TODO: test mdevd -> compare to udevd
-# TODO: test oryx vs bandwhich -> use both?
-# TODO: test https://github.com/Chleba/netscanner
-# TODO: test https://github.com/e-tho/iwmenu
-# TODO: test nftables
-# TODO: test MAC spoofing
-# TODO: test integrity check in Void Linux, restic, aide, borg. wtf?
-# TODO: test fuseoverlay-fs
-
-set -Eeuo pipefail
-IFS=$'\n\t'
-shopt -s failglob
+set -eu
+IFS=' 	
+'
 
 ###############################################################################
 # Error handling & cleanup                                                    #
 ###############################################################################
-TMP_OUT=$(mktemp --tmpdir "jpstack.XXXXXX")
+TMP_OUT=$(mktemp)
 LOG_FILE=${LOG_FILE:-"/tmp/jpstack.$(date +%s).log"}
 
 trap 'rm -f "$TMP_OUT"' EXIT
 
-# automatic catch-all for failures
-error_trap() {
-    local line=$1 rc=$2
-    echo "[jpstack] ERROR line $line – exit $rc" | tee -a "$LOG_FILE" >&2
-    exit "$rc"
-}
-trap 'error_trap $LINENO $?' ERR
-
 log() {
-    echo "[jpstack] $*" | tee -a "$LOG_FILE"
+    printf "[jpstack] %s\n" "$*" | tee -a "$LOG_FILE"
 }
 
-# log stdout from external commands
 log_cmd() {
     log "+ $*"
     "$@" 2>&1 | tee -a "$LOG_FILE"
@@ -63,92 +28,32 @@ log_cmd() {
 ###############################################################################
 TITLE="jpstack setup"
 JPSTACK_DIR="$HOME/Coding/jpstack"
-REPOSITORIES=(void-repo-nonfree void-repo-multilib void-repo-multilib-nonfree)
-
-# Package groups (arrays)
-CORE_DESKTOP=(\
-  dragon fcft-devel foot xdg-user-dirs xdg-desktop-portal-wlr \
-  xdg-desktop-portal-gtk wlroots0.18-devel xorg-server-xwayland wlr-randr \
-  wdisplays wl-clipboard grim slurp seatd turnstile keyd dhcpcd ifupdown-ng \
-  qt5-wayland qt6-wayland adwaita-qt adwaita-qt6 tofi trash-cli mako \
-  swaylock swaybg gammastep librewolf)
-
-CORE_UTILS=(\
-  neovim stow handlr bash-completion abduco socklog-void ripgrep fd fzf \
-  cronie eza ntpd-rs qalculate btrfs-progs zstd keychain make)
-
-FONTS=(dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk noto-fonts-emoji nerd-fonts-ttf)
-
-MEDIA=(mpv imv pipewire alsa-pipewire alsa-utils ffmpeg zathura-pdf-mupdf ImageMagick \
-        cmus cmus-pulseaudio cmus-faad cmus-flac)
-
-WIFI=(iwd impala)
-
-BLUETOOTH=(bluez libspa-bluetooth bluetui)
-
-VIRT=(podman catatonit libvirt qemu virt-manager)
-
-FLATPAK=(flatpak)
-
-FLATPAK_APPS=(com.github.tchx84.Flatseal com.saivert.pwvucontrol)
-            
-EXTRA=(\
-  xtools smartmontools lm_sensors dmidecode xwininfo \
-  catgirl htop btop nvtop bandwhich tlp tlp-rdw keepassxc syncthing glxinfo \
-  git tig vis tealdeer ldns socat uv strace jq dua-cli xh \
-  tcpdump psmisc procs man-pages-devel cpufrequtils)
-
-AMD_GPU_MESA=(linux-firmware-amd mesa-dri vulkan-loader mesa-vulkan-radeon mesa-vaapi mesa-vdpau)
-AMD_GPU_VLK=("${AMD_GPU_MESA[@]}" amdvlk)
-INTEL_GPU=(linux-firmware-intel mesa-dri vulkan-loader mesa-vulkan-intel intel-video-accel)
-NVIDIA_GPU=(nvidia nvidia-libs-32bit libgcc-32bit libstdc++-32bit libdrm-32bit libglvnd-32bit)
-
-GROUPS=(seatd wheel input video socklog libvirt)
-DISABLE_SERVICES=(dhcpcd wpa_supplicant agetty-tty4 agetty-tty5 agetty-tty6)
-ENABLE_SERVICES=(keyd dbus cronie ntpd-rs seatd turnstiled nanoklogd socklog-unix libvirtd virtlockd virtlogd)
 
 # Required commands
-REQUIRED_CMDS=(dialog xbps-install sudo)
-
+REQUIRED_CMDS="dialog xbps-install sudo"
 
 ###############################################################################
 # Helper functions                                                            #
 ###############################################################################
 require_cmd() {
-    if ! command -v "$1" &>/dev/null; then
+    if ! command -v "$1" >/dev/null 2>&1; then
         log "Missing required command: $1"
         exit 1
     fi
 }
 
-install_flatpak_apps() {
-    info_box "Adding flathub remote user repo..."
-    log_cmd flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-
-    for app in "${FLATPAK_APPS[@]}"; do
-        info_box "Installing flatpak: $app..."
-        log_cmd flatpak install --user --noninteractive --or-update flathub $app
-    done
-}
-
-# prints array elements separated by spaces
-join_by_space() {
-    local IFS=' '
-    echo "$*"
-}
-
 info_box() {
-    dialog --title "$TITLE" --infobox "$1" 5 60 && sleep 0.8
+    dialog --title "$TITLE" --infobox "$1" 5 60
 }
 
 make_clean_install() {
-    local repo=$1
+    repo="$1"
     info_box "Compiling $repo..."
-    pushd "$repo" >/dev/null
+    cd "$repo"
     log_cmd make clean
     log_cmd make -j"$(getconf _NPROCESSORS_ONLN)"
     log_cmd sudo make install
-    popd >/dev/null
+    cd ..
 }
 
 install_librewolf_repo() {
@@ -158,244 +63,157 @@ repository=https://github.com/index-0/librewolf-void/releases/latest/download/
 EOF
 }
 
-# TODO: create a shell script of this.
-#   - https://docs.freebsd.org/en/books/handbook/config/#configtuning-starting-services
-service() {
-    local action=$1 svc=$2
-    local svc_backend=""
-
-    # detect service backend
+service_enable() {
+    svc="$1"
+    info_box "Enabling service: $svc..."
+    
+    # Detect running init system
     if pgrep runit >/dev/null 2>&1; then
-        svc_backend="runit"
+        if [ ! -e "/var/service/$svc" ]; then
+            sudo ln -s "/etc/sv/$svc" "/var/service/$svc"
+            sudo sv start "$svc"
+        fi
+    elif pgrep dinit >/dev/null 2>&1; then
+        sudo dinitctl enable "$svc"
+        sudo dinitctl start "$svc"
     else
-        dialog --msgbox "No supported init system found. Exiting." 7 50
-        exit 1
+        log "Unknown init system, cannot enable $svc"
     fi
+}
 
-    case $svc_backend in
-    runit)
-        local dst="/var/service/$svc" src="/etc/sv/$svc"
-        case $action in
-            enable)
-                info_box "Enabling service: $svc..."
-                [[ -e $dst ]] || { sudo ln -s "$src" "$dst"; sudo sv start "$svc"; } ;;
-            disable)
-                info_box "Disabling service: $svc..."
-                if [[ -h $dst ]]; then
-                    sudo sv stop "$svc"
-                    sudo unlink "$dst"
-                fi
-                ;;
-            *)
-                dialog --msgbox "Unknown service action: $action" 5 40 ;;
-        esac
-        ;;
-    *)
-        dialog --msgbox "Unsupported service backend: $svc_backend" 5 40 ;;
-    esac
+service_disable() {
+    svc="$1"
+    info_box "Disabling service: $svc..."
+    
+    # Detect running init system
+    if pgrep runit >/dev/null 2>&1; then
+        if [ -h "/var/service/$svc" ]; then
+            sudo sv stop "$svc"
+            sudo unlink "/var/service/$svc"
+        fi
+    elif pgrep dinit >/dev/null 2>&1; then
+        sudo dinitctl stop "$svc" 2>/dev/null || true
+        sudo dinitctl disable "$svc" 2>/dev/null || true
+    else
+        log "Unknown init system, cannot disable $svc"
+    fi
 }
 
 ###############################################################################
-# Install‑phase                                                               #
+# Package installation                                                        #
 ###############################################################################
 install_packages() {
     info_box "Adding custom repositories..."
     install_librewolf_repo
 
     info_box "Syncing XBPS repositories..."
-    log_cmd sudo xbps-install -Suy "${REPOSITORIES[@]}"
+    log_cmd sudo xbps-install -Suy void-repo-nonfree void-repo-multilib void-repo-multilib-nonfree
 
-    # ----- Optional package groups (dialog) -----
+    # Core packages - always installed
+    CORE_PKGS="dragon fcft-devel foot xdg-user-dirs xdg-desktop-portal-wlr \
+    xdg-desktop-portal-gtk wlroots0.19-devel xorg-server-xwayland wlr-randr \
+    wdisplays wl-clipboard grim slurp seatd keyd dhcpcd \
+    qt5-wayland qt6-wayland adwaita-qt adwaita-qt6 tofi trash-cli mako \
+    waylock swayidle swaybg gammastep neovim stow handlr \
+    abduco socklog-void ripgrep fd fzf cronie eza ntpd-rs qalculate \
+    btrfs-progs snazzer zstd keychain make"
+
+    PKGS="$CORE_PKGS"
+
+    # Optional package groups
     dialog --checklist "Select optional package groups:" 20 60 10 \
         fonts "Install fonts" off \
         media "Media tools" off \
         wifi "Wireless networking" off \
         bluetooth "Bluetooth stack" off \
-        virtualization "VM/containers" off \
+        virt "VM/containers" off \
         flatpak "Flatpak" off \
         extra "Extra tools" off 2>"$TMP_OUT"
-    mapfile -t CHOICES <"$TMP_OUT"
 
-    declare -a PKGS=("${CORE_DESKTOP[@]}" "${CORE_UTILS[@]}")
-
-    for choice in "${CHOICES[@]}"; do
-        case $choice in
-            fonts)          PKGS+=("${FONTS[@]}") ;;
-            media)          PKGS+=("${MEDIA[@]}") ;;
-            wifi)           PKGS+=("${WIFI[@]}") ;;
-            bluetooth)      PKGS+=("${BLUETOOTH[@]}") ;;
-            virtualization) PKGS+=("${VIRT[@]}") ;;
-            flatpak)        PKGS+=("${FLATPAK[@]}") ;;
-            extra)          PKGS+=("${EXTRA[@]}") ;;
+    while read -r choice; do
+        case "$choice" in
+            fonts)
+                PKGS="$PKGS dejavu-fonts-ttf noto-fonts-ttf noto-fonts-cjk noto-fonts-emoji nerd-fonts-ttf"
+                ;;
+            media)
+                PKGS="$PKGS librewolf mpv imv pipewire alsa-pipewire alsa-utils ffmpeg zathura-pdf-mupdf ImageMagick cmus cmus-pulseaudio cmus-faad cmus-flac"
+                ;;
+            wifi)
+                PKGS="$PKGS iwd impala"
+                ;;
+            bluetooth)
+                PKGS="$PKGS bluez libspa-bluetooth bluetui"
+                ;;
+            virt)
+                PKGS="$PKGS podman catatonit libvirt qemu virt-manager"
+                ;;
+            flatpak)
+                PKGS="$PKGS flatpak"
+                ;;
+            extra)
+                PKGS="$PKGS xtools smartmontools lm_sensors dmidecode xwininfo catgirl htop btop nvtop bandwhich tlp tlp-rdw keepassxc syncthing glxinfo git tig vis tealdeer ldns socat uv strace jq dua-cli xh tcpdump psmisc procs man-pages-devel cpufrequtils"
+                ;;
         esac
-    done
+    done < "$TMP_OUT"
 
-    # ----- GPU drivers -----
-    dialog --checklist "Select GPU drivers to install:" 15 60 6 \
+    # GPU drivers
+    dialog --checklist "Select GPU drivers:" 15 60 4 \
         amd "AMD (Mesa)" off \
-        amdvlk "AMD (Mesa + AMDVLK)" off \
         intel "Intel" off \
         nvidia "NVIDIA proprietary" off 2>"$TMP_OUT"
-    mapfile -t GPU_CHOICE <"$TMP_OUT"
 
-    for gpu in "${GPU_CHOICE[@]}"; do
-        case $gpu in
-            amd)     PKGS+=("${AMD_GPU_MESA[@]}") ;;
-            amdvlk)  PKGS+=("${AMD_GPU_VLK[@]}") ;;
-            intel)   PKGS+=("${INTEL_GPU[@]}") ;;
-            nvidia)  PKGS+=("${NVIDIA_GPU[@]}") ;;
+    while read -r gpu; do
+        case "$gpu" in
+            amd)
+                PKGS="$PKGS linux-firmware-amd mesa-dri vulkan-loader mesa-vulkan-radeon mesa-vaapi mesa-vdpau"
+                ;;
+            intel)
+                PKGS="$PKGS linux-firmware-intel mesa-dri vulkan-loader mesa-vulkan-intel intel-video-accel"
+                ;;
+            nvidia)
+                PKGS="$PKGS nvidia nvidia-container-toolkit"
+                ;;
         esac
-    done
+    done < "$TMP_OUT"
 
-    (( ${#GPU_CHOICE[@]} > 1 )) && dialog --msgbox "Multiple GPU drivers selected. Ensure compatibility." 6 60
-
-    printf '%s\n' "${PKGS[@]}" > "$TMP_OUT"
+    # Show package list
+    printf "%s\n" $PKGS > "$TMP_OUT"
     dialog --title "$TITLE" --textbox "$TMP_OUT" 20 60
 
-    info_box "Installing selected packages... (this may take a while)"
-    log_cmd sudo xbps-install -Sy "${PKGS[@]}"
+    info_box "Installing selected packages..."
+    log_cmd sudo xbps-install -Sy $PKGS
 
-    if command -v flatpak &>/dev/null; then
-        install_flatpak_apps
+    # Install flatpak apps if flatpak was selected
+    if command -v flatpak >/dev/null 2>&1; then
+        info_box "Installing flatpak apps..."
+        log_cmd flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+        log_cmd flatpak install --user --noninteractive flathub com.github.tchx84.Flatseal com.saivert.pwvucontrol
     fi
 
-    # --- Build personal suckless tools ---
-    mkdir -p "$JPSTACK_DIR" && pushd "$JPSTACK_DIR" >/dev/null
-
-    for repo in sfm slstatus dwl; do
-        if [[ -d $repo ]]; then
-            log "$repo already cloned."
-        else
-            log_cmd git clone "https://github.com/jpnt/$repo"
-        fi
-        make_clean_install "$repo"
-    done
-
-    popd >/dev/null
+    # Build personal suckless tools
+    # mkdir -p "$JPSTACK_DIR"
+    # cd "$JPSTACK_DIR"
+    #
+    # for repo in sfm slstatus; do
+    #     if [ -d "$repo" ]; then
+    #         log "$repo already cloned."
+    #     else
+    #         log_cmd git clone "https://github.com/jpnt/$repo"
+    #     fi
+    #     make_clean_install "$repo"
+    # done
+    #
+    # cd "$HOME"
 }
 
 ###############################################################################
 # System configuration                                                        #
 ###############################################################################
 configure_btrfs() {
-    if ! findmnt -n -o FSTYPE / | grep -q btrfs; then
-        log "Root filesystem is not Btrfs, skipping."
-        return
-    fi
-
-    info_box "Configuring Btrfs..."
-
-    local ROOT_UUID
-    ROOT_UUID=$(findmnt -no UUID /)
-    local ROOT_MNT="/mnt" # temp mountpoint
-    local SUBVOLS=("@" "@home" "@snapshots" "@cache" "@log") # subvolume layout
-    local MOUNTPOINTS=("/" "/home" "/snapshots" "/var/cache" "/var/log") # corresponding mountpoints
-    local OPTIONS="compress=zstd,noatime,discard=async,space_cache=v2" # TODO: is autodefrag good?
-
-    # mount full btrfs volume read-only to inspect/create subvolumes
-    log_cmd sudo mkdir -p "$ROOT_MNT"
-    log_cmd sudo mount -o subvol=/,ro UUID="$ROOT_UUID" "$ROOT_MNT"
-
-    for subvol in "${SUBVOLS[@]}"; do
-        if [[ ! -d "$ROOT_MNT/$subvol" ]]; then
-            log_cmd sudo btrfs subvolume create "$ROOT_MNT/$subvol"
-        else
-            log "Subvolume $subvol already exists, skipping."
-        fi
-    done
-
-    # unmount volume to proceed with new mount layout
-    log_cmd sudo umount "$ROOT_MNT"
-
-    # remount root using subvolume '@' to access proper layout and create mountpoints
-    log_cmd sudo mkdir -p /mnt/btrfsroot
-    log_cmd sudo mount -o "$OPTIONS",subvol=@ UUID="$ROOT_UUID" /mnt/btrfsroot
-
-    # create mountpoints (e.g. /mnt/btrfsroot/home) for more volumes
-    for mp in "${MOUNTPOINTS[@]}"; do
-        log_cmd sudo mkdir -p "/mnt/btrfsroot$mp"
-    done
-
-    # clean up
-    sudo umount /mnt/btrfsroot
-    rmdir /mnt/btrfsroot 2>/dev/null || true
-
-    # backup current fstab
-    sudo cp /etc/fstab "/etc/fstab.$(date +%s).bak"
-
-    # create temporary fstab with preserved non-Btrfs entries
-    local TMP_FSTAB
-    TMP_FSTAB=$(mktemp)
-
-    # copy non btrfs mountpoints over
-    grep -v ' btrfs ' /etc/fstab > "$TMP_FSTAB"
-
-    for i in "${!SUBVOLS[@]}"; do
-        local subvol="${SUBVOLS[i]}"
-        local mountpoint="${MOUNTPOINTS[i]}"
-        if ! grep -q "subvol=$subvol" "$TMP_FSTAB"; then
-            echo "UUID=$ROOT_UUID $mountpoint btrfs subvol=$subvol,$OPTIONS 0 0" >> "$TMP_FSTAB"
-            log "Added fstab entry: $subvol -> $mountpoint"
-        else
-            log "fstab already contains $subvol -> $mountpoint, skipping."
-        fi
-    done
-
-    if ! cmp -s "$TMP_FSTAB" /etc/fstab; then
-        log_cmd sudo cp "$TMP_FSTAB" /etc/fstab
-        log "fstab updated successfully."
-    else
-        log "fstab unchanged."
-    fi
-
-    rm -f "$TMP_FSTAB"
-
-    log "Btrfs subvolumes configured and fstab updated."
-}
-
-configure_btrfs_snapshots() {
-    if ! findmnt -n -o FSTYPE / | grep -q btrfs; then
-        log "Root filesystem is not Btrfs, skipping."
-        return
-    fi
-
-    info_box "Configuring Btrfs snapshots..."
-
-    local SNAPSHOT_DIR="/snapshots"
-    local SNAP_LIMIT=4
-    local SNAP_SCRIPT="/etc/cron.weekly/btrfs-snapshot"
-
-    if [[ ! -d "$SNAPSHOT_DIR" ]]; then
-        log "Snapshot directory $SNAPSHOT_DIR does not exist, skipping snapshot config."
-        return
-    fi
-
-    sudo install -Dm755 /dev/stdin "$SNAP_SCRIPT" <<'EOF'
-#!/bin/sh
-set -e
-
-SNAPSHOT_DIR="$SNAPSHOT_DIR"
-TIMESTAMP=\$(date +@-%Y%m%d-%H%M)
-SNAP_PATH="\$SNAPSHOT_DIR/\$TIMESTAMP"
-
-# Create read-only snapshot
-btrfs subvolume snapshot -r / "\$SNAP_PATH"
-
-# Remove older snapshots beyond limit
-find "\$SNAPSHOT_DIR" -mindepth 1 -maxdepth 1 -type d | sort -r | tail -n +$((SNAP_LIMIT + 1)) | xargs -r rm -rf
-EOF
-
-    log_cmd sudo chmod +x "$SNAP_SCRIPT"
-    log "Weekly snapshot script installed at $SNAP_SCRIPT"
-}
-
-# redundant with btrfs mount option 'discard=async'
-configure_fstrim() {
-    info_box "Configuring fstrim..."
-    sudo install -Dm755 /dev/stdin /etc/cron.weekly/fstrim <<'EOF'
-#!/bin/sh
-fstrim /
-EOF
+	# TODO
+	# really important. if this fails the whole system fails as well!
+	# use snazzer tool for backups
+	# btrfs-progs has a lot of useful utilities
 }
 
 configure_dracut() {
@@ -434,47 +252,45 @@ EOF
 }
 
 configure_system() {
-    dialog --checklist "Select optional configuration steps:" 20 60 10 \
-        btrfs "EXPERIMENTAL: Configure Btrfs subvolumes + fstab" off \
-        snapshots "EXPERIMENTAL: Enable Btrfs weekly snapshots" off \
-        fstrim "Install fstrim weekly cron job" off \
+    dialog --checklist "Select configuration steps:" 20 60 10 \
+        btrfs "Configure Btrfs subvolumes + fstab + snapshots" off \
         dracut "Configure dracut (hostonly)" on \
         sysctl "Configure sysctl (vm.swappiness = 10)" on \
         iwd "Enable iwd native DHCP" on \
         keyd "Map ESC/CapsLock with keyd" off 2>"$TMP_OUT"
-    mapfile -t CONFIG_STEPS <"$TMP_OUT"
 
-    for step in "${CONFIG_STEPS[@]}"; do
+    while read -r step; do
         case "$step" in
-            btrfs)     configure_btrfs ;;
-            snapshots) configure_btrfs_snapshots ;;
-            fstrim)    configure_fstrim ;;
-            dracut)    configure_dracut ;;
-            sysctl)    configure_sysctl ;;
-            iwd)       configure_iwd ;;
-            keyd)      configure_keyd ;;
+            btrfs) configure_btrfs ;;
+            dracut) configure_dracut ;;
+            sysctl) configure_sysctl ;;
+            iwd) configure_iwd ;;
+            keyd) configure_keyd ;;
         esac
-    done
+    done < "$TMP_OUT"
 }
 
 ###############################################################################
-# Post‑install phase                                                          #
+# Post-install                                                                #
 ###############################################################################
 post_install() {
     info_box "Creating XDG user dirs..."
     xdg-user-dirs-update
 
-    info_box "Adding user $(whoami) to groups..."
-    for grp in "${GROUPS[@]}"; do
+    info_box "Adding user to groups..."
+    for grp in seatd wheel input video socklog libvirt; do
         sudo usermod -aG "$grp" "$(whoami)"
     done
 
-    info_box "Toggling services..."
-    for svc in "${DISABLE_SERVICES[@]}";   do service disable "$svc"; done
-    for svc in "${ENABLE_SERVICES[@]}";    do service enable  "$svc";  done
+    info_box "Configuring services..."
+    for svc in dhcpcd wpa_supplicant agetty-tty4 agetty-tty5 agetty-tty6; do
+        service_disable "$svc"
+    done
+    
+    for svc in keyd dbus cronie ntpd-rs seatd turnstiled nanoklogd socklog-unix libvirtd virtlockd virtlogd; do
+        service_enable "$svc"
+    done
 
-    # TODO: create update-initrd generic POSIX shell script? or is it too similar to update-initramfs from initramfs-tools?
-    # log_cmd sudo /etc/kernel.d/post-install/20-initramfs jpstack "$(uname -r)" TODO: this doesnt work
     log_cmd sudo update-grub
     log_cmd sudo vkpurge rm all
 }
@@ -483,8 +299,15 @@ post_install() {
 # Main                                                                        #
 ###############################################################################
 main() {
-    for cmd in "${REQUIRED_CMDS[@]}"; do require_cmd "$cmd"; done
-    dialog --title "$TITLE" --yesno "Start jpstack system setup now?" 7 50 || { log "Aborted by user."; exit 0; }
+    for cmd in $REQUIRED_CMDS; do
+        require_cmd "$cmd"
+    done
+    
+    if ! dialog --title "$TITLE" --yesno "Start jpstack system setup?" 7 50; then
+        log "Aborted by user."
+        exit 0
+    fi
+    
     log "jpstack started at $(date)"
 
     install_packages
