@@ -1,5 +1,5 @@
 type = process
 command = pipewire-pulse
 restart = on-failure
-depends-on: pipewire
-depends-on: wireplumber
+depends-on = pipewire
+depends-on = wireplumber

@@ -110,11 +110,11 @@ install_packages() {
     log_cmd sudo xbps-install -Suy void-repo-nonfree void-repo-multilib void-repo-multilib-nonfree
 
     # Core packages - always installed
-    CORE_PKGS="dragon fcft-devel foot xdg-user-dirs xdg-desktop-portal-wlr \
+    CORE_PKGS="dinit dragon fcft-devel foot xdg-user-dirs xdg-desktop-portal-wlr \
     xdg-desktop-portal-gtk wlroots0.19-devel xorg-server-xwayland wlr-randr \
-    wdisplays wl-clipboard grim slurp seatd keyd dhcpcd \
+    wdisplays wl-clipboard grim slurp seatd greetd keyd dhcpcd \
     qt5-wayland qt6-wayland adwaita-qt adwaita-qt6 tofi trash-cli mako \
-    waylock swayidle swaybg gammastep neovim stow handlr \
+    waylock swaybg swayidle kanshi gammastep neovim stow handlr scdoc \
     abduco socklog-void ripgrep fd fzf cronie eza ntpd-rs qalculate \
     btrfs-progs snazzer zstd keychain make"
 
@@ -151,7 +151,7 @@ install_packages() {
                 PKGS="$PKGS flatpak"
                 ;;
             extra)
-                PKGS="$PKGS xtools smartmontools lm_sensors dmidecode xwininfo catgirl htop btop nvtop bandwhich tlp tlp-rdw keepassxc syncthing glxinfo git tig vis tealdeer ldns socat uv strace jq dua-cli xh tcpdump psmisc procs man-pages-devel cpufrequtils"
+                PKGS="$PKGS xtools smartmontools lm_sensors dmidecode xwininfo catgirl htop btop nvtop bandwhich tlp keepassxc syncthing glxinfo git tig vis tealdeer ldns socat uv jq dua-cli xh tcpdump psmisc procs man-pages-devel cpufrequtils"
                 ;;
         esac
     done < "$TMP_OUT"
@@ -189,6 +189,11 @@ install_packages() {
         log_cmd flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
         log_cmd flatpak install --user --noninteractive flathub com.github.tchx84.Flatseal com.saivert.pwvucontrol
     fi
+
+    # TODO
+    # Install zig-0.14
+    # Install river
+    # Install creek
 
     # Build personal suckless tools
     # mkdir -p "$JPSTACK_DIR"
@@ -251,6 +256,18 @@ esc = capslock
 EOF
 }
 
+configure_greetd() {
+	info_box "Configuring greetd..."
+	sudo install -Dm644 /dev/stdin /etc/greetd/config.toml <<'EOF'
+[terminal]
+vt = 1
+
+[default_session]
+command = "agreety --cmd 'dbus-run-session river'"
+user = "_greeter"
+EOF
+}
+
 configure_system() {
     dialog --checklist "Select configuration steps:" 20 60 10 \
         btrfs "Configure Btrfs subvolumes + fstab + snapshots" off \
@@ -278,12 +295,12 @@ post_install() {
     xdg-user-dirs-update
 
     info_box "Adding user to groups..."
-    for grp in seatd wheel input video socklog libvirt; do
+    for grp in _seatd wheel input video socklog libvirt; do
         sudo usermod -aG "$grp" "$(whoami)"
     done
 
     info_box "Configuring services..."
-    for svc in dhcpcd wpa_supplicant agetty-tty4 agetty-tty5 agetty-tty6; do
+    for svc in dhcpcd wpa_supplicant agetty-tty5 agetty-tty6; do
         service_disable "$svc"
     done
     

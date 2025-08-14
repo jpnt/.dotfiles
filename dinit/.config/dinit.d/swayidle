@@ -1,3 +1,6 @@
 type = process
-command = swayidle -w timeout 300 waylock timeout 600 "wlr-randr --output '*' --off" resume "wlr-randr --output '*' --on" before-sleep waylock
+command = swayidle -w \
+	timeout 300 waylock \
+	before-sleep waylock
 restart = true
+depends-on = wayland-session

@@ -1,0 +1,4 @@
+profile laptop {
+    output "*" mode 2560x1600@165Hz scale 1.5 adaptive_sync on
+}
+

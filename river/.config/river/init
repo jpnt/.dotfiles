@@ -131,7 +131,3 @@ rivertile -view-padding 0 -outer-padding 0 &
 
 # Start user services
 dinit --user --quiet &
-
-# Display setup
-display=$(wlr-randr | tr ' ' '\n' | head -n1)
-wlr-randr --output ${display} --mode 2560x1600 --scale 1.5 --adaptive-sync enabled 

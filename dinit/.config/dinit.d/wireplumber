@@ -1,4 +1,4 @@
 type = process
 command = wireplumber
 restart = on-failure
-depends-on: pipewire
+depends-on = pipewire

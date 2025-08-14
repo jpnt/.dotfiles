@@ -1,3 +1,4 @@
-type = process  
+type = process
 command = mako
 restart = true
+depends-on = wayland-session
