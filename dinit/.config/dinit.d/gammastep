@@ -1,4 +1,3 @@
 type = process
 command = gammastep -l 40:-8 -t 5000:3500 -g 0.8
 restart = true
-depends-on = wayland-session

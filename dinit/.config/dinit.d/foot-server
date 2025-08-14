@@ -1,4 +1,3 @@
 type = process
 command = foot --server
 restart = true
-depends-on = wayland-session

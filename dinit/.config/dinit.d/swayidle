@@ -3,4 +3,3 @@ command = swayidle -w \
 	timeout 300 waylock \
 	before-sleep waylock
 restart = true
-depends-on = wayland-session

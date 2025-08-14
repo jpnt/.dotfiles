@@ -1,3 +1,7 @@
 type = internal
 depends-on = pipewire-pulse
-depends-on = wayland-session
+depends-on = foot-server
+depends-on = mako
+depends-on = gammastep
+depends-on = swayidle
+depends-on = kanshi

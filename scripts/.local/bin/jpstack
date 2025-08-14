@@ -63,6 +63,13 @@ repository=https://github.com/index-0/librewolf-void/releases/latest/download/
 EOF
 }
 
+install_ungoogled_chromium_repo() {
+    info_box "Installing Ungoogled Chromium repository..."
+    sudo install -Dm644 /dev/stdin /etc/xbps.d/20-ungoogled-chromium.conf <<'EOF'
+repository=https://github.com/DAINRA/ungoogled-chromium-void/releases/latest/download/
+EOF
+}
+
 service_enable() {
     svc="$1"
     info_box "Enabling service: $svc..."

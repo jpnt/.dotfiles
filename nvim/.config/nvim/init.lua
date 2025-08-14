@@ -22,6 +22,8 @@ vim.pack.add({
   { src = "https://github.com/echasnovski/mini.notify" },
   { src = "https://github.com/tpope/vim-fugitive" },
   { src = "https://github.com/neovim/nvim-lspconfig" },
+  { src = "https://github.com/NMAC427/guess-indent.nvim" },
+  { src = "https://github.com/vladdoster/remember.nvim" },
 })
 
 -- Plugin config/enable
@@ -31,6 +33,8 @@ require("mini.pick").setup()
 require("mini.surround").setup()
 require("mini.tabline").setup()
 require("mini.notify").setup()
+require("guess-indent").setup()
+require("remember")
 require("mini.base16").setup({
   palette = {
     base00 = "#000000",
