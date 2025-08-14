@@ -1,0 +1,5 @@
+type = process
+command = pipewire
+restart = on-failure
+socket-listen = $XDG_RUNTIME_DIR/pipewire-0
+socket-permissions = 666

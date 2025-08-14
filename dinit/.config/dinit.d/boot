@@ -1,0 +1,6 @@
+type = internal
+depends-on: pipewire-pulse
+depends-on: foot-server  
+depends-on: mako
+depends-on: gammastep
+depends-on: swayidle
