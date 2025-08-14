@@ -11,8 +11,10 @@ riverctl border-width 1
 # Keyboard repeat rate
 riverctl set-repeat 40 600
 
-# Focus follows mouse
+# Cursor configuration
 riverctl focus-follows-cursor normal
+riverctl hide-cursor timeout 5000
+riverctl hide-cursor when-typing enabled
 
 # Keyboard layout
 riverctl keyboard-layout -options "grp:alt_shift_toggle" "pt,us"
@@ -121,7 +123,7 @@ for vt in $(seq 1 12); do
 done
 
 # Rules
-riverctl rule-add -app-id "foot" ssd           
+riverctl rule-add ssd  # All windows use server-side decorations
 riverctl rule-add -title "*GIMP*" float        
 
 # Layout generator
