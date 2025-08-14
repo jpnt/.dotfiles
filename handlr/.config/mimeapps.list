@@ -1,0 +1,4 @@
+[Added Associations]
+
+[Default Applications]
+x-scheme-handler/terminal=footclient.desktop;

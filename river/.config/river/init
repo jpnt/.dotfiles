@@ -13,7 +13,6 @@ riverctl set-repeat 40 600
 
 # Cursor configuration
 riverctl focus-follows-cursor normal
-riverctl hide-cursor timeout 5000
 riverctl hide-cursor when-typing enabled
 
 # Keyboard layout
@@ -70,7 +69,7 @@ riverctl map normal Super S spawn 'grim'
 riverctl map normal Super+Shift S spawn 'grim -g "$(slurp)"'
 
 # Lock screen
-riverctl map normal Super+Shift Delete spawn 'waylock'
+riverctl map normal Control+Alt Backspace spawn 'waylock'
 
 # Audio controls
 riverctl map normal None XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+'
@@ -115,7 +114,7 @@ riverctl map-pointer normal Super BTN_MIDDLE toggle-float
 riverctl map normal Super+Shift Q exit
 
 # Emergency exit  
-riverctl map normal Control+Alt BackSpace exit
+riverctl map normal Super+Control+Alt BackSpace exit
 
 # VT switching
 for vt in $(seq 1 12); do
