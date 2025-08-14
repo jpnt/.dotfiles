@@ -56,7 +56,7 @@ require("mini.base16").setup({
 vim.keymap.set({ 'n', 'v', 'x' }, '<leader>y', '"+y<CR>')
 vim.keymap.set({ 'n', 'v', 'x' }, '<leader>d', '"+d<CR>')
 vim.keymap.set('n', '<leader>f', ':Pick files<CR>')
-vim.keymap.set('n', '<leader>g', ':Pick live_grep<CR>')
+vim.keymap.set('n', '<leader>g', ':Pick grep_live<CR>')
 vim.keymap.set("n", "-", "<cmd>Oil<CR>")
 vim.keymap.set("n", "<Tab>", "<cmd>bnext<CR>")
 vim.keymap.set("n", "<S-Tab>", "<cmd>bprevious<CR>")
