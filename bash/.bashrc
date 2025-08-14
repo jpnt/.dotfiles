@@ -15,19 +15,21 @@ if [ -f /etc/bash_completion ]; then
 fi
 
 # Aliases
-alias v='vis'
-alias nv='nvim'
-alias a='abduco'
-alias ..='cd ..'
-alias gb='git branch --all'
-alias gl='git log --oneline --graph --decorate'
 alias ls='ls --color=always'
-alias l='eza -alh --icons --group --group-directories-first --color-scale'
 alias grep='grep --color=always'
 alias tree='tree -C'
 alias diff='diff --color=always'
 alias ip='ip --color=always'
 alias dmesg='dmesg --color=always'
+alias ..='cd ..'
+alias a='abduco'
+alias g='grep'
+alias l='$PAGER'
+alias nv='nvim'
+alias llm='uvx ramalama'
+alias gb='git branch --all'
+alias gl='git log --oneline --graph --decorate'
+alias ll='eza -alh --icons --group --group-directories-first --color-scale'
 alias straceps='strace -ftt -e trace=%process,%signal -o "straceps_$(date +%Y%m%d_%H%M%S).log"'
 alias stracerw='strace -ftt -e trace=read,write -o "stracerw_$(date +%Y%m%d_%H%M%S).log"'
 

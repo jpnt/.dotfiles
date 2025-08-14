@@ -1,8 +1,0 @@
-#!/bin/sh
-# fzbook - fuzzy find pdf,epub books
-
-selected=$(find . -type f \( -name '*.pdf' -o -name '*.epub' \) | fzf)
-
-if [ -n "$selected" ]; then
-	zathura "$selected"
-fi

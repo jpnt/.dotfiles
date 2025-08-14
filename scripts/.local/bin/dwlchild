@@ -1,9 +1,0 @@
-#!/bin/sh
-# closes standard input (fd 0)
-exec <&-
-
-display=$(wlr-randr | tr ' ' '\n' | head -n1)
-
-wlr-randr --output "${display}" --mode 2560x1600 --scale 1.5 --adaptive-sync enabled
-
-swaybg -i ~/Imagens/Wallpaper/current.png
