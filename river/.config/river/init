@@ -1,0 +1,136 @@
+#!/bin/sh
+
+# River init
+
+# Appearance
+riverctl background-color 0x000000
+riverctl border-color-focused 0x79c0ff
+riverctl border-color-unfocused 0x161b22
+riverctl border-width 1
+
+# Keyboard repeat rate
+riverctl set-repeat 40 600
+
+# Focus follows mouse
+riverctl focus-follows-cursor normal
+
+# Keyboard layout
+riverctl keyboard-layout -options "grp:alt_shift_toggle" "pt,us"
+
+# Input configuration
+for pad in $(riverctl list-inputs | grep -i touchpad)
+do
+    riverctl input $pad tap enabled
+    riverctl input $pad tap-button-map left-right-middle
+    riverctl input $pad drag enabled
+    riverctl input $pad drag-lock enabled
+    riverctl input $pad disable-while-typing enabled
+    riverctl input $pad middle-emulation disabled
+    riverctl input $pad natural-scroll disabled
+    riverctl input $pad scroll-method two-finger
+    riverctl input $pad click-method button-areas
+    riverctl input $pad accel-profile adaptive
+    riverctl input $pad pointer-accel 0.0
+done
+
+# Terminal
+riverctl map normal Super+Shift Return spawn footclient
+
+# Launchers  
+riverctl map normal Super P spawn 'sh -c "exec $(tofi-run)"'
+riverctl map normal Super+Shift P spawn 'sh -c "exec $(tofi-drun)"'
+
+# Window management
+riverctl map normal Super X close                    
+riverctl map normal Super J focus-view next          
+riverctl map normal Super K focus-view previous      
+riverctl map normal Super Return zoom                
+riverctl map normal Super Tab set-focused-tags 0
+
+# Layout control
+riverctl map normal Super H send-layout-cmd rivertile "main-ratio -0.05"  
+riverctl map normal Super L send-layout-cmd rivertile "main-ratio +0.05"  
+riverctl map normal Super I send-layout-cmd rivertile "main-count +1"     
+riverctl map normal Super D send-layout-cmd rivertile "main-count -1"
+
+# Layout switching
+riverctl map normal Super T send-layout-cmd rivertile "main-location left"   
+riverctl map normal Super F toggle-float                                     
+riverctl map normal Super M send-layout-cmd rivertile "main-location monocle"
+
+# Fullscreen and floating
+riverctl map normal Super E toggle-fullscreen        
+riverctl map normal Super Space toggle-float         
+riverctl map normal Super+Shift Space send-layout-cmd rivertile "main-location left"
+
+# Screenshot
+riverctl map normal Super S spawn 'grim'
+riverctl map normal Super+Shift S spawn 'grim -g "$(slurp)"'
+
+# Lock screen
+riverctl map normal Super+Shift Delete spawn 'waylock'
+
+# Audio controls
+riverctl map normal None XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+'
+riverctl map normal None XF86AudioLowerVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
+riverctl map normal None XF86AudioMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
+riverctl map normal None XF86AudioMicMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
+
+# Monitor focus
+riverctl map normal Super Comma focus-output previous
+riverctl map normal Super Period focus-output next
+riverctl map normal Super+Shift Comma send-to-output previous  
+riverctl map normal Super+Shift Period send-to-output next
+
+# Tags
+for i in $(seq 1 9); do
+    tags=$((1 << ($i - 1)))
+    
+    # Super+[1-9] to focus tag
+    riverctl map normal Super $i set-focused-tags $tags
+    
+    # Super+Shift+[1-9] to move window to tag  
+    riverctl map normal Super+Shift $i set-view-tags $tags
+    
+    # Super+Ctrl+[1-9] to toggle tag view
+    riverctl map normal Super+Control $i toggle-focused-tags $tags
+    
+    # Super+Ctrl+Shift+[1-9] to toggle tag on window
+    riverctl map normal Super+Control+Shift $i toggle-view-tags $tags
+done
+
+# All tags
+all_tags=$(((1 << 32) - 1))
+riverctl map normal Super 0 set-focused-tags $all_tags
+riverctl map normal Super+Shift 0 set-view-tags $all_tags
+
+# Mouse bindings
+riverctl map-pointer normal Super BTN_LEFT move-view      
+riverctl map-pointer normal Super BTN_RIGHT resize-view   
+riverctl map-pointer normal Super BTN_MIDDLE toggle-float 
+
+# Exit river
+riverctl map normal Super+Shift Q exit
+
+# Emergency exit  
+riverctl map normal Control+Alt BackSpace exit
+
+# VT switching
+for vt in $(seq 1 12); do
+    riverctl map normal Control+Alt F$vt spawn "chvt $vt"
+done
+
+# Rules
+riverctl rule-add -app-id "foot" ssd           
+riverctl rule-add -title "*GIMP*" float        
+
+# Layout generator
+riverctl default-layout rivertile
+rivertile -view-padding 0 -outer-padding 0 &   
+
+# Start user services
+dinit --user --quiet &
+
+# Display setup
+display=$(wlr-randr | tr ' ' '\n' | head -n1)
+wlr-randr --output ${display} --mode 2560x1600 --scale 1.5 --adaptive-sync enabled 
