@@ -1,0 +1,2 @@
+enable_selector = true
+selector = "tofi-drun --prompt-text 'open with: '"
