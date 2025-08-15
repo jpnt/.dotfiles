@@ -21,6 +21,7 @@ vim.pack.add({
   { src = "https://github.com/echasnovski/mini.tabline" },
   { src = "https://github.com/echasnovski/mini.notify" },
   { src = "https://github.com/echasnovski/mini.statusline" },
+  { src = "https://github.com/echasnovski/mini.diff" },
   { src = "https://github.com/tpope/vim-fugitive" },
   { src = "https://github.com/neovim/nvim-lspconfig" },
   { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
@@ -35,6 +36,7 @@ require("mini.pick").setup()
 require("mini.surround").setup()
 require("mini.tabline").setup()
 require("mini.statusline").setup()
+require("mini.diff").setup()
 require("guess-indent").setup()
 require("remember")
 
