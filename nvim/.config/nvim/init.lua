@@ -20,6 +20,7 @@ vim.pack.add({
   { src = "https://github.com/echasnovski/mini.surround" },
   { src = "https://github.com/echasnovski/mini.tabline" },
   { src = "https://github.com/echasnovski/mini.notify" },
+  { src = "https://github.com/echasnovski/mini.statusline" },
   { src = "https://github.com/tpope/vim-fugitive" },
   { src = "https://github.com/neovim/nvim-lspconfig" },
   { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
@@ -33,14 +34,17 @@ require("mini.icons").setup()
 require("mini.pick").setup()
 require("mini.surround").setup()
 require("mini.tabline").setup()
+require("mini.statusline").setup()
 require("guess-indent").setup()
 require("remember")
+
 require("mini.notify").setup()
 vim.notify = require("mini.notify").make_notify()
+
 require("nvim-treesitter.configs").setup({
-  auto_install = true,
-  highlight = { enable = true },
+  auto_install = true, highlight = { enable = true },
 })
+
 require("mini.base16").setup({
   palette = {
     base00 = "#000000",
