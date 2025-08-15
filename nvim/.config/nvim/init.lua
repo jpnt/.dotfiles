@@ -1,18 +1,20 @@
 -- nvim 0.12 required
-local vim            = vim
+local vim             = vim
 -- Options
-vim.o.number         = true
-vim.o.relativenumber = true
-vim.o.signcolumn     = "yes"
-vim.o.wrap           = false
-vim.o.scrolloff      = 8
-vim.o.sidescrolloff  = 8
-vim.o.completeopt    = "menu,menuone,noselect"
-vim.g.mapleader      = ' '
+vim.o.number          = true
+vim.o.relativenumber  = true
+vim.o.ignorecase      = true
+vim.o.smartcase       = true
+vim.o.signcolumn      = "yes"
+vim.o.wrap            = false
+vim.o.scrolloff       = 8
+vim.o.sidescrolloff   = 8
+vim.o.completeopt     = "menu,menuone,noselect"
+vim.g.mapleader       = ' '
+vim.g.netrw_liststyle = 3 -- tree view by default
 
 -- Plugin manager
 vim.pack.add({
-  { src = "https://github.com/stevearc/oil.nvim" },
   { src = "https://github.com/echasnovski/mini.icons" },
   { src = "https://github.com/echasnovski/mini.base16" },
   { src = "https://github.com/echasnovski/mini.pick" },
@@ -30,7 +32,6 @@ vim.pack.add({
 })
 
 -- Plugin config/enable
-require("oil").setup()
 require("mini.icons").setup()
 require("mini.pick").setup()
 require("mini.surround").setup()
@@ -73,7 +74,7 @@ vim.keymap.set({ 'n', 'v', 'x' }, '<leader>y', '"+y<CR>')
 vim.keymap.set({ 'n', 'v', 'x' }, '<leader>d', '"+d<CR>')
 vim.keymap.set('n', '<leader>f', ':Pick files<CR>')
 vim.keymap.set('n', '<leader>g', ':Pick grep_live<CR>')
-vim.keymap.set("n", "-", "<cmd>Oil<CR>")
+vim.keymap.set("n", "-", "<cmd>Ex<CR>")
 vim.keymap.set("n", "<Tab>", "<cmd>bnext<CR>")
 vim.keymap.set("n", "<S-Tab>", "<cmd>bprevious<CR>")
 vim.keymap.set("n", "<leader>\\", function()
