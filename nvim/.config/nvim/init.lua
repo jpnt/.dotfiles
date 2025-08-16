@@ -25,6 +25,7 @@ vim.pack.add({
   { src = "https://github.com/echasnovski/mini.statusline" },
   { src = "https://github.com/echasnovski/mini.diff" },
   { src = "https://github.com/tpope/vim-fugitive" },
+  { src = "https://github.com/tpope/vim-dispatch" },
   { src = "https://github.com/neovim/nvim-lspconfig" },
   { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
   { src = "https://github.com/NMAC427/guess-indent.nvim" },
@@ -74,6 +75,7 @@ vim.keymap.set({ 'n', 'v', 'x' }, '<leader>y', '"+y<CR>')
 vim.keymap.set({ 'n', 'v', 'x' }, '<leader>d', '"+d<CR>')
 vim.keymap.set('n', '<leader>f', ':Pick files<CR>')
 vim.keymap.set('n', '<leader>g', ':Pick grep_live<CR>')
+vim.keymap.set("n", "<leader>cc", ':Dispatch ')
 vim.keymap.set("n", "-", "<cmd>Ex<CR>")
 vim.keymap.set("n", "<Tab>", "<cmd>bnext<CR>")
 vim.keymap.set("n", "<S-Tab>", "<cmd>bprevious<CR>")

@@ -122,7 +122,7 @@ install_packages() {
     xdg-desktop-portal-gtk wlroots0.19-devel xorg-server-xwayland wlr-randr \
     wdisplays wl-clipboard grim slurp seatd greetd keyd dhcpcd \
     qt5-wayland qt6-wayland adwaita-qt adwaita-qt6 tofi trash-cli mako \
-    waylock swaybg swayidle kanshi gammastep neovim stow handlr scdoc \
+    waylock swaybg swayidle kanshi gammastep neovim handlr scdoc \
     abduco socklog-void ripgrep fd fzf cronie eza ntpd-rs qalculate \
     btrfs-progs snazzer zstd keychain make"
 
