@@ -27,9 +27,10 @@ vim.pack.add({
   { src = "https://github.com/tpope/vim-fugitive" },
   { src = "https://github.com/tpope/vim-dispatch" },
   { src = "https://github.com/neovim/nvim-lspconfig" },
-  { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
   { src = "https://github.com/NMAC427/guess-indent.nvim" },
   { src = "https://github.com/vladdoster/remember.nvim" },
+  { src = "https://github.com/L3MON4D3/LuaSnip" },
+  { src = "https://github.com/rafamadriz/friendly-snippets" },
 })
 
 -- Plugin config/enable
@@ -41,13 +42,10 @@ require("mini.statusline").setup()
 require("mini.diff").setup()
 require("guess-indent").setup()
 require("remember")
+require("luasnip.loaders.from_vscode").lazy_load()
 
 require("mini.notify").setup()
 vim.notify = require("mini.notify").make_notify()
-
-require("nvim-treesitter.configs").setup({
-  auto_install = true, highlight = { enable = true },
-})
 
 require("mini.base16").setup({
   palette = {
@@ -77,12 +75,21 @@ vim.keymap.set('n', '<leader>f', ':Pick files<CR>')
 vim.keymap.set('n', '<leader>g', ':Pick grep_live<CR>')
 vim.keymap.set("n", "<leader>cc", ':Dispatch ')
 vim.keymap.set("n", "-", "<cmd>Ex<CR>")
+
 vim.keymap.set("n", "<Tab>", "<cmd>bnext<CR>")
 vim.keymap.set("n", "<S-Tab>", "<cmd>bprevious<CR>")
+
 vim.keymap.set("n", "<leader>\\", function()
   vim.cmd.vnew()
   vim.cmd.term()
   vim.cmd.wincmd("J")
+end)
+
+vim.keymap.set({ 'i', 's' }, '<C-e>', function()
+  local luasnip = require("luasnip")
+  if luasnip.expand_or_locally_jumpable() then
+    luasnip.expand_or_jump()
+  end
 end)
 
 -- LSP
