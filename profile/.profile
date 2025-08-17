@@ -9,8 +9,9 @@ export \
     BROWSER=firefox \
     GTK_THEME=Adwaita:dark \
     QT_STYLE_OVERRIDE=Adwaita-Dark \
-    GOPATH="${HOME}/.local/share/go" \
     LESS='-R --use-color -Dd+r$Du+b$' \
+    GOPATH="${HOME}/.local/share/go" \
+    MANPATH="${HOME}/.local/share/man:${MANPATH}" \
     PATH="${HOME}/.local/bin:${GOPATH}/bin:/usr/local/bin:${PATH}"
 
 # Wayland‐specific settings
