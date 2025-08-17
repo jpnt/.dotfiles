@@ -1,12 +1,1 @@
 *old
-*bak
-*bk
-vim/
-!vim/.config/vim/vimrc
-!vim/.config/vim/pack/jetpack/opt/vim-jetpack/plugin/jetpack.vim
-vis/.config/vis/plugins
-vis/.config/vis/recentf
-supervise
-service-turnstile-runit/.config/service/*/1
-service-turnstile-runit/.config/service/turnstile-ready/run
-neovide
