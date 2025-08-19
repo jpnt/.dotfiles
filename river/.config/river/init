@@ -46,7 +46,7 @@ riverctl map normal Super X close
 riverctl map normal Super J focus-view next          
 riverctl map normal Super K focus-view previous      
 riverctl map normal Super Return zoom                
-riverctl map normal Super Tab set-focused-tags 0
+riverctl map normal Super Tab focus-previous-tags
 
 # Layout control
 riverctl map normal Super H send-layout-cmd rivertile "main-ratio -0.05"  
@@ -55,8 +55,8 @@ riverctl map normal Super I send-layout-cmd rivertile "main-count +1"
 riverctl map normal Super D send-layout-cmd rivertile "main-count -1"
 
 # Layout switching
-riverctl map normal Super T send-layout-cmd rivertile "main-location left"   
 riverctl map normal Super F toggle-float                                     
+riverctl map normal Super T send-layout-cmd rivertile "main-location left"   
 riverctl map normal Super M send-layout-cmd rivertile "main-location monocle"
 
 # Fullscreen and floating
@@ -112,9 +112,6 @@ riverctl map-pointer normal Super BTN_MIDDLE toggle-float
 
 # Exit river
 riverctl map normal Super+Shift Q exit
-
-# Emergency exit  
-riverctl map normal Super+Control+Alt BackSpace exit
 
 # VT switching
 for vt in $(seq 1 12); do
