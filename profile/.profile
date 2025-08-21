@@ -25,19 +25,15 @@ export \
     ELM_DISPLAY=wl \
     _JAVA_AWT_WM_NONREPARENTING=1
 
-# Create runtime dir if does not exist already
-if test -z "${XDG_RUNTIME_DIR}"; then
-	export XDG_RUNTIME_DIR="/tmp/${UID}-runtime-dir"
-	if ! test -d "${XDG_RUNTIME_DIR}"; then
-		mkdir -p "${XDG_RUNTIME_DIR}"
-		chmod 0700 "${XDG_RUNTIME_DIR}"
-	fi
-fi
-
 # Source shell-specific interactive config if we're interactive
 if test -n "$PS1"; then
     case "$(ps -p $$ -o comm= 2>/dev/null)" in
-        bash) [ -r "${HOME}/.bashrc" ] && . "${HOME}/.bashrc" ;;
+        bash) test -r "${HOME}/.bashrc" && . "${HOME}/.bashrc" ;;
 	# TODO: add yash
     esac
+fi
+
+# Start graphical session on tty1 if not already running
+if test "$(tty)" = "/dev/tty1" && test -z "$WAYLAND_DISPLAY"; then
+    exec river
 fi

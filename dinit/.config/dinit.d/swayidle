@@ -1,3 +1,5 @@
 type = process
-command = swayidle -w before-sleep waylock
+command = swayidle -w \
+	timeout 300 waylock \
+	before-sleep waylock
 restart = true

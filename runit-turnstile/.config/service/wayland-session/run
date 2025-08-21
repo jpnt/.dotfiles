@@ -1,0 +1,11 @@
+#!/bin/sh
+exec 2>&1
+exec inotifywait -m -e create "${XDG_RUNTIME_DIR}" --format '%f' | while read file; do
+    test "${file#wayland-}" != "$file" && test -S "${XDG_RUNTIME_DIR}/$file" && {
+        test -d "$TURNSTILE_ENV_DIR" && {
+            echo "$file" > "$TURNSTILE_ENV_DIR"/WAYLAND_DISPLAY
+            echo "${DISPLAY:-:0}" > "$TURNSTILE_ENV_DIR"/DISPLAY
+        }
+        exec pause
+    }
+done

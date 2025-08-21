@@ -118,13 +118,13 @@ install_packages() {
     log_cmd sudo xbps-install -Suy void-repo-nonfree void-repo-multilib void-repo-multilib-nonfree
 
     # Core packages - always installed
-    CORE_PKGS="dinit dragon fcft-devel foot xdg-user-dirs xdg-desktop-portal-wlr \
+    CORE_PKGS="dragon fcft-devel foot xdg-user-dirs xdg-desktop-portal-wlr \
     xdg-desktop-portal-gtk wlroots0.19-devel xorg-server-xwayland wlr-randr \
-    wdisplays wl-clipboard grim slurp seatd greetd keyd dhcpcd \
+    wdisplays wl-clipboard grim slurp seatd turnstile keyd dhcpcd \
     qt5-wayland qt6-wayland adwaita-qt adwaita-qt6 tofi trash-cli mako \
     waylock swaybg swayidle kanshi gammastep neovim handlr scdoc \
     abduco socklog-void ripgrep fd fzf cronie eza ntpd-rs qalculate \
-    btrfs-progs snazzer zstd keychain make"
+    btrfs-progs snazzer zstd keychain make inotify-tools"
 
     PKGS="$CORE_PKGS"
 
@@ -261,18 +261,6 @@ configure_keyd() {
 [main]
 capslock = esc
 esc = capslock
-EOF
-}
-
-configure_greetd() {
-	info_box "Configuring greetd..."
-	sudo install -Dm644 /dev/stdin /etc/greetd/config.toml <<'EOF'
-[terminal]
-vt = 1
-
-[default_session]
-command = "agreety --cmd 'dbus-run-session river'"
-user = "_greeter"
 EOF
 }
 

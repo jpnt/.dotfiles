@@ -1,0 +1,2 @@
+#!/bin/sh
+exec vlogger -t wireplumber-$(id -u) -p daemon

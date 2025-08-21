@@ -1,0 +1,5 @@
+#!/bin/sh
+exec 2>&1
+sv check ../wayland-session || exit 1
+[ -r "$HOME/.profile" ] && . "$HOME/.profile"
+exec chpst -e "$TURNSTILE_ENV_DIR" foot --server

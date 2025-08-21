@@ -125,6 +125,3 @@ riverctl rule-add -title "*GIMP*" float
 # Layout generator
 riverctl default-layout rivertile
 rivertile -view-padding 0 -outer-padding 0 &   
-
-# Start user services
-dinit --user --quiet &

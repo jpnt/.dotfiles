@@ -1,0 +1,2 @@
+#!/bin/sh
+exec vlogger -t pipewire-pulse-$(id -u) -p daemon

@@ -1,0 +1,2 @@
+#!/bin/sh
+exec vlogger -t dbus-session-$(id -u) -p daemon
