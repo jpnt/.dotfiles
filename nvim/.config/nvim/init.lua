@@ -19,13 +19,16 @@ vim.pack.add({
   { src = "https://github.com/echasnovski/mini.base16" },
   { src = "https://github.com/echasnovski/mini.pick" },
   { src = "https://github.com/echasnovski/mini.comment" },
+  { src = "https://github.com/echasnovski/mini.ai" },
   { src = "https://github.com/echasnovski/mini.surround" },
   { src = "https://github.com/echasnovski/mini.tabline" },
   { src = "https://github.com/echasnovski/mini.notify" },
   { src = "https://github.com/echasnovski/mini.statusline" },
   { src = "https://github.com/echasnovski/mini.diff" },
+  { src = "https://github.com/echasnovski/mini.sessions" },
   { src = "https://github.com/tpope/vim-fugitive" },
   { src = "https://github.com/tpope/vim-dispatch" },
+  { src = "https://github.com/tpope/vim-projectionist" },
   { src = "https://github.com/neovim/nvim-lspconfig" },
   { src = "https://github.com/NMAC427/guess-indent.nvim" },
   { src = "https://github.com/vladdoster/remember.nvim" },
@@ -36,10 +39,13 @@ vim.pack.add({
 -- Plugin config/enable
 require("mini.icons").setup()
 require("mini.pick").setup()
+require("mini.ai").setup()
 require("mini.surround").setup()
 require("mini.tabline").setup()
 require("mini.statusline").setup()
 require("mini.diff").setup()
+require("mini.sessions").setup()
+
 require("guess-indent").setup()
 require("remember")
 require("luasnip.loaders.from_vscode").lazy_load()
@@ -75,6 +81,12 @@ vim.keymap.set('n', '<leader>f', ':Pick files<CR>')
 vim.keymap.set('n', '<leader>g', ':Pick grep_live<CR>')
 vim.keymap.set("n", "<leader>cc", ':Dispatch ')
 vim.keymap.set("n", "-", "<cmd>Ex<CR>")
+
+vim.keymap.set('n', '<leader>ss', '<cmd>lua MiniSessions.select()<cr>')
+vim.keymap.set('n', '<leader>sw', function()
+    local folder_name = vim.fn.getcwd():match("([^/]+)$")
+    require('mini.sessions').write(folder_name)
+end)
 
 vim.keymap.set("n", "<Tab>", "<cmd>bnext<CR>")
 vim.keymap.set("n", "<S-Tab>", "<cmd>bprevious<CR>")
