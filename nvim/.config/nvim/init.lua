@@ -11,7 +11,6 @@ vim.o.scrolloff       = 8
 vim.o.sidescrolloff   = 8
 vim.o.completeopt     = "menu,menuone,noselect"
 vim.g.mapleader       = ' '
-vim.g.netrw_liststyle = 3 -- tree view by default
 
 -- Plugin manager
 vim.pack.add({
@@ -29,6 +28,7 @@ vim.pack.add({
   { src = "https://github.com/tpope/vim-fugitive" },
   { src = "https://github.com/tpope/vim-dispatch" },
   { src = "https://github.com/tpope/vim-projectionist" },
+  { src = "https://github.com/tpope/vim-vinegar" },
   { src = "https://github.com/neovim/nvim-lspconfig" },
   { src = "https://github.com/NMAC427/guess-indent.nvim" },
   { src = "https://github.com/vladdoster/remember.nvim" },
@@ -84,8 +84,8 @@ vim.keymap.set("n", "-", "<cmd>Ex<CR>")
 
 vim.keymap.set('n', '<leader>ss', '<cmd>lua MiniSessions.select()<cr>')
 vim.keymap.set('n', '<leader>sw', function()
-    local folder_name = vim.fn.getcwd():match("([^/]+)$")
-    require('mini.sessions').write(folder_name)
+  local folder_name = vim.fn.getcwd():match("([^/]+)$")
+  require('mini.sessions').write(folder_name)
 end)
 
 vim.keymap.set("n", "<Tab>", "<cmd>bnext<CR>")
