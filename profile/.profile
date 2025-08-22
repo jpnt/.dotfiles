@@ -29,11 +29,11 @@ export \
 if test -n "$PS1"; then
     case "$(ps -p $$ -o comm= 2>/dev/null)" in
         bash) test -r "${HOME}/.bashrc" && . "${HOME}/.bashrc" ;;
-	# TODO: add yash
     esac
 fi
 
 # Start graphical session on tty1 if not already running
 if test "$(tty)" = "/dev/tty1" && test -z "$WAYLAND_DISPLAY"; then
-    exec river
+    exec river 2>&1 | tee -a ~/.local/state/river.log
+    # exec sh -c 'slstatus -s | dwl 2>&1 | tee -a ~/.local/state/dwl.log'
 fi
