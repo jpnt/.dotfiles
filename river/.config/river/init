@@ -119,7 +119,8 @@ for vt in $(seq 1 12); do
 done
 
 # Rules
-riverctl rule-add ssd  # All windows use server-side decorations
+riverctl rule-add csd
+riverctl rule-add -title "foot" ssd
 riverctl rule-add -title "*GIMP*" float        
 
 # Layout generator
