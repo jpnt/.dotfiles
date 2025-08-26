@@ -119,8 +119,8 @@ for vt in $(seq 1 12); do
 done
 
 # Rules
-riverctl rule-add csd
-riverctl rule-add -title "foot" ssd
+riverctl rule-add ssd
+# riverctl rule-add -title "foot" ssd
 riverctl rule-add -title "*GIMP*" float        
 
 # Layout generator
