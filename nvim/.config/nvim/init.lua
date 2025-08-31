@@ -114,6 +114,7 @@ vim.lsp.enable({
   "gopls",
   "rust_analyzer",
   "zls",
+  "typst_lsp",
 })
 
 vim.diagnostic.config({
