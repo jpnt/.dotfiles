@@ -1,7 +1,7 @@
 # ~/.profile
 
-export GOPATH="${HOME}/.local/share/go" \
-export MANPATH="${HOME}/.local/share/man:${MANPATH}" \
+export GOPATH="${HOME}/.local/share/go"
+export MANPATH="${HOME}/.local/share/man:${MANPATH}"
 export PATH="${HOME}/.local/bin:${GOPATH}/bin:/usr/local/bin:${PATH}"
 
 # Basic environment configuration
