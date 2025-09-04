@@ -71,11 +71,18 @@ riverctl map normal Super+Shift S spawn 'grim -g "$(slurp)"'
 # Lock screen
 riverctl map normal Control+Alt Backspace spawn 'waylock'
 
+# Battery percentage
+riverctl map normal Super+Shift B spawn 'notify-send -t 800 "Battery: $(cat /sys/class/power_supply/BAT0/capacity)%"'
+
 # Audio controls
-riverctl map normal None XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+'
-riverctl map normal None XF86AudioLowerVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
-riverctl map normal None XF86AudioMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
-riverctl map normal None XF86AudioMicMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
+riverctl map normal None XF86AudioRaiseVolume spawn \
+    'wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+ && notify-send -t 800 "$(wpctl get-volume @DEFAULT_AUDIO_SINK@)"'
+riverctl map normal None XF86AudioLowerVolume spawn \
+    'wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%- && notify-send -t 800 "$(wpctl get-volume @DEFAULT_AUDIO_SINK@)"'
+riverctl map normal None XF86AudioMute spawn \
+    'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && notify-send -t 800 "$(wpctl get-volume @DEFAULT_AUDIO_SINK@)"'
+riverctl map normal None XF86AudioMicMute spawn \
+    'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle && notify-send -t 800 "Microphone: $(wpctl get-volume @DEFAULT_AUDIO_SOURCE@)"'
 
 # Monitor focus
 riverctl map normal Super Comma focus-output previous
