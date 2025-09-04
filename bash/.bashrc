@@ -36,6 +36,7 @@ alias gm='git submodule update --init --recursive'
 alias gd='git diff --color-moved --patience'
 alias straceps='strace -ftt -e trace=%process,%signal -o "straceps_$(date +%Y%m%d_%H%M%S).log"'
 alias stracerw='strace -ftt -e trace=read,write -o "stracerw_$(date +%Y%m%d_%H%M%S).log"'
+alias rsyncpreserve='rsync -avHAXS --numeric-ids'
 
 # Prompt
 PS1='$ \u:[\w]> '
