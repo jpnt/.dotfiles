@@ -1,16 +1,18 @@
 -- nvim 0.12 required
-local vim             = vim -- ignore warning
+local vim            = vim -- ignore warning
 -- Options
-vim.o.number          = true
-vim.o.relativenumber  = true
-vim.o.ignorecase      = true
-vim.o.smartcase       = true
-vim.o.signcolumn      = "yes"
-vim.o.wrap            = false
-vim.o.scrolloff       = 8
-vim.o.sidescrolloff   = 8
-vim.o.completeopt     = "menu,menuone,noselect"
-vim.g.mapleader       = ' '
+vim.o.cursorline     = true
+vim.o.number         = true
+vim.o.termguicolors  = true
+vim.o.relativenumber = true
+vim.o.ignorecase     = true
+vim.o.smartcase      = true
+vim.o.signcolumn     = "yes"
+vim.o.wrap           = false
+vim.o.scrolloff      = 8
+vim.o.sidescrolloff  = 8
+vim.o.completeopt    = "menu,menuone,noselect"
+vim.g.mapleader      = ' '
 
 -- Plugin manager
 vim.pack.add({
@@ -52,6 +54,7 @@ require("luasnip.loaders.from_vscode").lazy_load()
 
 require("mini.notify").setup()
 vim.notify = require("mini.notify").make_notify()
+
 
 require("mini.base16").setup({
   palette = {
