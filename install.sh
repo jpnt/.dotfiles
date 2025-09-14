@@ -13,8 +13,6 @@ find "$1" -type f | while read -r file; do
     
     # Create symlink (remove existing file/link first)
     [ -e "$target_path" ] && rm -f "$target_path"
-    ln -sf "$PWD/$file" "$target_path"
-    
-    echo "Linked $target_path -> $PWD/$file"
+    ln -sf "$PWD/$file" "$target_path" && echo "Linked $target_path -> $PWD/$file"
 done
 
