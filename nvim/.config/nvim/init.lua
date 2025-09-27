@@ -13,6 +13,7 @@ vim.o.scrolloff      = 8
 vim.o.sidescrolloff  = 8
 vim.o.completeopt    = "menu,menuone,noselect"
 vim.g.mapleader      = ' '
+vim.g.netrw_keepdir  = 0
 
 -- Plugin manager
 vim.pack.add({
@@ -36,7 +37,10 @@ vim.pack.add({
   { src = "https://github.com/vladdoster/remember.nvim" },
   { src = "https://github.com/L3MON4D3/LuaSnip" },
   { src = "https://github.com/rafamadriz/friendly-snippets" },
-  { src = "https://github.com/xiyaowong/transparent.nvim" },
+  { src = "https:://github.com/xiyaowong/transparent.nvim" },
+  { src = "https://github.com/dstein64/vim-startuptime" },
+  { src = "https://codeberg.org/mfussenegger/nvim-jdtls" },
+  { src = "https://codeberg.org/mfussenegger/nvim-dap.git" },
 })
 
 -- Plugin config/enable
@@ -48,15 +52,11 @@ require("mini.tabline").setup()
 require("mini.statusline").setup()
 require("mini.diff").setup()
 require("mini.sessions").setup()
-
+require("mini.notify").setup()
+vim.notify = require("mini.notify").make_notify()
 require("guess-indent").setup()
 require("remember")
 require("luasnip.loaders.from_vscode").lazy_load()
-
-require("mini.notify").setup()
-vim.notify = require("mini.notify").make_notify()
-
-
 require("mini.base16").setup({
   palette = {
     base00 = "#000000",
@@ -81,27 +81,24 @@ require("mini.base16").setup({
 -- Keymaps
 vim.keymap.set({ 'n', 'v', 'x' }, '<leader>y', '"+y<CR>')
 vim.keymap.set({ 'n', 'v', 'x' }, '<leader>d', '"+d<CR>')
-vim.keymap.set('n', '<leader>f', ':Pick files<CR>')
-vim.keymap.set('n', '<leader>g', ':Pick grep_live<CR>')
-vim.keymap.set('n', '<leader>h', ':Pick help<CR>')
-vim.keymap.set("n", "<leader>cc", ':Dispatch ')
-vim.keymap.set("n", "-", "<cmd>Ex<CR>")
-
-vim.keymap.set('n', '<leader>ss', '<cmd>lua MiniSessions.select()<cr>')
-vim.keymap.set('n', '<leader>sw', function()
-  local folder_name = vim.fn.getcwd():match("([^/]+)$")
-  require('mini.sessions').write(folder_name)
-end)
-
 vim.keymap.set("n", "<Tab>", "<cmd>bnext<CR>")
 vim.keymap.set("n", "<S-Tab>", "<cmd>bprevious<CR>")
-
+vim.keymap.set("n", "-", "<cmd>Ex<CR>")
 vim.keymap.set("n", "<leader>\\", function()
   vim.cmd.vnew()
   vim.cmd.term()
   vim.cmd.wincmd("J")
 end)
 
+vim.keymap.set('n', '<leader>f', ':Pick files<CR>')
+vim.keymap.set('n', '<leader>g', ':Pick grep_live<CR>')
+vim.keymap.set('n', '<leader>h', ':Pick help<CR>')
+vim.keymap.set("n", "<leader>cc", ':Dispatch ')
+vim.keymap.set('n', '<leader>ss', '<cmd>lua MiniSessions.select()<cr>')
+vim.keymap.set('n', '<leader>sw', function()
+  local folder_name = vim.fn.getcwd():match("([^/]+)$")
+  require('mini.sessions').write(folder_name)
+end)
 vim.keymap.set({ 'i', 's' }, '<C-e>', function()
   local luasnip = require("luasnip")
   if luasnip.expand_or_locally_jumpable() then
@@ -119,6 +116,7 @@ vim.lsp.enable({
   "rust_analyzer",
   "zls",
   "typst_lsp",
+  "jdtls",
 })
 
 vim.diagnostic.config({
