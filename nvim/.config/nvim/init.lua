@@ -1,19 +1,24 @@
 -- nvim 0.12 required
-local vim            = vim -- ignore warning
+local vim = vim
+vim.loader.enable()
 -- Options
-vim.o.cursorline     = true
-vim.o.number         = true
-vim.o.termguicolors  = true
-vim.o.relativenumber = true
-vim.o.ignorecase     = true
-vim.o.smartcase      = true
-vim.o.signcolumn     = "yes"
-vim.o.wrap           = false
-vim.o.scrolloff      = 8
-vim.o.sidescrolloff  = 8
-vim.o.completeopt    = "menu,menuone,noselect"
-vim.g.mapleader      = ' '
-vim.g.netrw_keepdir  = 0
+vim.o.cursorline              = true
+vim.o.number                  = true
+vim.o.termguicolors           = true
+vim.o.relativenumber          = true
+vim.o.ignorecase              = true
+vim.o.smartcase               = true
+vim.o.signcolumn              = "yes"
+vim.o.wrap                    = false
+vim.o.scrolloff               = 8
+vim.o.sidescrolloff           = 8
+vim.o.completeopt             = "menu,menuone,noselect"
+vim.g.mapleader               = ' '
+vim.g.netrw_keepdir           = 0
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_node_provider    = 0
+vim.g.loaded_perl_provider    = 0
+vim.g.loaded_ruby_provider    = 0
 
 -- Plugin manager
 vim.pack.add({
@@ -75,7 +80,6 @@ vim.schedule(function() -- Do not lock
   require("mini.statusline").setup()
   require("mini.diff").setup()
   require("mini.sessions").setup()
-  require("mini.notify").setup()
   vim.notify = require("mini.notify").make_notify()
 
   require("luasnip.loaders.from_vscode").lazy_load()
@@ -88,7 +92,7 @@ vim.keymap.set({ 'n', 'v', 'x' }, '<leader>y', '"+y<CR>')
 vim.keymap.set({ 'n', 'v', 'x' }, '<leader>d', '"+d<CR>')
 vim.keymap.set("n", "<Tab>", "<cmd>bnext<CR>")
 vim.keymap.set("n", "<S-Tab>", "<cmd>bprevious<CR>")
-vim.keymap.set("n", "-", "<cmd>Ex<CR>")
+vim.keymap.set("n", "-", "<cmd>Lex 25<CR>")
 vim.keymap.set("n", "<leader>\\", function()
   vim.cmd.vnew()
   vim.cmd.term()
@@ -116,7 +120,7 @@ vim.diagnostic.config({
 })
 
 -- LSP (Language Server Protocol)
-vim.api.nvim_create_autocmd({"BufReadPost", "BufNewFile"}, {
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
   once = true,
   callback = function()
     -- vim.lsp.config is handled by nvim-lspconfig plugin
