@@ -48,6 +48,8 @@ vim.pack.add({
   { src = "https://codeberg.org/mfussenegger/nvim-dap.git" },
 })
 
+require("remember")
+
 -- Theme
 require("mini.base16").setup({
   palette = {
@@ -84,7 +86,6 @@ vim.schedule(function() -- Do not lock
 
   require("luasnip.loaders.from_vscode").lazy_load()
   require("guess-indent").setup()
-  require("remember")
 end)
 
 -- Keymaps
