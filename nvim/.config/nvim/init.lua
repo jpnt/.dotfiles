@@ -49,6 +49,7 @@ vim.pack.add({
 })
 
 require("remember")
+require("guess-indent").setup()
 
 -- Theme
 require("mini.base16").setup({
@@ -82,10 +83,10 @@ vim.schedule(function() -- Do not lock
   require("mini.statusline").setup()
   require("mini.diff").setup()
   require("mini.sessions").setup()
+  require("mini.notify").setup()
   vim.notify = require("mini.notify").make_notify()
 
   require("luasnip.loaders.from_vscode").lazy_load()
-  require("guess-indent").setup()
 end)
 
 -- Keymaps
@@ -148,7 +149,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
     vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr })
     vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr })
-    vim.keymap.set("n", "<leader>rr", vim.lsp.buf.references, { buffer = bufnr })
     vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { buffer = bufnr })
   end,
 })
