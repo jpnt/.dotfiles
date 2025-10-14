@@ -1,53 +1,10 @@
 #!/bin/sh
-# booksort: Book library sorting and place on specific folder according to file extension.
+# booksort: Book sorting and place on specific folder according to file extension.
 # Use `KEPUB=1 booksort *` to also convert from epub to kepub and place them separately.
+set -e
 
-if [ "$#" -eq 0 ]; then
-    echo "Usage: $0 <file>"
-    exit 1
-fi
-
-for FILE in "$@"; do
-    if [ ! -f "$FILE" ]; then
-        echo "Skipping: $FILE (not a valid file)"
-        continue
-    fi
-
-    case "$FILE" in
-        *.kepub.epub)
-            FILENAME=$(basename "$FILE")
-            DIRECTORY=$(dirname "$FILE")
-            NORMALIZED_NAME=$(echo "$FILENAME" | sed 's/[[:space:]]\{1,\}/_/g' | awk '{
-                gsub(/_+/, "_")
-                n = split($0, parts, /_/)
-                output = ""
-                for (i = 1; i <= n; i++) {
-                    if (parts[i] == "") continue
-                    first = substr(parts[i], 1, 1)
-                    rest = substr(parts[i], 2)
-                    output = output (i > 1 ? "_" : "") toupper(first) rest
-                }
-                print output
-            }')
-            OUTPUT_DIR="$DIRECTORY/kepub"
-            mkdir -p "$OUTPUT_DIR"
-            mv "$FILE" "$OUTPUT_DIR/$NORMALIZED_NAME"
-            echo "Processed: $NORMALIZED_NAME -> $OUTPUT_DIR"
-            continue
-            ;;
-    esac
-
-    EXTENSION="${FILE##*.}"
-    EXTENSION_LOWER=$(echo "$EXTENSION" | tr '[:upper:]' '[:lower:]')
-
-    if [ "$EXTENSION_LOWER" != "pdf" ] && [ "$EXTENSION_LOWER" != "epub" ] && [ "$EXTENSION_LOWER" != "kepub" ]; then
-        echo "Skipping: $FILE (unsupported file type: $EXTENSION)"
-        continue
-    fi
-
-    FILENAME=$(basename "$FILE")
-    DIRECTORY=$(dirname "$FILE")
-    NORMALIZED_NAME=$(echo "$FILENAME" | sed 's/[[:space:]]\{1,\}/_/g' | awk '{
+normalize_name() {
+    echo "$1" | sed 's/[[:space:]]\{1,\}/_/g' | awk '{
         gsub(/_+/, "_")
         n = split($0, parts, /_/)
         output = ""
@@ -58,19 +15,51 @@ for FILE in "$@"; do
             output = output (i > 1 ? "_" : "") toupper(first) rest
         }
         print output
-    }')
+    }'
+}
 
-    OUTPUT_DIR="$DIRECTORY/$EXTENSION_LOWER"
-    mkdir -p "$OUTPUT_DIR"
+die() {
+    echo "Error: $1" >&2
+    exit 1
+}
 
-    if [ "$EXTENSION_LOWER" = "epub" ] && [ "${KEPUB:-0}" -eq 1 ]; then
-        KEPUB_NAME=$(echo "$NORMALIZED_NAME" | sed 's/\.[^.]*$//').kepub.epub
-        KEPUB_DIR="$DIRECTORY/kepub"
-        mkdir -p "$KEPUB_DIR"
-        kepubify "$FILE" -o "$KEPUB_DIR/$KEPUB_NAME"
-        echo "Processed: $KEPUB_NAME -> $KEPUB_DIR"
+[ "$#" -eq 0 ] && die "Usage: $0 <file>..."
+[ "${KEPUB:-0}" -eq 1 ] && ! command -v kepubify >/dev/null && die "kepubify not found"
+
+for FILE in "$@"; do
+    [ ! -f "$FILE" ] && { echo "Skip: $FILE (not a file)" >&2; continue; }
+
+    BASE=$(basename "$FILE")
+    DIR=$(dirname "$FILE")
+    
+    # Extract extension, normalize to lowercase
+    EXT="${BASE##*.}"
+    EXT=$(echo "$EXT" | tr '[:upper:]' '[:lower:]')
+    
+    # Handle .kepub.epub special case
+    if [ "$BASE" != "${BASE%.kepub.epub}" ]; then
+        EXT="kepub"
+        BASE="${BASE%.kepub.epub}.kepub.epub"
     fi
-
-    mv "$FILE" "$OUTPUT_DIR/$NORMALIZED_NAME"
-    echo "Processed: $NORMALIZED_NAME -> $OUTPUT_DIR"
+    
+    case "$EXT" in
+        pdf|epub|kepub|djvu) ;;
+        *) echo "Skip: $FILE (unsupported: .$EXT)" >&2; continue ;;
+    esac
+    
+    NORM=$(normalize_name "$BASE")
+    DEST="$DIR/$EXT"
+    mkdir -p "$DEST"
+    
+    # Convert epub→kepub if requested and not already kepub
+    if [ "$EXT" = "epub" ] && [ "${KEPUB:-0}" -eq 1 ]; then
+        KEPUB_NAME="${NORM%.epub}.kepub.epub"
+        KEPUB_DEST="$DIR/kepub"
+        mkdir -p "$KEPUB_DEST"
+        kepubify "$FILE" -o "$KEPUB_DEST/$KEPUB_NAME"
+        echo "$KEPUB_NAME → $KEPUB_DEST/"
+    fi
+    
+    mv "$FILE" "$DEST/$NORM"
+    echo "$NORM → $DEST/"
 done
