@@ -127,8 +127,14 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
   callback = function()
     -- vim.lsp.config is handled by nvim-lspconfig plugin
     vim.lsp.enable({
-      "clangd", "lua_ls", "ts_ls", "pyright",
-      "gopls", "rust_analyzer", "zls", "typst_lsp", "jdtls"
+      "clangd",
+      "lua_ls",
+      "vtsls",
+      "pyright",
+      "gopls",
+      "rust_analyzer",
+      "zls",
+      "jdtls",
     })
   end
 })
