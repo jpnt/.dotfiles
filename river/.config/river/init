@@ -72,10 +72,10 @@ riverctl map normal Super+Shift S spawn 'grim -g "$(slurp)"'
 riverctl map normal Control+Alt Backspace spawn 'waylock'
 
 # Battery percentage
-riverctl map normal Super+Shift B spawn 'notify-send -t 2000 "Battery: $(cat /sys/class/power_supply/BAT0/capacity)%"'
+riverctl map normal Super+Shift B spawn 'notify-send -t 2000 "Battery" "$(cat /sys/class/power_supply/BAT0/capacity)% $(cat /sys/class/power_supply/BAT0/status)"'
 
 # Date
-riverctl map normal Super+Shift D spawn 'notify-send -t 2000 "Date: $(date)"'
+riverctl map normal Super+Shift D spawn 'notify-send -t 2000 "Date" "$(date)"'
 
 # River tags
 riverctl map normal Super+Shift T spawn 'notify-send -t 2000 "Tags" "$(rivertags)"'
