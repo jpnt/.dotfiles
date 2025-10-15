@@ -1,0 +1,6 @@
+#!/bin/sh
+selection=$(man -k . | fzf)
+[ -z "$selection" ] && exit 0
+name=$(echo "$selection" | sed 's/ *(.*//')
+section=$(echo "$selection" | sed 's/^[^(]*(\([0-9]\+\)).*/\1/')
+man "$section" "$name"
