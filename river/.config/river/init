@@ -132,9 +132,8 @@ for vt in $(seq 1 12); do
 done
 
 # Rules
-riverctl rule-add ssd
-# riverctl rule-add -title "foot" ssd
-riverctl rule-add -title "*GIMP*" float        
+riverctl rule-add -app-id "gimp" float
+riverctl rule-add -app-id "Eclipse" float
 
 # Layout generator
 riverctl default-layout rivertile

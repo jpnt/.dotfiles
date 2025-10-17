@@ -44,9 +44,7 @@ vim.pack.add({
   { src = "https://github.com/rafamadriz/friendly-snippets" },
   { src = "https://github.com/dstein64/vim-startuptime" },
   { src = "https://github.com/mg979/vim-visual-multi" },
-  { src = "https://codeberg.org/mfussenegger/nvim-jdtls" },
-  { src = "https://codeberg.org/mfussenegger/nvim-dap.git" },
-})
+  })
 
 require("remember")
 require("guess-indent").setup()
@@ -101,6 +99,7 @@ vim.keymap.set("n", "<leader>\\", function()
   vim.cmd.wincmd("J")
 end)
 
+-- Keymaps using plugins
 vim.keymap.set('n', '<leader>f', '<cmd>Pick files<CR>')
 vim.keymap.set('n', '<leader>g', '<cmd>Pick grep_live<CR>')
 vim.keymap.set('n', '<leader>h', '<cmd>Pick help<CR>')
@@ -117,6 +116,7 @@ vim.keymap.set({ 'i', 's' }, '<C-e>', function()
   end
 end)
 
+-- Diagnostic line
 vim.diagnostic.config({
   virtual_lines = { current_line = true },
 })
@@ -126,6 +126,7 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
   once = true,
   callback = function()
     -- vim.lsp.config is handled by nvim-lspconfig plugin
+    -- https://github.com/neovim/nvim-lspconfig/tree/master/lsp
     vim.lsp.enable({
       "clangd",
       "lua_ls",
