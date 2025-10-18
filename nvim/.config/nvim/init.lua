@@ -43,36 +43,39 @@ vim.pack.add({
   { src = "https://github.com/L3MON4D3/LuaSnip" },
   { src = "https://github.com/rafamadriz/friendly-snippets" },
   { src = "https://github.com/dstein64/vim-startuptime" },
+  { src = "https://github.com/dstein64/nvim-scrollview" },
   { src = "https://github.com/mg979/vim-visual-multi" },
-  })
-
-require("remember")
-require("guess-indent").setup()
+  { src = "https://github.com/romus204/referencer.nvim" },
+})
 
 -- Theme
 require("mini.base16").setup({
   palette = {
-    base00 = "#2E3440",
-    base01 = "#3B4252",
-    base02 = "#434C5E",
-    base03 = "#4C566A",
-    base04 = "#D8DEE9",
-    base05 = "#E5E9F0",
-    base06 = "#ECEFF4",
-    base07 = "#ECEFF4",
-    base08 = "#BF616A",
-    base09 = "#D08770",
-    base0A = "#EBCB8B",
-    base0B = "#A3BE8C",
-    base0C = "#88C0D0",
-    base0D = "#81A1C1",
-    base0E = "#B48EAD",
-    base0F = "#D08770",
+    base00 = "#282c34", -- background
+    base01 = "#353b45", -- lighter background (status, sidebar)
+    base02 = "#3e4451", -- selection background
+    base03 = "#545862", -- comments, invisibles
+    base04 = "#565c64", -- dark foreground (status)
+    base05 = "#abb2bf", -- default foreground
+    base06 = "#b6bdca", -- light foreground
+    base07 = "#c8ccd4", -- lighter foreground
+    base08 = "#e06c75", -- variables, red
+    base09 = "#d19a66", -- integers, booleans, constants
+    base0A = "#e5c07b", -- classes, yellow
+    base0B = "#98c379", -- strings, green (mandatory)
+    base0C = "#56b6c2", -- support, cyan
+    base0D = "#61afef", -- functions, blue
+    base0E = "#c678dd", -- keywords, purple
+    base0F = "#be5046", -- deprecated, orange-red
   },
 })
 
--- Plugin config/enable
-vim.schedule(function() -- Do not lock
+-- Plugins that have to load early
+require("remember")
+require("guess-indent").setup()
+
+-- Plugins that can be scheduled to load later
+vim.schedule(function()
   require("mini.icons").setup()
   require("mini.pick").setup()
   require("mini.ai").setup()
@@ -83,8 +86,8 @@ vim.schedule(function() -- Do not lock
   require("mini.sessions").setup()
   require("mini.notify").setup()
   vim.notify = require("mini.notify").make_notify()
-
   require("luasnip.loaders.from_vscode").lazy_load()
+  require("referencer").setup({ enable = true })
 end)
 
 -- Keymaps
@@ -99,7 +102,7 @@ vim.keymap.set("n", "<leader>\\", function()
   vim.cmd.wincmd("J")
 end)
 
--- Keymaps using plugins
+-- Keymaps that use plugins
 vim.keymap.set('n', '<leader>f', '<cmd>Pick files<CR>')
 vim.keymap.set('n', '<leader>g', '<cmd>Pick grep_live<CR>')
 vim.keymap.set('n', '<leader>h', '<cmd>Pick help<CR>')
@@ -152,7 +155,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.lsp.completion.get()
       end, { buffer = bufnr })
     end
-    -- LSP specific keymaps
+    -- LSP keymaps
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
     vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr })
     vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr })
