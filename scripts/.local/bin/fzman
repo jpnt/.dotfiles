@@ -1,6 +1,23 @@
 #!/bin/sh
-selection=$(man -k . | fzf)
-[ -z "$selection" ] && exit 0
-name=$(echo "$selection" | sed 's/ *(.*//')
-section=$(echo "$selection" | sed 's/^[^(]*(\([0-9]\+\)).*/\1/')
-man "$section" "$name"
+
+# Get all possible man directories
+{
+    echo "$MANPATH" | tr ':' '\n'
+    command -v manpath >/dev/null 2>&1 && manpath 2>/dev/null | tr ':' '\n'
+    echo "/usr/share/man
+/usr/local/share/man
+/usr/man
+/usr/local/man
+/opt/man
+$HOME/.local/share/man"
+} | while IFS= read -r dir; do
+    [ -d "$dir" ] && printf "%s\n" "$dir"
+done | sort -u | while IFS= read -r dir; do
+    find "$dir" -type f -name "*.[1-9]*" 2>/dev/null
+done | 
+    sed 's|.*/man\([1-9][^/]*\)/\([^/]*\)\.\([1-9]\).*$|\2(\1)|' | 
+    sort -u | 
+    fzf --exact --no-sort | {
+        IFS='()' read -r name section _
+        [ -n "$name" ] && exec man "$section" "$name"
+    }

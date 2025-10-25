@@ -1,8 +1,7 @@
 # ~/.profile
 
 export GOPATH="${HOME}/.local/share/go"
-export BUN_INSTALL="$HOME/.local/share/bun"
-export PATH="${HOME}/.local/bin:${GOPATH}/bin:${BUN_INSTALL}/bin:/usr/local/bin:${PATH}"
+export PATH="${HOME}/.local/bin:${GOPATH}/bin:/usr/local/bin:${PATH}"
 export MANPATH="${HOME}/.local/share/man:${MANPATH}"
 
 # Basic environment configuration
