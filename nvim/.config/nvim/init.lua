@@ -51,22 +51,22 @@ vim.pack.add({
 -- Theme
 require("mini.base16").setup({
   palette = {
-    base00 = "#282c34", -- background
-    base01 = "#353b45", -- lighter background (status, sidebar)
-    base02 = "#3e4451", -- selection background
-    base03 = "#545862", -- comments, invisibles
-    base04 = "#565c64", -- dark foreground (status)
-    base05 = "#abb2bf", -- default foreground
-    base06 = "#b6bdca", -- light foreground
-    base07 = "#c8ccd4", -- lighter foreground
-    base08 = "#e06c75", -- variables, red
-    base09 = "#d19a66", -- integers, booleans, constants
-    base0A = "#e5c07b", -- classes, yellow
-    base0B = "#98c379", -- strings, green (mandatory)
-    base0C = "#56b6c2", -- support, cyan
-    base0D = "#61afef", -- functions, blue
-    base0E = "#c678dd", -- keywords, purple
-    base0F = "#be5046", -- deprecated, orange-red
+    base00 = "#1d1f21", -- background
+    base01 = "#282a2e", -- lighter background (status, sidebar)
+    base02 = "#373b41", -- selection background
+    base03 = "#969896", -- comments, invisibles
+    base04 = "#b4b7b4", -- dark foreground (status)
+    base05 = "#c5c8c6", -- default foreground
+    base06 = "#e0e0e0", -- light foreground
+    base07 = "#ffffff", -- lighter foreground
+    base08 = "#cc6666", -- red (variables, errors)
+    base09 = "#de935f", -- orange (numbers, constants)
+    base0A = "#f0c674", -- yellow (classes, highlights)
+    base0B = "#b5bd68", -- green (strings)
+    base0C = "#8abeb7", -- cyan (support, special)
+    base0D = "#81a2be", -- blue (functions)
+    base0E = "#b294bb", -- purple (keywords)
+    base0F = "#a3685a", -- brown (deprecated, warnings)
   },
 })
 
