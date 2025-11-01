@@ -1,14 +1,12 @@
 # denv: developer environment: wrapper interface to manually initialize various programming tools
-# very silly script. not really updated and I just update it here and there when I need some glue
 
-CURRENT_SHELL=$(ps -p $$ -o comm=)
+CURRENT_SHELL=$(basename "$SHELL")
 
 usage() {
 	echo "Usage: source denv <tool>"
-	echo "Available tools: conda, cargo, dotnet, sdkman, nvm, bun"
+	echo "Available tools: conda, cargo, dotnet, sdkman, nvm, bun, esp"
 }
 
-# TODO: python, uv, pip? I never understood how python deals with shit. too many ways of doing the same shit
 tool_init() {
 	case "$1" in
 		conda)
@@ -18,26 +16,29 @@ tool_init() {
 			. "$HOME/.cargo/env"
 			;;
 		dotnet)
-			export DOTNET_CLI_TELEMETRY_OPTOUT=1
 			export DOTNET_ROOT=/usr/lib/dotnet/dotnet8
+			test -d "$DOTNET_ROOT" || { echo "dotnet install not found at: $DOTNET_ROOT"; return 1; }
+			export DOTNET_CLI_TELEMETRY_OPTOUT=1
 			export PATH="${DOTNET_ROOT}:${HOME}/.dotnet/tools:${PATH}"
 			;;
 		sdkman)
 			export SDKMAN_DIR="${HOME}/.sdkman"
+			test -d "$SDKMAN_DIR" || { echo "sdkman install not found at: $SDKMAN_DIR"; return 1; }
 			. "${HOME}/.sdkman/bin/sdkman-init.sh"
 			;;
 		nvm)
 			export NVM_DIR="${HOME}/.nvm"
+			test -d "$NVM_DIR" || { echo "nvm install not found at: $NVM_DIR"; return 1; }
 			. "${NVM_DIR}/nvm.sh"
 			;;
 		bun)
 			export BUN_INSTALL="${HOME}/.bun"
-			test -d "$BUN_INSTALL" \
-				|| curl -fsSL https://bun.sh/install | bash
+			test -d "$BUN_INSTALL" || { echo "bun install not found at: $BUN_INSTALL"; return 1; }
 			export PATH="${BUN_INSTALL}/bin:${PATH}"
 			;;
 		esp)
-			. "${HOME}/esp-idf/export.sh"
+
+			. "$HOME/.esp-idf/export.sh"
 			;;
 		*)
 			echo "Error: Unknown tool '$1'."
