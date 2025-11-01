@@ -1,5 +1,9 @@
 profile laptop {
-    output "eDP-1" mode 2560x1600@165Hz scale 1.5 adaptive_sync on
+    output "BOE NE140QDM-NX7 Unknown" {
+        mode 2560x1600@165Hz 
+        scale 1.5 
+        adaptive_sync on
+    }
 }
 
 profile desktop {
