@@ -1,4 +1,5 @@
 #!/bin/sh
+set -eu
 exec 2>&1
 
 dbus-monitor --session \
@@ -6,6 +7,10 @@ dbus-monitor --session \
 while IFS= read -r line; do
     case "$line" in
         *"member=Ready"*)
+            # Reset values
+            wayland_display=
+            display=
+
             # Found our signal, read parameters
             while IFS= read -r line; do
                 case "$line" in
@@ -32,7 +37,7 @@ while IFS= read -r line; do
                 test -n "$display" && echo "$display" > "$TURNSTILE_ENV_DIR"/DISPLAY
             }
 
-            # Grace period for compositor protocol initialization, a "pseudo deadline"
+            # Grace period for compositor protocol initialization, "deadline"
             sleep 1
             
             exec pause
