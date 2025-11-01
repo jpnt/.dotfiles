@@ -1,45 +1,45 @@
 #!/bin/sh
 
-# River init
-
 # Appearance
 riverctl background-color 0x000000
 riverctl border-color-focused 0x79c0ff
 riverctl border-color-unfocused 0x161b22
 riverctl border-width 1
 
-# Keyboard repeat rate
+# Keyboard
 riverctl set-repeat 40 600
+riverctl keyboard-layout -options "grp:alt_shift_toggle" "pt,us"
 
-# Cursor configuration
+# Cursor
 riverctl focus-follows-cursor normal
 riverctl hide-cursor when-typing enabled
 
-# Keyboard layout
-riverctl keyboard-layout -options "grp:alt_shift_toggle" "pt,us"
+# Mouse
+riverctl map-pointer normal Super BTN_LEFT move-view      
+riverctl map-pointer normal Super BTN_RIGHT resize-view   
+riverctl map-pointer normal Super BTN_MIDDLE toggle-float 
 
-# Input configuration
-for pad in $(riverctl list-inputs | grep -i touchpad)
-do
-    riverctl input $pad tap enabled
-    riverctl input $pad tap-button-map left-right-middle
-    riverctl input $pad drag enabled
-    riverctl input $pad drag-lock enabled
-    riverctl input $pad disable-while-typing enabled
-    riverctl input $pad middle-emulation disabled
-    riverctl input $pad natural-scroll disabled
-    riverctl input $pad scroll-method two-finger
-    riverctl input $pad click-method button-areas
-    riverctl input $pad accel-profile adaptive
-    riverctl input $pad pointer-accel 0.0
+# Touchpad
+for pad in $(riverctl list-inputs | grep -i touchpad); do
+    riverctl input "$pad" tap enabled
+    riverctl input "$pad" tap-button-map left-right-middle
+    riverctl input "$pad" drag enabled
+    riverctl input "$pad" drag-lock enabled
+    riverctl input "$pad" disable-while-typing enabled
+    riverctl input "$pad" middle-emulation disabled
+    riverctl input "$pad" natural-scroll disabled
+    riverctl input "$pad" scroll-method two-finger
+    riverctl input "$pad" click-method button-areas
+    riverctl input "$pad" accel-profile adaptive
+    riverctl input "$pad" pointer-accel 0.0
 done
 
 # Terminal
 riverctl map normal Super+Shift Return spawn footclient
 
 # Launchers  
-riverctl map normal Super P spawn 'sh -c "exec $(tofi-run)"'
-riverctl map normal Super+Shift P spawn 'sh -c "exec $(tofi-drun)"'
+riverctl map normal Super P spawn 'tofi-run | xargs -r setsid -f'
+riverctl map normal Super+Shift P spawn 'tofi-drun | xargs -r setsid -f'
 
 # Window management
 riverctl map normal Super X close                    
@@ -55,32 +55,23 @@ riverctl map normal Super I send-layout-cmd rivertile "main-count +1"
 riverctl map normal Super D send-layout-cmd rivertile "main-count -1"
 
 # Layout switching
-riverctl map normal Super F toggle-float                                     
 riverctl map normal Super T send-layout-cmd rivertile "main-location left"   
 riverctl map normal Super M send-layout-cmd rivertile "main-location monocle"
-
-# Fullscreen and floating
-riverctl map normal Super E toggle-fullscreen        
-riverctl map normal Super Space toggle-float         
-riverctl map normal Super+Shift Space send-layout-cmd rivertile "main-location left"
+riverctl map normal Super E toggle-fullscreen
+riverctl map normal Super Space toggle-float
+riverctl map normal Super F toggle-float
 
 # Screenshot
 riverctl map normal Super S spawn 'grim'
-riverctl map normal Super+Shift S spawn 'grim -g "$(slurp)"'
+riverctl map normal Super+Shift S spawn 'slurp | xargs -I {} grim -g {}'
 
-# Lock screen
+# Notifications
 riverctl map normal Control+Alt Backspace spawn 'waylock'
-
-# Battery percentage
 riverctl map normal Super+Shift B spawn 'notify-send -t 2000 "Battery" "$(cat /sys/class/power_supply/BAT0/capacity)% $(cat /sys/class/power_supply/BAT0/status)"'
-
-# Date
 riverctl map normal Super+Shift D spawn 'notify-send -t 2000 "Date" "$(date)"'
-
-# River tags
 riverctl map normal Super+Shift T spawn 'notify-send -t 2000 "Tags" "$(rivertags)"'
 
-# Audio controls
+# Audio
 riverctl map normal None XF86AudioRaiseVolume spawn \
     'wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+ && notify-send -t 1000 "$(wpctl get-volume @DEFAULT_AUDIO_SINK@)"'
 riverctl map normal None XF86AudioLowerVolume spawn \
@@ -98,43 +89,38 @@ riverctl map normal Super+Shift Period send-to-output next
 
 # Tags
 for i in $(seq 1 9); do
-    tags=$((1 << ($i - 1)))
-    
-    # Super+[1-9] to focus tag
-    riverctl map normal Super $i set-focused-tags $tags
-    
-    # Super+Shift+[1-9] to move window to tag  
-    riverctl map normal Super+Shift $i set-view-tags $tags
-    
-    # Super+Ctrl+[1-9] to toggle tag view
-    riverctl map normal Super+Control $i toggle-focused-tags $tags
-    
-    # Super+Ctrl+Shift+[1-9] to toggle tag on window
-    riverctl map normal Super+Control+Shift $i toggle-view-tags $tags
+    tags=$((1 << (i - 1)))
+    riverctl map normal Super "$i" set-focused-tags "$tags"
+    riverctl map normal Super+Shift "$i" set-view-tags "$tags"
+    riverctl map normal Super+Control "$i" toggle-focused-tags "$tags"
+    riverctl map normal Super+Control+Shift "$i" toggle-view-tags "$tags"
 done
 
-# All tags
 all_tags=$(((1 << 32) - 1))
-riverctl map normal Super 0 set-focused-tags $all_tags
-riverctl map normal Super+Shift 0 set-view-tags $all_tags
+riverctl map normal Super 0 set-focused-tags "$all_tags"
+riverctl map normal Super+Shift 0 set-view-tags "$all_tags"
 
-# Mouse bindings
-riverctl map-pointer normal Super BTN_LEFT move-view      
-riverctl map-pointer normal Super BTN_RIGHT resize-view   
-riverctl map-pointer normal Super BTN_MIDDLE toggle-float 
-
-# Exit river
+# Exit
 riverctl map normal Super+Shift Q exit
 
 # VT switching
 for vt in $(seq 1 12); do
-    riverctl map normal Control+Alt F$vt spawn "chvt $vt"
+    riverctl map normal Control+Alt "F$vt" spawn "chvt $vt"
 done
 
 # Rules
-riverctl rule-add -app-id "gimp" float
-riverctl rule-add -app-id "Eclipse" float
+riverctl rule-add -app-id gimp float
+riverctl rule-add -app-id Eclipse float
 
-# Layout generator
+# Layout
 riverctl default-layout rivertile
-rivertile -view-padding 0 -outer-padding 0 &   
+
+# Signal readiness via D-Bus
+dbus-send --session --type=signal \
+    /org/wayland/Compositor \
+    org.wayland.Compositor.Ready \
+    string:"${WAYLAND_DISPLAY}" \
+    string:"${DISPLAY:-}"
+
+# Start layout generator (blocks)
+exec rivertile -view-padding 0 -outer-padding 0

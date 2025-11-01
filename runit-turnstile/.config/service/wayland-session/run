@@ -1,11 +1,41 @@
 #!/bin/sh
 exec 2>&1
-exec inotifywait -m -e create "${XDG_RUNTIME_DIR}" --format '%f' | while read file; do
-    test "${file#wayland-}" != "$file" && test -S "${XDG_RUNTIME_DIR}/$file" && {
-        test -d "$TURNSTILE_ENV_DIR" && {
-            echo "$file" > "$TURNSTILE_ENV_DIR"/WAYLAND_DISPLAY
-            echo "${DISPLAY:-:0}" > "$TURNSTILE_ENV_DIR"/DISPLAY
-        }
-        exec pause
-    }
+
+dbus-monitor --session \
+    "type='signal',path='/org/wayland/Compositor',interface='org.wayland.Compositor',member='Ready'" | \
+while IFS= read -r line; do
+    case "$line" in
+        *"member=Ready"*)
+            # Found our signal, read parameters
+            while IFS= read -r line; do
+                case "$line" in
+                    *string*)
+                        # Extract value from string parameter line
+                        val="${line#*\"}"
+                        val="${val%%\"*}"
+                        if [ -z "$wayland_display" ]; then
+                            wayland_display="$val"
+                        else
+                            display="$val"
+                            break
+                        fi
+                        ;;
+                esac
+            done
+
+            # For debugging (e.g.: svlogtail | grep parsed)
+            echo "parsed WAYLAND_DISPLAY: $wayland_display"
+            echo "parsed DISPLAY: $display"
+            
+            test -d "$TURNSTILE_ENV_DIR" && {
+                echo "$wayland_display" > "$TURNSTILE_ENV_DIR"/WAYLAND_DISPLAY
+                test -n "$display" && echo "$display" > "$TURNSTILE_ENV_DIR"/DISPLAY
+            }
+
+            # Grace period for compositor protocol initialization, a "pseudo deadline"
+            sleep 1
+            
+            exec pause
+            ;;
+    esac
 done
