@@ -19,6 +19,4 @@ divider = 2.0
 [renderer]
 performance = "low"
 backend = "vulkan"
-disable-unfocused-render = true
-level = 0
 
