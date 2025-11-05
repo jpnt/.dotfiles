@@ -4,8 +4,8 @@
 use-fork = true
 
 [fonts]
-size = 18
-family = "cascadiacode"
+size = 20
+family = "Iosevka Nerd Font Mono"
 
 [colors]
 background = '#000000'
@@ -20,3 +20,6 @@ divider = 2.0
 performance = "low"
 backend = "vulkan"
 
+[developer]
+log-level = "WARN"
+enable-log-file = true
