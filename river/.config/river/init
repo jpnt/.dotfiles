@@ -48,6 +48,18 @@ riverctl map normal Super K focus-view previous
 riverctl map normal Super Return zoom                
 riverctl map normal Super Tab focus-previous-tags
 
+# Snapping
+riverctl map normal Super Left  snap left
+riverctl map normal Super Right snap right
+riverctl map normal Super Up    snap up
+riverctl map normal Super Down  snap down
+
+# Floating resize
+riverctl map normal Super+Shift H resize horizontal -100
+riverctl map normal Super+Shift L resize horizontal +100
+riverctl map normal Super+Shift J resize vertical +100
+riverctl map normal Super+Shift K resize vertical -100
+
 # Layout control
 riverctl map normal Super H send-layout-cmd rivertile "main-ratio -0.05"  
 riverctl map normal Super L send-layout-cmd rivertile "main-ratio +0.05"  

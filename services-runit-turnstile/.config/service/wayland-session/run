@@ -1,6 +1,10 @@
 #!/bin/sh
-set -eu
 exec 2>&1
+
+# dbus-monitor --json | while read -r line; do
+#     wayland_display=$(echo "$line" | jq -r '.args.wayland_display')
+#     display=$(echo "$line" | jq -r '.args.display')
+# done
 
 dbus-monitor --session \
     "type='signal',path='/org/wayland/Compositor',interface='org.wayland.Compositor',member='Ready'" | \
