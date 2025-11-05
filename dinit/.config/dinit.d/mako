@@ -1,3 +1,0 @@
-type = process
-command = mako
-restart = true

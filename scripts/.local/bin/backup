@@ -1,5 +1,5 @@
 #!/bin/sh
-# Backup utility that uses parallel compression utilities whenever possible
+set -e
 
 # Settings
 BACKUP_DIR=~/Backups
@@ -7,38 +7,27 @@ COMPRESSION_LEVEL="6" # 1 to 9
 COMPRESSION_LEVEL_ZSTD="3" # 1 to 19
 PROCESSES=$(nproc)
 
-check_dependencies() {
-    dependencies="tar gzip pigz bzip2 pbzip2 zstd zip"
-    for cmd in $dependencies; do
-        if ! command -v "$cmd" >/dev/null 2>&1; then
-            echo "Error: '${cmd}' is not installed."
-            exit 1
-        fi
-    done
-}
-
 display_help() {
     echo "Usage: $(basename "$0") [FILE] [gzip|bzip2|zstd|zip]"
     exit 2
 }
 
 configure_backup_dir() {
-    if [ ! -e "$BACKUP_DIR" ]; then
-        mkdir "${BACKUP_DIR}"
-    fi
+    mkdir -p "${BACKUP_DIR}"
 }
 
 backup() {
-    input=$(echo "$1" | sed 's/\/$//') # Remove last trailing /
+    directory=0
+    
+    # assert file exists
+    # if its directory = 1
+
+    input="${1%/}" # strip trailing slash
+
     compression=$2
     timestamp=$(date +'%F-%Hh%M')
     backup_filename="${BACKUP_DIR}/${input}_${timestamp}"
     
-    if [ ! -e "$input" ]; then
-        echo "Error: File or directory not found: ${input}"
-        exit 1
-    fi
-
     echo "Initial size: $(du -sh "${input}")"
 
     case "$compression" in
@@ -92,8 +81,6 @@ backup() {
     exit 0
 }
 
-set -e
-check_dependencies
 configure_backup_dir
 
 if [ "$#" -ne 2 ]; then

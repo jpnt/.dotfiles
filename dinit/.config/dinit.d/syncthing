@@ -1,3 +1,0 @@
-type = process
-command = syncthing serve --no-browser
-restart = true

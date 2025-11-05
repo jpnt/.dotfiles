@@ -34,7 +34,6 @@ vim.pack.add({
   { src = "https://github.com/echasnovski/mini.diff" },
   { src = "https://github.com/echasnovski/mini.sessions" },
   { src = "https://github.com/tpope/vim-fugitive" },
-  { src = "https://github.com/tpope/vim-dispatch" },
   { src = "https://github.com/tpope/vim-projectionist" },
   { src = "https://github.com/tpope/vim-vinegar" },
   { src = "https://github.com/neovim/nvim-lspconfig" },
@@ -46,6 +45,7 @@ vim.pack.add({
   { src = "https://github.com/dstein64/nvim-scrollview" },
   { src = "https://github.com/mg979/vim-visual-multi" },
   { src = "https://github.com/romus204/referencer.nvim" },
+  { src = "https://github.com/slint-ui/vim-slint" },
 })
 
 -- Theme
@@ -103,7 +103,6 @@ vim.keymap.set("n", "<leader>\\", function()
 end)
 
 -- Keymaps that use plugins
-vim.keymap.set("n", "<leader>cc", ':Dispatch ')
 vim.keymap.set('n', '<leader>f', '<cmd>Pick files<CR>')
 vim.keymap.set('n', '<leader>g', '<cmd>Pick grep_live<CR>')
 vim.keymap.set('n', '<leader>h', '<cmd>Pick help<CR>')

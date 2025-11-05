@@ -1,6 +1,16 @@
 #!/bin/sh
-# jpstack – collection of software I run on Void Linux
-# POSIX sh - suckless and portable
+# jpstack – POSIX sh script to install and configure software I run on Void Linux
+# .dotfiles - user configuration
+# .etcfiles - system configuration
+# pman - custom package manager to install latest/custom software
+# kman - custom kernel manager to install latest/custom kernels
+
+# TODO: uses jpnt/.dotfiles and jpnt/.etcfiles for user and system configurations
+# TODO: uses pman to install software not present in xbps
+# TODO: no need for curses. just CLI . no need  for logs. do strict validation
+# TODO: no need for configuring GPU. script should detect it and install appropriate packages
+# TODO: remove Xwayland. wayland 100% percent.
+# TODO: script should have 100 lines max. unix and suckless style.
 
 set -eu
 IFS=' 	
@@ -46,6 +56,7 @@ info_box() {
     dialog --title "$TITLE" --infobox "$1" 5 60
 }
 
+# TODO: replace this shit with pman
 make_clean_install() {
     repo="$1"
     info_box "Compiling $repo..."
@@ -55,14 +66,12 @@ make_clean_install() {
     log_cmd sudo make install
     cd ..
 }
-
 install_librewolf_repo() {
     info_box "Installing Librewolf repository..."
     sudo install -Dm644 /dev/stdin /etc/xbps.d/20-librewolf.conf <<'EOF'
 repository=https://github.com/index-0/librewolf-void/releases/latest/download/
 EOF
 }
-
 install_ungoogled_chromium_repo() {
     info_box "Installing Ungoogled Chromium repository..."
     sudo install -Dm644 /dev/stdin /etc/xbps.d/20-ungoogled-chromium.conf <<'EOF'
@@ -124,7 +133,7 @@ install_packages() {
     qt5-wayland qt6-wayland adwaita-qt adwaita-qt6 tofi trash-cli mako \
     waylock swaybg swayidle kanshi gammastep neovim handlr scdoc \
     abduco socklog-void ripgrep fd fzf cronie eza ntpd-rs qalculate \
-    btrfs-progs snazzer zstd keychain make inotify-tools"
+    btrfs-progs snazzer zstd keychain make inotify-tools xlsclients lswt"
 
     PKGS="$CORE_PKGS"
 
@@ -159,7 +168,7 @@ install_packages() {
                 PKGS="$PKGS flatpak"
                 ;;
             extra)
-                PKGS="$PKGS xtools smartmontools lm_sensors dmidecode xwininfo catgirl htop btop nvtop bandwhich tlp keepassxc syncthing glxinfo git tig vis tealdeer ldns socat uv jq dua-cli xh tcpdump psmisc procs man-pages-devel cpufrequtils"
+                PKGS="$PKGS xtools smartmontools lm_sensors dmidecode xwininfo catgirl htop btop nvtop bandwhich tlp keepassxc syncthing glxinfo git tig vis tealdeer ldns socat uv jq dua-cli xh tcpdump psmisc procs man-pages-devel cpufrequtils libpcap-devel"
                 ;;
         esac
     done < "$TMP_OUT"
@@ -227,8 +236,10 @@ configure_btrfs() {
 	# really important. if this fails the whole system fails as well!
 	# use snazzer tool for backups
 	# btrfs-progs has a lot of useful utilities
+    # TODO: instead of this. create a blog post in my jpnt.github.io website.
 }
 
+# TODO: to be replaced with .etcfiles
 configure_dracut() {
     info_box "Configuring dracut..."
     sudo install -Dm644 /dev/stdin /etc/dracut.conf.d/99-jpstack.conf <<'EOF'
@@ -291,7 +302,7 @@ post_install() {
     xdg-user-dirs-update
 
     info_box "Adding user to groups..."
-    for grp in _seatd wheel input video socklog libvirt; do
+    for grp in _seatd wheel input video socklog libvirt dialout; do
         sudo usermod -aG "$grp" "$(whoami)"
     done
 

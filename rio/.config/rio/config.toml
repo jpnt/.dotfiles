@@ -1,0 +1,24 @@
+# https://rioterm.com/docs/key-bindings#linux-and-bsd
+
+# https://rioterm.com/docs/features/spawn-or-fork
+use-fork = true
+
+[fonts]
+size = 18
+family = "CaskaydiaCove Nerd Font Mono"
+
+[colors]
+background = '#000000'
+foreground = '#FFFFFF'
+cursor = '#FFFFFF'
+
+[scroll]
+multiplier = 10.0
+divider = 2.0
+
+[renderer]
+performance = "low"
+backend = "vulkan"
+disable-unfocused-render = true
+level = 0
+
