@@ -7,7 +7,7 @@ export MANPATH="${HOME}/.local/share/man:${MANPATH}"
 # Basic environment configuration
 export \
     XDG_CONFIG_HOME="${HOME}/.config" \
-    TERMINAL=footclient \
+    TERMINAL=foot \
     EDITOR=nvim \
     PAGER=less \
     BROWSER=firefox \
