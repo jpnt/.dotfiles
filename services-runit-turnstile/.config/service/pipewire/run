@@ -1,5 +1,4 @@
 #!/bin/sh
 exec 2>&1
-# TODO: "check" out /u/s/e/t/dbus.check
-# sv check ../dbus-session || exit 1
+sv check ../dbus-session || exit 1
 exec chpst -e "$TURNSTILE_ENV_DIR" pipewire
