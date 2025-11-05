@@ -6,7 +6,6 @@ use-fork = true
 [fonts]
 size = 20
 family = "Iosevka Nerd Font Mono"
-hinting = false
 
 [colors]
 background = '#000000'
