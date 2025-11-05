@@ -1,0 +1,7 @@
+#!/bin/sh
+sleep 1
+pkill -f xdg-desktop-portal-wlr
+pkill -f xdg-desktop-portal
+/usr/libexec/xdg-desktop-portal-wlr &
+sleep 2
+/usr/libexec/xdg-desktop-portal &
