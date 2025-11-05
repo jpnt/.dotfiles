@@ -5,7 +5,7 @@ use-fork = true
 
 [fonts]
 size = 18
-family = "CaskaydiaCove Nerd Font Mono"
+family = "cascadiacode"
 
 [colors]
 background = '#000000'
