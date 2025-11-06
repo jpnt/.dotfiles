@@ -1,7 +1,7 @@
 -- nvim 0.12 required
 local vim = vim
-vim.loader.enable()
 -- Options
+vim.loader.enable()
 vim.o.cursorline              = true
 vim.o.number                  = true
 vim.o.termguicolors           = true
@@ -19,6 +19,11 @@ vim.g.loaded_python3_provider = 0
 vim.g.loaded_node_provider    = 0
 vim.g.loaded_perl_provider    = 0
 vim.g.loaded_ruby_provider    = 0
+
+-- Diagnostic line
+vim.diagnostic.config({
+  virtual_lines = { current_line = true },
+})
 
 -- Plugin manager
 vim.pack.add({
@@ -46,6 +51,7 @@ vim.pack.add({
   { src = "https://github.com/mg979/vim-visual-multi" },
   { src = "https://github.com/romus204/referencer.nvim" },
   { src = "https://github.com/slint-ui/vim-slint" },
+  { src = "https://github.com/dhananjaylatkar/cscope_maps.nvim" },
 })
 
 -- Theme
@@ -76,6 +82,9 @@ require("guess-indent").setup()
 
 -- Plugins that can be scheduled to load later
 vim.schedule(function()
+  require("mini.notify").setup()
+  vim.notify = require("mini.notify").make_notify()
+
   require("mini.icons").setup()
   require("mini.pick").setup()
   require("mini.ai").setup()
@@ -84,10 +93,10 @@ vim.schedule(function()
   require("mini.statusline").setup()
   require("mini.diff").setup()
   require("mini.sessions").setup()
-  require("mini.notify").setup()
-  vim.notify = require("mini.notify").make_notify()
+
   require("luasnip.loaders.from_vscode").lazy_load()
   require("referencer").setup({ enable = true })
+  require("cscope_maps").setup()
 end)
 
 -- Keymaps
@@ -107,11 +116,13 @@ vim.keymap.set('n', '<leader>f', '<cmd>Pick files<CR>')
 vim.keymap.set('n', '<leader>g', '<cmd>Pick grep_live<CR>')
 vim.keymap.set('n', '<leader>h', '<cmd>Pick help<CR>')
 vim.keymap.set('n', '<leader>b', '<cmd>Pick buffers<CR>')
-vim.keymap.set('n', '<leader>ss', '<cmd>lua MiniSessions.select()<CR>')
+
 vim.keymap.set('n', '<leader>sw', function()
   local folder_name = vim.fn.getcwd():match("([^/]+)$")
   require('mini.sessions').write(folder_name)
 end)
+vim.keymap.set('n', '<leader>ss', '<cmd>lua MiniSessions.select()<CR>')
+
 vim.keymap.set({ 'i', 's' }, '<C-e>', function()
   local luasnip = require("luasnip")
   if luasnip.expand_or_locally_jumpable() then
@@ -119,12 +130,8 @@ vim.keymap.set({ 'i', 's' }, '<C-e>', function()
   end
 end)
 
--- Diagnostic line
-vim.diagnostic.config({
-  virtual_lines = { current_line = true },
-})
-
 -- LSP (Language Server Protocol)
+-- https://neovim.io/doc/user/lsp.html
 vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
   once = true,
   callback = function()

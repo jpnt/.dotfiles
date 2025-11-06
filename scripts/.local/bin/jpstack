@@ -11,6 +11,7 @@
 # TODO: no need for configuring GPU. script should detect it and install appropriate packages
 # TODO: remove Xwayland. wayland 100% percent.
 # TODO: script should have 100 lines max. unix and suckless style.
+# TODO: fwupd: https://github.com/fwupd/fwupd
 
 set -eu
 IFS=' 	
