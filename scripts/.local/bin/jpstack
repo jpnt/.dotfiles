@@ -168,7 +168,7 @@ install_packages() {
                 PKGS="$PKGS flatpak"
                 ;;
             extra)
-                PKGS="$PKGS xtools smartmontools lm_sensors dmidecode xwininfo catgirl htop btop nvtop bandwhich tlp keepassxc syncthing glxinfo git tig vis tealdeer ldns socat uv jq dua-cli xh tcpdump psmisc procs man-pages-devel cpufrequtils libpcap-devel"
+                PKGS="$PKGS xtools smartmontools lm_sensors dmidecode xwininfo catgirl htop atop nvtop bandwhich tlp keepassxc syncthing glxinfo git tig vis tealdeer ldns socat uv jq dua-cli xh tcpdump psmisc procs man-pages-devel cpufrequtils libpcap-devel"
                 ;;
         esac
     done < "$TMP_OUT"
