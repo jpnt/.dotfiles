@@ -34,7 +34,6 @@ vim.pack.add({
   { src = "https://github.com/echasnovski/mini.ai" },
   { src = "https://github.com/echasnovski/mini.surround" },
   { src = "https://github.com/echasnovski/mini.tabline" },
-  { src = "https://github.com/echasnovski/mini.notify" },
   { src = "https://github.com/echasnovski/mini.statusline" },
   { src = "https://github.com/echasnovski/mini.diff" },
   { src = "https://github.com/echasnovski/mini.sessions" },
@@ -52,6 +51,7 @@ vim.pack.add({
   { src = "https://github.com/romus204/referencer.nvim" },
   { src = "https://github.com/slint-ui/vim-slint" },
   { src = "https://github.com/dhananjaylatkar/cscope_maps.nvim" },
+  { src = "https://github.com/j-hui/fidget.nvim" },
 })
 
 -- Theme
@@ -82,9 +82,6 @@ require("guess-indent").setup()
 
 -- Plugins that can be scheduled to load later
 vim.schedule(function()
-  require("mini.notify").setup()
-  vim.notify = require("mini.notify").make_notify()
-
   require("mini.icons").setup()
   require("mini.pick").setup()
   require("mini.ai").setup()
@@ -97,6 +94,7 @@ vim.schedule(function()
   require("luasnip.loaders.from_vscode").lazy_load()
   require("referencer").setup({ enable = true })
   require("cscope_maps").setup()
+  require("fidget").setup()
 end)
 
 -- Keymaps
@@ -146,6 +144,7 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
       "rust_analyzer",
       "zls",
       "jdtls",
+      "slint_lsp",
     })
   end
 })
