@@ -53,6 +53,10 @@ vim.pack.add({
   { src = "https://github.com/slint-ui/vim-slint" },
   { src = "https://github.com/dhananjaylatkar/cscope_maps.nvim" },
   { src = "https://github.com/j-hui/fidget.nvim" },
+  {
+    src = "https://github.com/saghen/blink.cmp",
+    version = "v1.7.0"
+  },
 })
 
 -- Theme
@@ -96,6 +100,7 @@ vim.schedule(function()
   require("referencer").setup({ enable = true })
   require("cscope_maps").setup()
   require("fidget").setup()
+  require("blink.cmp").setup({ completion = { documentation = { auto_show = true } } })
 end)
 
 -- Keymaps
@@ -153,15 +158,6 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(ev)
     local bufnr  = ev.buf
-    local client = vim.lsp.get_client_by_id(ev.data.client_id)
-    -- native LSP completion (omnifunc + <C-Space>)
-    if client:supports_method("textDocument/completion") then
-      vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
-
-      vim.keymap.set("i", "<C-Space>", function()
-        vim.lsp.completion.get()
-      end, { buffer = bufnr })
-    end
     -- LSP keymaps
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
     vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr })
