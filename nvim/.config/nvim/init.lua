@@ -40,6 +40,7 @@ vim.pack.add({
   { src = "https://github.com/tpope/vim-fugitive" },
   { src = "https://github.com/tpope/vim-projectionist" },
   { src = "https://github.com/tpope/vim-vinegar" },
+  { src = "https://github.com/tpope/vim-dispatch" },
   { src = "https://github.com/neovim/nvim-lspconfig" },
   { src = "https://github.com/NMAC427/guess-indent.nvim" },
   { src = "https://github.com/vladdoster/remember.nvim" },
