@@ -2,6 +2,9 @@
 local vim = vim
 -- Options
 vim.loader.enable()
+vim.o.guicursor               = "n-v-i-c:block-Cursor"
+vim.o.wrap                    = true
+vim.opt.linebreak             = true
 vim.o.cursorline              = true
 vim.o.number                  = true
 vim.o.termguicolors           = true
@@ -9,7 +12,6 @@ vim.o.relativenumber          = true
 vim.o.ignorecase              = true
 vim.o.smartcase               = true
 vim.o.signcolumn              = "yes"
-vim.o.wrap                    = false
 vim.o.scrolloff               = 8
 vim.o.sidescrolloff           = 8
 vim.o.completeopt             = "menu,menuone,noselect"
@@ -53,10 +55,8 @@ vim.pack.add({
   { src = "https://github.com/slint-ui/vim-slint" },
   { src = "https://github.com/dhananjaylatkar/cscope_maps.nvim" },
   { src = "https://github.com/j-hui/fidget.nvim" },
-  {
-    src = "https://github.com/saghen/blink.cmp",
-    version = "v1.7.0"
-  },
+  { src = "https://github.com/saghen/blink.cmp",                version = "v1.7.0" },
+  { src = "https://github.com/stevearc/conform.nvim",           version = "v9.1.0" }
 })
 
 -- Theme
@@ -101,6 +101,15 @@ vim.schedule(function()
   require("cscope_maps").setup()
   require("fidget").setup()
   require("blink.cmp").setup({ completion = { documentation = { auto_show = true } } })
+  require("conform").setup({
+    formatters_by_ft = {
+      c = { "clang-format" },
+    },
+    format_on_save = {
+      timeout_ms = 500,
+      lsp_format = "fallback",
+    },
+  })
 end)
 
 -- Keymaps
@@ -139,7 +148,7 @@ end)
 vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
   once = true,
   callback = function()
-    -- vim.lsp.config is handled by nvim-lspconfig plugin
+    -- vim.lsp.config is handled automatically (by nvim-lspconfig plugin)
     -- https://github.com/neovim/nvim-lspconfig/tree/master/lsp
     vim.lsp.enable({
       "clangd",
@@ -157,11 +166,10 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
 
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(ev)
-    local bufnr  = ev.buf
+    local bufnr = ev.buf
     -- LSP keymaps
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
     vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr })
     vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr })
-    vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { buffer = bufnr })
   end,
 })
