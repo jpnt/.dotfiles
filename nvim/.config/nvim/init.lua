@@ -56,7 +56,8 @@ vim.pack.add({
   { src = "https://github.com/dhananjaylatkar/cscope_maps.nvim" },
   { src = "https://github.com/j-hui/fidget.nvim" },
   { src = "https://github.com/saghen/blink.cmp",                version = "v1.7.0" },
-  { src = "https://github.com/stevearc/conform.nvim",           version = "v9.1.0" }
+  { src = "https://github.com/stevearc/conform.nvim",           version = "v9.1.0" },
+  { src = "https://github.com/MysticalDevil/inlay-hints.nvim" }
 })
 
 -- Theme
@@ -165,6 +166,7 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {
+  require("inlay-hints").setup(),
   callback = function(ev)
     local bufnr = ev.buf
     -- LSP keymaps
