@@ -131,7 +131,7 @@ install_packages() {
     CORE_PKGS="dragon fcft-devel foot xdg-user-dirs xdg-desktop-portal-wlr \
     xdg-desktop-portal-gtk wlroots0.19-devel xorg-server-xwayland wlr-randr \
     wdisplays wl-clipboard grim slurp seatd turnstile keyd dhcpcd \
-    qt5-wayland qt6-wayland adwaita-qt adwaita-qt6 tofi trash-cli mako \
+    qt5-wayland qt6-wayland adwaita-qt adwaita-qt6 fuzzel trash-cli fnott \
     waylock swaybg swayidle kanshi gammastep neovim handlr scdoc \
     abduco socklog-void ripgrep fd fzf cronie eza ntpd-rs qalculate \
     btrfs-progs snazzer zstd keychain make inotify-tools xlsclients lswt"

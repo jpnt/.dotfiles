@@ -1,5 +1,8 @@
 #!/bin/sh
-
+# TODO: do not hardcode $HOME/.config/... as the XDG_CONFIG?
+# TODO: do not hardcode font across multiple files?
+# TODO: dbus session/flatpak dark theme
+ 
 [ $# -eq 1 ] || { echo "usage: $0 <dir>"; exit 1; }
 [ -d "$1" ] || { echo "error: $1 not found or is not a directory"; exit 1; }
 
