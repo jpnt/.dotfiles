@@ -1,4 +1,17 @@
 [Added Associations]
+application/x-trash=nvim.desktop;
+image/jpeg=imv.desktop;
+image/png=imv.desktop;
+inode/directory=pcmanfm.desktop;
+text/plain=nvim.desktop;
+video/mp4=mpv.desktop;
+video/x-matroska=mpv.desktop;
 
 [Default Applications]
-x-scheme-handler/eclipse+command x-scheme-handler/eclipse+mpc=_usr_lib_eclipse_.desktop
+image/jpeg=imv.desktop;
+image/png=imv.desktop;
+text/html=app.zen_browser.zen.desktop;
+text/plain=nvim.desktop;
+video/mp4=mpv.desktop;
+x-scheme-handler/http=app.zen_browser.zen.desktop;
+x-scheme-handler/https=app.zen_browser.zen.desktop;

@@ -9,10 +9,9 @@ export \
     XDG_CONFIG_HOME="${HOME}/.config" \
     TERMINAL=foot \
     EDITOR=nvim \
-    PAGER=less \
-    BROWSER=firefox \
     GTK_THEME=Adwaita:dark \
     QT_STYLE_OVERRIDE=Adwaita-Dark \
+    PAGER=less \
     LESS='-R --use-color -Dd+r$Du+b$'
 
 # Wayland‐specific settings
