@@ -1,11 +1,11 @@
-theme = "new_moon"
+theme = "varua"
 
 [editor]
 line-number = "relative"
 bufferline = "multiple"
 
 [editor.cursor-shape]
-insert = "bar"
+insert = "block"
 normal = "block"
 select = "underline"
 
@@ -28,6 +28,8 @@ X = ["extend_line_up", "extend_to_line_bounds"]
 "$" = "goto_line_end"
 
 [keys.normal.g]
+c = "toggle_comments"
+[keys.select.g]
 c = "toggle_comments"
 
 [keys.normal.Z]
