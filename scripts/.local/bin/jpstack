@@ -128,7 +128,7 @@ install_packages() {
     log_cmd sudo xbps-install -Suy void-repo-nonfree void-repo-multilib void-repo-multilib-nonfree
 
     # Core packages - always installed
-    CORE_PKGS="dragon fcft-devel foot xdg-user-dirs xdg-desktop-portal-wlr \
+    CORE_PKGS="s6 dragon fcft-devel foot xdg-user-dirs xdg-desktop-portal-wlr \
     xdg-desktop-portal-gtk wlroots0.19-devel xorg-server-xwayland wlr-randr \
     wdisplays wl-clipboard grim slurp seatd turnstile keyd dhcpcd \
     qt5-wayland qt6-wayland adwaita-qt adwaita-qt6 fuzzel trash-cli fnott \

@@ -1,0 +1,4 @@
+#!/bin/sh
+exec 2>&1
+sv check ../wayland-ready || exit 1
+exec chpst -e "$TURNSTILE_ENV_DIR" wlsunset -l 40 -L -8 -t 4500 -T 6500 -g 1.0

@@ -129,12 +129,16 @@ riverctl rule-add -app-id Eclipse float
 # Layout
 riverctl default-layout rivertile
 
-# Signal readiness via D-Bus
-dbus-send --session --type=signal \
-    /org/wayland/Compositor \
-    org.wayland.Compositor.Ready \
-    string:"${WAYLAND_DISPLAY}" \
-    string:"${DISPLAY:-}"
+# Write display variables
+test -d "$TURNSTILE_ENV_DIR" && {
+    echo "$WAYLAND_DISPLAY" > "$TURNSTILE_ENV_DIR"/WAYLAND_DISPLAY
+    test -n "$DISPLAY" && echo "$DISPLAY" > "$TURNSTILE_ENV_DIR"/DISPLAY
+}
+
+# Signal readiness
+FTRIG="/run/user/$(id -u)/wayland-ready"
+s6-mkfifodir "$FTRIG"
+s6-ftrig-notify "$FTRIG" 'r'
 
 # Start layout generator (blocks)
 exec rivertile -view-padding 0 -outer-padding 0

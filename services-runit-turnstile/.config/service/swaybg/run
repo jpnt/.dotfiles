@@ -1,6 +1,6 @@
 #!/bin/sh
 exec 2>&1
-sv check ../wayland-session || exit 1
+sv check ../wayland-ready || exit 1
 
 WALLPAPER_DIR=$(eval echo "$(grep XDG_PICTURES_DIR ~/.config/user-dirs.dirs | cut -d'=' -f2 | tr -d '"')/Wallpaper")
 WALLPAPER="$WALLPAPER_DIR/current"

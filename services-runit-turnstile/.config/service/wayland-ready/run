@@ -1,0 +1,9 @@
+#!/bin/sh
+exec 2>&1
+
+FTRIG="/run/user/$(id -u)/wayland-ready"
+
+s6-mkfifodir "$FTRIG" # assert file exists
+s6-ftrig-wait "$FTRIG" 'r' # block
+
+exec pause
