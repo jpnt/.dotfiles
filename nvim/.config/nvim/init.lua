@@ -37,7 +37,21 @@ local plu = require("plu")
 plu.add({
   {
     src = "neovim/nvim-lspconfig",
-    event = { "BufReadPost", "BufNewFile" }
+    event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      -- https://neovim.io/doc/user/lsp.html
+      vim.lsp.enable({
+        "clangd",
+        "lua_ls",
+        "vtsls",
+        "pyright",
+        "gopls",
+        "rust_analyzer",
+        "zls",
+        "jdtls",
+        "slint_lsp",
+      })
+    end
   },
   {
     src = "echasnovski/mini.pick",
@@ -96,7 +110,13 @@ plu.add({
       })
     end
   },
-  { src = "j-hui/fidget.nvim" },
+  {
+    src = "j-hui/fidget.nvim",
+    event = "LspAttach",
+    config = function()
+      require("fidget").setup()
+    end
+  },
 })
 plu.setup()
 
@@ -128,28 +148,6 @@ vim.keymap.set("n", "<leader>\\", function()
   vim.cmd.term()
   vim.cmd.wincmd("J")
 end)
-
-
--- LSP (Language Server Protocol)
--- https://neovim.io/doc/user/lsp.html
-vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
-  once = true,
-  callback = function()
-    -- vim.lsp.config is handled automatically (by nvim-lspconfig plugin)
-    -- https://github.com/neovim/nvim-lspconfig/tree/master/lsp
-    vim.lsp.enable({
-      "clangd",
-      "lua_ls",
-      "vtsls",
-      "pyright",
-      "gopls",
-      "rust_analyzer",
-      "zls",
-      "jdtls",
-      "slint_lsp",
-    })
-  end
-})
 
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(ev)
