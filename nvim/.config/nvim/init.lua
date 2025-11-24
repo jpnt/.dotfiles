@@ -1,4 +1,4 @@
--- nvim 0.12 required
+-- nvim >=0.11 required
 local vim                 = vim
 local opt                 = vim.opt
 local g                   = vim.g
