@@ -1,117 +1,121 @@
 -- nvim 0.12 required
-local vim = vim
+local vim                 = vim
+local opt                 = vim.opt
+local g                   = vim.g
+
 -- Options
-vim.loader.enable()
-vim.o.guicursor               = "n-v-i-c:block-Cursor"
-vim.o.wrap                    = true
-vim.opt.linebreak             = true
-vim.o.cursorline              = true
-vim.o.number                  = true
-vim.o.termguicolors           = true
-vim.o.relativenumber          = true
-vim.o.ignorecase              = true
-vim.o.smartcase               = true
-vim.o.signcolumn              = "yes"
-vim.o.scrolloff               = 8
-vim.o.sidescrolloff           = 8
-vim.o.completeopt             = "menu,menuone,noselect"
-vim.g.mapleader               = ' '
-vim.g.netrw_keepdir           = 0
-vim.g.loaded_python3_provider = 0
-vim.g.loaded_node_provider    = 0
-vim.g.loaded_perl_provider    = 0
-vim.g.loaded_ruby_provider    = 0
+opt.guicursor             = "n-v-i-c:block-Cursor"
+opt.wrap                  = true
+opt.linebreak             = true
+opt.cursorline            = true
+opt.number                = true
+opt.relativenumber        = true
+opt.ignorecase            = true
+opt.smartcase             = true
+opt.signcolumn            = "yes"
+opt.scrolloff             = 8
+opt.sidescrolloff         = 8
+opt.completeopt           = "menu,menuone,noselect"
+
+g.mapleader               = " "
+g.netrw_keepdir           = 0
+g.loaded_python3_provider = 0
+g.loaded_node_provider    = 0
+g.loaded_perl_provider    = 0
+g.loaded_ruby_provider    = 0
 
 -- Diagnostic line
 vim.diagnostic.config({
   virtual_lines = { current_line = true },
 })
 
--- Plugin manager
-vim.pack.add({
-  { src = "https://github.com/echasnovski/mini.icons" },
-  { src = "https://github.com/echasnovski/mini.base16" },
-  { src = "https://github.com/echasnovski/mini.pick" },
-  { src = "https://github.com/echasnovski/mini.comment" },
-  { src = "https://github.com/echasnovski/mini.ai" },
-  { src = "https://github.com/echasnovski/mini.surround" },
-  { src = "https://github.com/echasnovski/mini.tabline" },
-  { src = "https://github.com/echasnovski/mini.statusline" },
-  { src = "https://github.com/echasnovski/mini.diff" },
-  { src = "https://github.com/echasnovski/mini.sessions" },
-  { src = "https://github.com/tpope/vim-fugitive" },
-  { src = "https://github.com/tpope/vim-projectionist" },
-  { src = "https://github.com/tpope/vim-vinegar" },
-  { src = "https://github.com/tpope/vim-dispatch" },
-  { src = "https://github.com/neovim/nvim-lspconfig" },
-  { src = "https://github.com/NMAC427/guess-indent.nvim" },
-  { src = "https://github.com/vladdoster/remember.nvim" },
-  { src = "https://github.com/L3MON4D3/LuaSnip" },
-  { src = "https://github.com/rafamadriz/friendly-snippets" },
-  { src = "https://github.com/dstein64/vim-startuptime" },
-  { src = "https://github.com/dstein64/nvim-scrollview" },
-  { src = "https://github.com/mg979/vim-visual-multi" },
-  { src = "https://github.com/romus204/referencer.nvim" },
-  { src = "https://github.com/slint-ui/vim-slint" },
-  { src = "https://github.com/dhananjaylatkar/cscope_maps.nvim" },
-  { src = "https://github.com/j-hui/fidget.nvim" },
-  { src = "https://github.com/saghen/blink.cmp",                version = "v1.7.0" },
-  { src = "https://github.com/stevearc/conform.nvim",           version = "v9.1.0" },
-  { src = "https://github.com/MysticalDevil/inlay-hints.nvim" }
-})
+-- Colorscheme
+vim.cmd.colorscheme("retrobox")
 
--- Theme
-require("mini.base16").setup({
-  palette = {
-    base00 = "#1d1f21", -- background
-    base01 = "#282a2e", -- lighter background (status, sidebar)
-    base02 = "#373b41", -- selection background
-    base03 = "#969896", -- comments, invisibles
-    base04 = "#b4b7b4", -- dark foreground (status)
-    base05 = "#c5c8c6", -- default foreground
-    base06 = "#e0e0e0", -- light foreground
-    base07 = "#ffffff", -- lighter foreground
-    base08 = "#cc6666", -- red (variables, errors)
-    base09 = "#de935f", -- orange (numbers, constants)
-    base0A = "#f0c674", -- yellow (classes, highlights)
-    base0B = "#b5bd68", -- green (strings)
-    base0C = "#8abeb7", -- cyan (support, special)
-    base0D = "#81a2be", -- blue (functions)
-    base0E = "#b294bb", -- purple (keywords)
-    base0F = "#a3685a", -- brown (deprecated, warnings)
+-- Plugin manager
+local plu = require("plu")
+plu.add({
+  {
+    src = "neovim/nvim-lspconfig",
+    event = { "BufReadPost", "BufNewFile" }
   },
+  {
+    src = "echasnovski/mini.pick",
+    keys = { "<leader>f", "<leader>g", "<leader>b" },
+    config = function()
+      local pick = require("mini.pick")
+      vim.keymap.set('n', '<leader>f', pick.builtin.files)
+      vim.keymap.set('n', '<leader>g', pick.builtin.grep_live)
+      vim.keymap.set('n', '<leader>b', pick.builtin.buffers)
+    end,
+  },
+  { src = "echasnovski/mini.statusline" },
+  { src = "echasnovski/mini.tabline" },
+  { src = "echasnovski/mini.icons" },
+  { src = "echasnovski/mini.ai" },
+  { src = "echasnovski/mini.surround" },
+  { src = "echasnovski/mini.diff" },
+  { src = "tpope/vim-fugitive",         lazy = false },
+  { src = "tpope/vim-projectionist",    lazy = false },
+  { src = "tpope/vim-vinegar",          lazy = false },
+  { src = "tpope/vim-dispatch",         lazy = false },
+  { src = "vladdoster/remember.nvim",   lazy = false },
+  { src = "dstein64/vim-startuptime",   lazy = false },
+  { src = "dstein64/nvim-scrollview",   lazy = false },
+  { src = "mg979/vim-visual-multi",     lazy = false },
+  { src = "slint-ui/vim-slint",         lazy = false },
+  {
+    src = "romus204/referencer.nvim",
+    config = function()
+      require("referencer").setup({ enable = true })
+    end
+  },
+  {
+    src = "saghen/blink.cmp",
+    version = "v1.7.0",
+    event = "InsertEnter",
+    config = function()
+      require("blink.cmp").setup({
+        completion = { documentation = { auto_show = true } }
+      })
+    end
+  },
+  {
+    src = "stevearc/conform.nvim",
+    version = "v9.1.0",
+    event = "BufWritePre",
+    config = function()
+      require("conform").setup({
+        formatters_by_ft = {
+          c = { "clang-format" },
+        },
+        format_on_save = {
+          timeout_ms = 500,
+          lsp_format = "fallback",
+        },
+      })
+    end
+  },
+  { src = "j-hui/fidget.nvim" },
 })
+plu.setup()
 
 -- Plugins that have to load early
 require("remember")
-require("guess-indent").setup()
 
--- Plugins that can be scheduled to load later
-vim.schedule(function()
-  require("mini.icons").setup()
-  require("mini.pick").setup()
-  require("mini.ai").setup()
-  require("mini.surround").setup()
-  require("mini.tabline").setup()
-  require("mini.statusline").setup()
-  require("mini.diff").setup()
-  require("mini.sessions").setup()
-
-  require("luasnip.loaders.from_vscode").lazy_load()
-  require("referencer").setup({ enable = true })
-  require("cscope_maps").setup()
-  require("fidget").setup()
-  require("blink.cmp").setup({ completion = { documentation = { auto_show = true } } })
-  require("conform").setup({
-    formatters_by_ft = {
-      c = { "clang-format" },
-    },
-    format_on_save = {
-      timeout_ms = 500,
-      lsp_format = "fallback",
-    },
-  })
-end)
+-- Only display numbers on active windows
+vim.api.nvim_create_autocmd({ "WinEnter" }, {
+  callback = function()
+    vim.wo.number = true
+    vim.wo.relativenumber = true
+  end,
+})
+vim.api.nvim_create_autocmd({ "WinLeave" }, {
+  callback = function()
+    vim.wo.number = false
+    vim.wo.relativenumber = false
+  end,
+})
 
 -- Keymaps
 vim.keymap.set({ 'n', 'v', 'x' }, '<leader>y', '"+y<CR>')
@@ -125,24 +129,6 @@ vim.keymap.set("n", "<leader>\\", function()
   vim.cmd.wincmd("J")
 end)
 
--- Keymaps that use plugins
-vim.keymap.set('n', '<leader>f', '<cmd>Pick files<CR>')
-vim.keymap.set('n', '<leader>g', '<cmd>Pick grep_live<CR>')
-vim.keymap.set('n', '<leader>h', '<cmd>Pick help<CR>')
-vim.keymap.set('n', '<leader>b', '<cmd>Pick buffers<CR>')
-
-vim.keymap.set('n', '<leader>sw', function()
-  local folder_name = vim.fn.getcwd():match("([^/]+)$")
-  require('mini.sessions').write(folder_name)
-end)
-vim.keymap.set('n', '<leader>ss', '<cmd>lua MiniSessions.select()<CR>')
-
-vim.keymap.set({ 'i', 's' }, '<C-e>', function()
-  local luasnip = require("luasnip")
-  if luasnip.expand_or_locally_jumpable() then
-    luasnip.expand_or_jump()
-  end
-end)
 
 -- LSP (Language Server Protocol)
 -- https://neovim.io/doc/user/lsp.html
@@ -166,9 +152,15 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {
-  require("inlay-hints").setup(),
   callback = function(ev)
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
     local bufnr = ev.buf
+
+    -- Native inlay hints
+    if client.server_capabilities.inlayHintProvider then
+      vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+    end
+
     -- LSP keymaps
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
     vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr })

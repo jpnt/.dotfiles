@@ -80,7 +80,6 @@ riverctl map normal Super+Shift S spawn 'slurp | xargs -I {} grim -g {}'
 
 # Notifications
 riverctl map normal Control+Alt Backspace spawn 'waylock'
-# TODO: make battery and tags event driven
 riverctl map normal Super+Shift B spawn 'notify-send -t 2000 "Battery" "$(cat /sys/class/power_supply/BAT0/capacity)% $(cat /sys/class/power_supply/BAT0/status)"'
 riverctl map normal Super+Shift D spawn 'notify-send -t 2000 "Date" "$(date)"'
 riverctl map normal Super+Shift T spawn 'notify-send -t 2000 "Tags" "$(rivertags)"'
