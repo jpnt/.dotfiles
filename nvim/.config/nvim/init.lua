@@ -2,6 +2,8 @@
 local vim                 = vim
 local opt                 = vim.opt
 local g                   = vim.g
+local autocmd             = vim.api.nvim_create_autocmd
+local keymap              = vim.keymap.set
 
 -- Options
 opt.guicursor             = "n-v-i-c:block-Cursor"
@@ -58,9 +60,9 @@ plu.add({
     keys = { "<leader>f", "<leader>g", "<leader>b" },
     config = function()
       local pick = require("mini.pick")
-      vim.keymap.set('n', '<leader>f', pick.builtin.files)
-      vim.keymap.set('n', '<leader>g', pick.builtin.grep_live)
-      vim.keymap.set('n', '<leader>b', pick.builtin.buffers)
+      keymap('n', '<leader>f', pick.builtin.files)
+      keymap('n', '<leader>g', pick.builtin.grep_live)
+      keymap('n', '<leader>b', pick.builtin.buffers)
     end,
   },
   { src = "echasnovski/mini.statusline" },
@@ -124,13 +126,13 @@ plu.setup()
 require("remember")
 
 -- Only display numbers on active windows
-vim.api.nvim_create_autocmd({ "WinEnter" }, {
+autocmd({ "WinEnter" }, {
   callback = function()
     vim.wo.number = true
     vim.wo.relativenumber = true
   end,
 })
-vim.api.nvim_create_autocmd({ "WinLeave" }, {
+autocmd({ "WinLeave" }, {
   callback = function()
     vim.wo.number = false
     vim.wo.relativenumber = false
@@ -138,18 +140,18 @@ vim.api.nvim_create_autocmd({ "WinLeave" }, {
 })
 
 -- Keymaps
-vim.keymap.set({ 'n', 'v', 'x' }, '<leader>y', '"+y<CR>')
-vim.keymap.set({ 'n', 'v', 'x' }, '<leader>d', '"+d<CR>')
-vim.keymap.set("n", "<Tab>", "<cmd>bnext<CR>")
-vim.keymap.set("n", "<S-Tab>", "<cmd>bprevious<CR>")
-vim.keymap.set("n", "-", "<cmd>Lex 25<CR>")
-vim.keymap.set("n", "<leader>\\", function()
+keymap({ 'n', 'v', 'x' }, '<leader>y', '"+y<CR>')
+keymap({ 'n', 'v', 'x' }, '<leader>d', '"+d<CR>')
+keymap("n", "<Tab>", "<cmd>bnext<CR>")
+keymap("n", "<S-Tab>", "<cmd>bprevious<CR>")
+keymap("n", "-", "<cmd>Lex 25<CR>")
+keymap("n", "<leader>\\", function()
   vim.cmd.vnew()
   vim.cmd.term()
   vim.cmd.wincmd("J")
 end)
 
-vim.api.nvim_create_autocmd("LspAttach", {
+autocmd("LspAttach", {
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
     local bufnr = ev.buf
@@ -160,8 +162,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
 
     -- LSP keymaps
-    vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
-    vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr })
-    vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr })
+    keymap("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
+    keymap("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr })
+    keymap("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr })
   end,
 })
