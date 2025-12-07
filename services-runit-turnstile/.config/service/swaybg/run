@@ -5,4 +5,6 @@ sv check ../wayland-ready || exit 1
 WALLPAPER_DIR=$(eval echo "$(grep XDG_PICTURES_DIR ~/.config/user-dirs.dirs | cut -d'=' -f2 | tr -d '"')/Wallpaper")
 WALLPAPER="$WALLPAPER_DIR/current"
 
+test -e "$WALLPAPER" || exec pause
+
 exec chpst -e "$TURNSTILE_ENV_DIR" swaybg -i "$WALLPAPER"

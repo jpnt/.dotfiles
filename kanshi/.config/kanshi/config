@@ -9,12 +9,13 @@ profile laptop {
 profile desktop {
     output "Ancor Communications Inc VG248 H9LMQS005850" {
         mode 1920x1080@144Hz
-        position 1920,0
+        position 1080,440
         adaptive_sync off
     }
     output "Samsung Electric Company S24C31x H4CW901201X" {
         mode 1920x1080@60Hz
         position 0,0
+	transform 90
         adaptive_sync off
     }
 }
