@@ -20,7 +20,6 @@
           (: (require :mini.notify) :setup {})
           (: (require :mini.pick) :setup {})
           (: (require :mini.pairs) :setup {})
-          (: (require :mini.diff) :setup {})
           (: (require :mini.surround) :setup {}))}
  ;; Filemanager
  {:src "https://github.com/A7Lavinraj/fyler.nvim"
@@ -45,8 +44,9 @@
  "https://github.com/tpope/vim-fugitive"
  ;; Orgmode
  {:src "https://github.com/nvim-orgmode/orgmode"
+  :version :0.7.2
   :on_require :orgmode
   :lazy false
-  :setup {:org_agenda_file "~/Sync/Org/**/*"
-          :org_default_file "~/Sync/Org/refile.org"}}
+  :setup {:org_agenda_files "~/Sync/Org/**/*"
+          :org_default_notes_file "~/Sync/Org/refile.org"}}
 ]

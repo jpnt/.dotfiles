@@ -52,7 +52,8 @@
     },
     "orgmode": {
       "rev": "cf75da1a91071c6c041075eae4ca2326f9d1f52a",
-      "src": "https://github.com/nvim-orgmode/orgmode"
+      "src": "https://github.com/nvim-orgmode/orgmode",
+      "version": "'0.7.2'"
     },
     "rtp.nvim": {
       "rev": "494ddfc888bb466555d90ace731856de1320fe45",
