@@ -2,7 +2,7 @@
 
 ; Define leader key as early as possible as some plugins may not work if they're loaded before
 ; the leader is defined.
-(g! :mapleader ",")
+(g! :mapleader " ")
 (g! :maplocalleader ",")
 
 ;; Then load all plugins so the rest of the configuration can reference them if needed to.
@@ -31,12 +31,15 @@
 (g! :loaded_perl_provider 0)
 (g! :loaded_ruby_provider 0)
 
+(local util (require :util))
 (map! :i "<C-l>" "λ" {:desc "Insert lambda symbol"})
 (map! :nvx :<leader>y "\"+y<CR>" {:desc "Yank to clipboard"})
 (map! :nvx :<leader>d "\"+d<CR>" {:desc "Delete to clipboard"})
 (map! :n :<Tab> :<cmd>bnext<CR> {:desc "Switch to next buffer"})
 (map! :n :<S-Tab> :<cmd>bprevious<CR> {:desc "Switch to previous buffer"})
-(map! :n "<leader>u" #(m undotree open {:command "topleft 30vnew"}) {:desc "Undotree"})
+(map! :n "<leader>u"
+      #(m undotree open {:command "topleft 30vnew"}
+      {:desc "Open undotree"}))
 (map! :n "<leader>f" ":Pick files<CR>" {:desc "Find files"})
 (map! :n "<leader>g" ":Pick grep_live<CR>"  {:desc "Live grep"})
 (map! :n "<leader>b" ":Pick buffers<CR>" {:desc "Buffers"})
@@ -47,15 +50,9 @@
          (vim.cmd.wincmd "J"))
       {:desc "Open vertical terminal"})
 (map! :n "-" ":Fyler<CR>" {:desc "Open file explorer"})
-(map! :n "<leader>u" ":Undotree<CR> {:desc Open undotree}")
-
-(augroup! :line-num-only-in-active-windows
- (au! :WinEnter #(do
-                   (let! :wo :number true)
-                   (let! :wo :relativenumber true)))
- (au! :WinLeave #(do
-                   (let! :wo :number false)
-                   (let! :wo :relativenumber false))))
+(map! :n "<localleader>d"
+        #(util.insert-date "%Y-%m-%d")
+        {:desc "Insert current date"})
 
 ;; LSP Config
 (vim.diagnostic.config {:virtual_lines {:current_line true}})
@@ -78,9 +75,19 @@
           (bmap! :n "<leader>ca" vim.lsp.buf.code_action)
           (bmap! :n "<leader>rn" vim.lsp.buf.rename))))
 
+
+(augroup! :line-num-only-in-active-windows
+ (au! :WinEnter #(do
+                   (let! :wo :number true)
+                   (let! :wo :relativenumber true)))
+ (au! :WinLeave #(do
+                   (let! :wo :number false)
+                   (let! :wo :relativenumber false))))
+
+(local nvim-treesitter (require :nvim-treesitter))
 ;; ignore auto install for these filetypes:
 (local ignored_ft [])
-(local nvim-treesitter (require :nvim-treesitter))
+
 (augroup! :treesitter
          (au! :filetype
                (λ [args]
