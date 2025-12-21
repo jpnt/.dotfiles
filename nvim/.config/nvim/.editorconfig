@@ -3,3 +3,7 @@ root = true
 [*.lua]
 indent_style = space
 indent_size = 2
+
+[*.fnl]
+indent_style = space
+indent_size = 1

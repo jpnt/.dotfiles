@@ -1,170 +1,48 @@
--- nvim >=0.11 required
-local vim                 = vim
-local opt                 = vim.opt
-local g                   = vim.g
-local autocmd             = vim.api.nvim_create_autocmd
-local keymap              = vim.keymap.set
+vim.loader.enable()
 
--- Options
-opt.guicursor             = "n-v-i-c:block-Cursor"
-opt.wrap                  = true
-opt.linebreak             = true
-opt.cursorline            = true
-opt.number                = true
-opt.relativenumber        = true
-opt.ignorecase            = true
-opt.smartcase             = true
-opt.signcolumn            = "yes"
-opt.scrolloff             = 8
-opt.sidescrolloff         = 8
-opt.completeopt           = "menu,menuone,noselect"
+-- Clear Fennel cache when Fennel dependencies are changed.
+local rebuild_thyme = false
 
-g.mapleader               = " "
-g.netrw_keepdir           = 0
-g.loaded_python3_provider = 0
-g.loaded_node_provider    = 0
-g.loaded_perl_provider    = 0
-g.loaded_ruby_provider    = 0
+vim.api.nvim_create_autocmd("PackChanged", {
+	callback = function(event)
+		local name = event.data.spec.name
 
--- Diagnostic line
-vim.diagnostic.config({
-  virtual_lines = { current_line = true },
+		if name == "nvim-thyme" or name == "nvim-laurel" then
+			rebuild_thyme = true
+		end
+	end,
+	group = vim.api.nvim_create_augroup("init.lua", { clear = true }),
 })
 
--- Colorscheme
-vim.cmd.colorscheme("retrobox")
+-- vim.pack installs into `~/.local/share/nvim/site/pack/core/opt/` by default
+-- while adding them to &runtimepath.
+vim.pack.add({
+	-- Fennel environment and compiler.
+	"https://github.com/aileot/nvim-thyme",
+	"https://git.sr.ht/~technomancy/fennel",
+	-- Gives us some pleasant fennel macros.
+  "https://github.com/aileot/nvim-laurel",
+	-- Enables lazy loading of plugins.
+	"https://github.com/BirdeeHub/lze",
+}, { confirm = false })
 
--- Plugin manager
-local plu = require("plu")
-plu.add({
-  {
-    src = "neovim/nvim-lspconfig",
-    event = { "BufReadPost", "BufNewFile" },
-    config = function()
-      -- https://neovim.io/doc/user/lsp.html
-      vim.lsp.enable({
-        "clangd",
-        "lua_ls",
-        "vtsls",
-        "pyright",
-        "gopls",
-        "rust_analyzer",
-        "zls",
-        "jdtls",
-        "slint_lsp",
-      })
-    end
-  },
-  {
-    src = "echasnovski/mini.pick",
-    keys = { "<leader>f", "<leader>g", "<leader>b" },
-    config = function()
-      local pick = require("mini.pick")
-      keymap('n', '<leader>f', pick.builtin.files)
-      keymap('n', '<leader>g', pick.builtin.grep_live)
-      keymap('n', '<leader>b', pick.builtin.buffers)
-    end,
-  },
-  { src = "echasnovski/mini.statusline" },
-  { src = "echasnovski/mini.tabline" },
-  { src = "echasnovski/mini.icons" },
-  { src = "echasnovski/mini.ai" },
-  { src = "echasnovski/mini.surround" },
-  { src = "echasnovski/mini.diff" },
-  { src = "tpope/vim-fugitive",         lazy = false },
-  { src = "tpope/vim-projectionist",    lazy = false },
-  { src = "tpope/vim-vinegar",          lazy = false },
-  { src = "tpope/vim-dispatch",         lazy = false },
-  { src = "vladdoster/remember.nvim",   lazy = false },
-  { src = "dstein64/vim-startuptime",   lazy = false },
-  { src = "dstein64/nvim-scrollview",   lazy = false },
-  { src = "mg979/vim-visual-multi",     lazy = false },
-  { src = "slint-ui/vim-slint",         lazy = false },
-  {
-    src = "romus204/referencer.nvim",
-    config = function()
-      require("referencer").setup({ enable = true })
-    end
-  },
-  {
-    src = "saghen/blink.cmp",
-    version = "v1.8.0",
-    event = "InsertEnter",
-    config = function()
-      require("blink.cmp").setup({
-        completion = { documentation = { auto_show = true } }
-      })
-    end
-  },
-  {
-    src = "stevearc/conform.nvim",
-    version = "v9.1.0",
-    event = "BufWritePre",
-    config = function()
-      require("conform").setup({
-        formatters_by_ft = {
-          c = { "clang-format" },
-          arduino = { "clang-format" },
-        },
-        format_on_save = {
-          timeout_ms = 500,
-          lsp_format = "fallback",
-        },
-      })
-    end
-  },
-  {
-    src = "j-hui/fidget.nvim",
-    event = "LspAttach",
-    config = function()
-      require("fidget").setup()
-    end
-  },
-})
-plu.setup()
-
--- Plugins that have to load early
-require("remember")
-
--- Only display numbers on active windows
-autocmd({ "WinEnter" }, {
-  callback = function()
-    vim.wo.number = true
-    vim.wo.relativenumber = true
-  end,
-})
-autocmd({ "WinLeave" }, {
-  callback = function()
-    vim.wo.number = false
-    vim.wo.relativenumber = false
-  end,
-})
-
--- Keymaps
-keymap({ 'n', 'v', 'x' }, '<leader>y', '"+y<CR>')
-keymap({ 'n', 'v', 'x' }, '<leader>d', '"+d<CR>')
-keymap("n", "<Tab>", "<cmd>bnext<CR>")
-keymap("n", "<S-Tab>", "<cmd>bprevious<CR>")
-keymap("n", "-", "<cmd>Lex 25<CR>")
-keymap("n", "<leader>\\", function()
-  vim.cmd.vnew()
-  vim.cmd.term()
-  vim.cmd.wincmd("J")
+-- Override package loading so thyme can hook into `require` calls and generate lua code
+-- if the required package is a fennel file.
+table.insert(package.loaders, function(...)
+	return require("thyme").loader(...)
 end)
 
-autocmd("LspAttach", {
-  callback = function(ev)
-    local client = vim.lsp.get_client_by_id(ev.data.client_id)
-    local bufnr = ev.buf
+-- Setup the compile cache path that thyme requires.
+local thyme_cache_prefix = vim.fn.stdpath("cache") .. "/thyme/compiled"
+vim.opt.rtp:prepend(thyme_cache_prefix)
 
-    -- Native inlay hints
-    if client.server_capabilities.inlayHintProvider then
-      vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-    end
+require("thyme").setup()
 
-    -- LSP keymaps
-    keymap("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
-    keymap("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr })
-    keymap("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr })
-  end,
-})
+-- Rebuild thyme cache after `vim.pack.add` to avoid dependency issues
+-- and to make sure all packages are loaded.
+if rebuild_thyme then
+	vim.cmd("ThymeCacheClear")
+end
+
+-- Load the rest of the config with transparent fennel support.
+require("config")

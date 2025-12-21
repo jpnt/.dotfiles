@@ -1,0 +1,74 @@
+{
+  "plugins": {
+    "blink.cmp": {
+      "rev": "b19413d214068f316c78978b08264ed1c41830ec",
+      "src": "https://github.com/saghen/blink.cmp",
+      "version": "'v1.8.0'"
+    },
+    "conform.nvim": {
+      "rev": "5f5152fae39a57e3a04cbce09fb21e10c49c9d95",
+      "src": "https://github.com/stevearc/conform.nvim"
+    },
+    "conjure": {
+      "rev": "f92b09ede8e88d6e24231001940008ced62f9304",
+      "src": "https://github.com/Olical/conjure"
+    },
+    "fennel": {
+      "rev": "110e9ca42a8c79666bd81c09bd283347afccc9a7",
+      "src": "https://git.sr.ht/~technomancy/fennel"
+    },
+    "fyler.nvim": {
+      "rev": "292a0d02fa06dd57fa110bbd5640a9190d3e2c33",
+      "src": "https://github.com/A7Lavinraj/fyler.nvim"
+    },
+    "lze": {
+      "rev": "3c956e4e181d1d279c208fc2e80018736c1d5347",
+      "src": "https://github.com/BirdeeHub/lze"
+    },
+    "melange-nvim": {
+      "rev": "ce42f6b629beeaa00591ba73a77d3eeac4cf28ce",
+      "src": "https://github.com/savq/melange-nvim"
+    },
+    "mini.nvim": {
+      "rev": "6170f606fbdb94bf461635c47962f61dceffe496",
+      "src": "https://github.com/nvim-mini/mini.nvim",
+      "version": "'main'"
+    },
+    "nvim-laurel": {
+      "rev": "0167c1ded60a6c325266287cf63fd1816b411605",
+      "src": "https://github.com/aileot/nvim-laurel"
+    },
+    "nvim-lspconfig": {
+      "rev": "d20d83b3f24f5884da73a9fc92fdc47e778b8d0d",
+      "src": "https://github.com/neovim/nvim-lspconfig"
+    },
+    "nvim-thyme": {
+      "rev": "13b2a55dad7b86ae6c83d51fc640eb00b45c4525",
+      "src": "https://github.com/aileot/nvim-thyme"
+    },
+    "nvim-treesitter": {
+      "rev": "6e42d823ce0a5a76180c473c119c7677738a09d1",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter"
+    },
+    "orgmode": {
+      "rev": "cf75da1a91071c6c041075eae4ca2326f9d1f52a",
+      "src": "https://github.com/nvim-orgmode/orgmode"
+    },
+    "rtp.nvim": {
+      "rev": "494ddfc888bb466555d90ace731856de1320fe45",
+      "src": "https://github.com/lumen-oss/rtp.nvim"
+    },
+    "vim-dispatch": {
+      "rev": "a2ff28abdb2d89725192db5b8562977d392a4d3f",
+      "src": "https://github.com/tpope/vim-dispatch"
+    },
+    "vim-fugitive": {
+      "rev": "61b51c09b7c9ce04e821f6cf76ea4f6f903e3cf4",
+      "src": "https://github.com/tpope/vim-fugitive"
+    },
+    "vim-visual-multi": {
+      "rev": "a6975e7c1ee157615bbc80fc25e4392f71c344d4",
+      "src": "https://github.com/mg979/vim-visual-multi"
+    }
+  }
+}
