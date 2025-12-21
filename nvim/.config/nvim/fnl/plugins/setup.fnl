@@ -20,6 +20,8 @@
           (: (require :mini.notify) :setup {})
           (: (require :mini.pick) :setup {})
           (: (require :mini.pairs) :setup {})
+          (: (require :mini.starter) :setup {})
+          (: (require :mini.jump) :setup {})
           (: (require :mini.surround) :setup {}))}
  ;; Filemanager
  {:src "https://github.com/A7Lavinraj/fyler.nvim"
@@ -32,6 +34,9 @@
   :on_require :blink.cmp
   :event [:InsertEnter]
   :setup {:completion {:documentation {:auto_show true}}}}
+ ;; Snippets
+ {:src "https://github.com/rafamadriz/friendly-snippets"
+  :dep_of :blink.cmp}
  ;; Formatting
  {:src "https://github.com/stevearc/conform.nvim"
   :on_require :conform

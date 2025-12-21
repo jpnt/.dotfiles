@@ -17,6 +17,10 @@
       "rev": "110e9ca42a8c79666bd81c09bd283347afccc9a7",
       "src": "https://git.sr.ht/~technomancy/fennel"
     },
+    "friendly-snippets": {
+      "rev": "572f5660cf05f8cd8834e096d7b4c921ba18e175",
+      "src": "https://github.com/rafamadriz/friendly-snippets"
+    },
     "fyler.nvim": {
       "rev": "292a0d02fa06dd57fa110bbd5640a9190d3e2c33",
       "src": "https://github.com/A7Lavinraj/fyler.nvim"
