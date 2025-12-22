@@ -22,6 +22,7 @@
           (: (require :mini.pairs) :setup {})
           (: (require :mini.starter) :setup {})
           (: (require :mini.jump) :setup {})
+          (: (require :mini.icons) :setup {})
           (: (require :mini.surround) :setup {}))}
  ;; Filemanager
  {:src "https://github.com/A7Lavinraj/fyler.nvim"
