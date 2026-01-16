@@ -5,6 +5,7 @@
  ;; Treesitter
  {:src "https://github.com/nvim-treesitter/nvim-treesitter"
   :after_build #(vim.cmd "TSUpdate")}
+ {:src "https://github.com/nvim-treesitter/nvim-treesitter-context"}
  "https://github.com/Olical/conjure"
  "https://github.com/mg979/vim-visual-multi"
  ;; LspConfig (preconfigured set lsps)
@@ -23,6 +24,7 @@
           (: (require :mini.starter) :setup {})
           (: (require :mini.jump) :setup {})
           (: (require :mini.icons) :setup {})
+          (: (require :mini.diff) :setup {})
           (: (require :mini.surround) :setup {}))}
  ;; Filemanager
  {:src "https://github.com/A7Lavinraj/fyler.nvim"
@@ -45,6 +47,10 @@
   :setup {:formatters_by_ft {:c [:clang-format]}
           :format_on_save {:timeout_ms 500
                            :lsp_format "fallback"}}}
+ ;; TODO: Linting
+ ; https://github.com/mfussenegger/nvim-lint
+ ;; TODO: Marks
+ ; https://github.com/chentoast/marks.nvim
  ;; Tpope
  "https://github.com/tpope/vim-dispatch"
  "https://github.com/tpope/vim-fugitive"

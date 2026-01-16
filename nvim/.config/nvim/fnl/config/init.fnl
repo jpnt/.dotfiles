@@ -64,7 +64,8 @@
                  "rust_analyzer"
                  "zls"
                  "jdtls"
-                 "fennel_ls"])
+                 "fennel_ls"
+                 "clojure_lsp"])
 ;; Native LSP hints
 (vim.lsp.inlay_hint.enable true)
 (augroup! :my-lsps
