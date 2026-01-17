@@ -5,17 +5,20 @@
  ;; Treesitter
  {:src "https://github.com/nvim-treesitter/nvim-treesitter"
   :after_build #(vim.cmd "TSUpdate")}
- {:src "https://github.com/nvim-treesitter/nvim-treesitter-context"}
+ "https://github.com/nvim-treesitter/nvim-treesitter-context"
+ "https://github.com/HiPhish/rainbow-delimiters.nvim"
+ ;; REPL development
  "https://github.com/Olical/conjure"
+ ;; Multiple cursors
  "https://github.com/mg979/vim-visual-multi"
  ;; LspConfig (preconfigured set lsps)
  {:src "https://github.com/neovim/nvim-lspconfig"
   :event [:BufReadPost :BufNewFile]}
- ;; Mini
+ ;; Mini plugin collection
  {:src "https://github.com/nvim-mini/mini.nvim"
- :version :main
- :lazy false
- :after (λ []
+  :version :main
+  :lazy false
+  :after (λ []
           (: (require :mini.ai) :setup {})
           (: (require :mini.cursorword) :setup {})
           (: (require :mini.notify) :setup {})
@@ -27,11 +30,6 @@
           (: (require :mini.diff) :setup {})
           (: (require :mini.tabline) :setup {})
           (: (require :mini.surround) :setup {}))}
- ;; Filemanager
- {:src "https://github.com/A7Lavinraj/fyler.nvim"
-  :on_require :fyler
-  :lazy false
-  :setup {:views {:finder {:default_explorer true}}}}
  ;; Completion
  {:src "https://github.com/saghen/blink.cmp"
   :version :v1.8.0
@@ -41,20 +39,20 @@
  ;; Snippets
  {:src "https://github.com/rafamadriz/friendly-snippets"
   :dep_of :blink.cmp}
- ;; Formatting
+ ;; Format
  {:src "https://github.com/stevearc/conform.nvim"
   :on_require :conform
   :event [:BufWritePre]
   :setup {:formatters_by_ft {:c [:clang-format]}
           :format_on_save {:timeout_ms 500
                            :lsp_format "fallback"}}}
- ;; TODO: Linting
- ; https://github.com/mfussenegger/nvim-lint
- ;; TODO: Marks
- ; https://github.com/chentoast/marks.nvim
- ;; Tpope
+ ;; Lint
+ "https://github.com/mfussenegger/nvim-lint"
+ ;; Stuff by tpope
  "https://github.com/tpope/vim-dispatch"
  "https://github.com/tpope/vim-fugitive"
+ "https://github.com/tpope/vim-eunuch"
+ "https://github.com/tpope/vim-vinegar"
  ;; Orgmode
  {:src "https://github.com/nvim-orgmode/orgmode"
   :version :0.7.2

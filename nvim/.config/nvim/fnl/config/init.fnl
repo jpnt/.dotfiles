@@ -40,19 +40,29 @@
 (map! :n "<leader>u"
       #(m undotree open {:command "topleft 30vnew"}
       {:desc "Open undotree"}))
+(map! :n "<leader>d" ":Pick buffers<CR>" {:desc "Buffers"})
 (map! :n "<leader>f" ":Pick files<CR>" {:desc "Find files"})
 (map! :n "<leader>g" ":Pick grep_live<CR>"  {:desc "Live grep"})
-(map! :n "<leader>b" ":Pick buffers<CR>" {:desc "Buffers"})
+(map! :n "<leader>h" ":Pick help<CR>"  {:desc "Help"})
 (map! :n "<leader>\\"
       #(do
          (vim.cmd.vnew)
          (vim.cmd.term)
          (vim.cmd.wincmd "J"))
       {:desc "Open vertical terminal"})
-(map! :n "-" ":Fyler<CR>" {:desc "Open file explorer"})
 (map! :n "<localleader>d"
         #(util.insert-date "%Y-%m-%d")
         {:desc "Insert current date"})
+
+
+(augroup! :line-num-only-in-active-windows
+ (au! :WinEnter #(do
+                   (let! :wo :number true)
+                   (let! :wo :relativenumber true)))
+ (au! :WinLeave #(do
+                   (let! :wo :number false)
+                   (let! :wo :relativenumber false))))
+
 
 ;; LSP Config
 (vim.diagnostic.config {:virtual_lines {:current_line true}})
@@ -77,18 +87,10 @@
           (bmap! :n "<leader>rn" vim.lsp.buf.rename))))
 
 
-(augroup! :line-num-only-in-active-windows
- (au! :WinEnter #(do
-                   (let! :wo :number true)
-                   (let! :wo :relativenumber true)))
- (au! :WinLeave #(do
-                   (let! :wo :number false)
-                   (let! :wo :relativenumber false))))
-
+;; Treesitter
 (local nvim-treesitter (require :nvim-treesitter))
 ;; ignore auto install for these filetypes:
-(local ignored_ft ["mininotify"])
-
+(local ignored_ft ["mininotify" "minipick" "fugitive" "netrw"])
 (augroup! :treesitter
          (au! :filetype
                (λ [args]
@@ -104,3 +106,11 @@
                           ;; enable highlight only if there's an installed grammar.
                           (vim.treesitter.start bufnr))))))))
 
+;; Linters
+(local lint (require :lint))
+(tset lint :linters_by_ft
+      {:python [:ruff]
+       :c [:clangtidy]
+       :sh [:shellcheck]})
+(augroup! :nvim_lint {:clear true}
+  (autocmd! [:BufWritePost] ["*"] #(lint.try_lint)))
