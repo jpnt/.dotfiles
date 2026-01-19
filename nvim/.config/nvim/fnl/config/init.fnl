@@ -94,7 +94,8 @@
                    "minipick"
                    "fugitive"
                    "netrw"
-                   "blink-cmp-menu"])
+                   "blink-cmp-menu"
+                   "blink-cmp-documentation"])
 (augroup! :treesitter
          (au! :filetype
                (λ [args]
