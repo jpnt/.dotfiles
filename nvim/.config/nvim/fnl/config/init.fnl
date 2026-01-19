@@ -90,7 +90,11 @@
 ;; Treesitter
 (local nvim-treesitter (require :nvim-treesitter))
 ;; ignore auto install for these filetypes:
-(local ignored_ft ["mininotify" "minipick" "fugitive" "netrw"])
+(local ignored_ft ["mininotify"
+                   "minipick"
+                   "fugitive"
+                   "netrw"
+                   "blink-cmp-menu"])
 (augroup! :treesitter
          (au! :filetype
                (λ [args]
@@ -111,6 +115,7 @@
 (tset lint :linters_by_ft
       {:python [:ruff]
        :c [:clangtidy]
+       :clojure [:clj-kondo]
        :sh [:shellcheck]})
 (augroup! :nvim_lint {:clear true}
   (autocmd! [:BufWritePost] ["*"] #(lint.try_lint)))
