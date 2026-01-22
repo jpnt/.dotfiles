@@ -94,6 +94,7 @@
                    "minipick"
                    "fugitive"
                    "netrw"
+                   "nvim-undotree"
                    "blink-cmp-menu"
                    "blink-cmp-documentation"])
 (augroup! :treesitter
