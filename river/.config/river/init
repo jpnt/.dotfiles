@@ -76,13 +76,19 @@ riverctl map normal Super F toggle-float
 
 # Screenshot
 riverctl map normal Super S spawn 'grim'
-riverctl map normal Super+Shift S spawn 'slurp | xargs -I {} grim -g {}'
+riverctl map normal Super+Shift S spawn 'sh -c "grim -g \"$(slurp)\" - | wl-copy"' 
 
 # Notifications
 riverctl map normal Control+Alt Backspace spawn 'waylock'
 riverctl map normal Super+Shift B spawn 'notify-send -t 2000 "Battery" "$(cat /sys/class/power_supply/BAT0/capacity)% $(cat /sys/class/power_supply/BAT0/status)"'
 riverctl map normal Super+Shift D spawn 'notify-send -t 2000 "Date" "$(date)"'
 riverctl map normal Super+Shift T spawn 'notify-send -t 2000 "Tags" "$(rivertags)"'
+
+# Pomodoro
+riverctl map normal Super+Control P spawn 'pkill -USR2 spt || spt' # start/toggle
+riverctl map normal Super+Control O spawn 'pkill -USR1 spt' # state
+riverctl map normal Super+Control+Shift P spawn 'pkill spt' # stop
+
 
 # Audio
 riverctl map normal None XF86AudioRaiseVolume spawn \
