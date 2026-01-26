@@ -1,6 +1,10 @@
-#!/bin/sh
-# POSIX shell
-# e(x)tract (f)iles
+#!/usr/bin/env bash
+# WARNING: USE AT YOUR OWN RISK!!!
+# e(x)tract (f)ile/s
+# Supports output directory and spaces in filenames
+
+OUTPUT_DIR="."
+FILES=()
 
 print_format() {
     echo "Extracting archive format: $1"
@@ -11,93 +15,130 @@ check_tool() {
 }
 
 display_help() {
-    echo "Usage: $(basename "$0") [FILE...]"
+    cat <<EOF
+Usage: $(basename "$0") [OPTIONS] FILE...
+
+Options:
+  -h, --help        Show this help message
+  -o, --output DIR  Extract files into directory DIR (default: current directory)
+
+Supports formats: tar, tar.gz, tar.bz2, tgz, tbz2, txz, bz2, rar, 7z, gz, zip,
+                  lz4, zst, xz, iso, deb, rpm, jar, cab, arj, cpio, Z
+EOF
     exit 0
 }
 
-extract() {
-    for file in "$@"; do
-        if [ "$file" = "-h" ] || [ "$file" = "--help" ]; then
-            display_help
-        elif [ -f "$file" ]; then
-            case "$file" in
-                *.tar|*.tar.xz|*.tar.gz|*.tgz|*.tar.bz2|*.tbz2|*.txz)
-                    print_format "tar"
-                    check_tool tar
-                    tar xvf "$file" ;;
-                *.bz2)
-                    print_format "bzip2"
-                    check_tool bunzip2
-                    bunzip2 -v "$file" ;;
-                *.rar)
-                    print_format "rar"
-                    check_tool unrar
-                    unrar x "$file" ;;
-                *.7z)
-                    print_format "7z"
-                    check_tool 7z
-                    7z x "$file" ;;
-                *.gz)
-                    print_format "gzip"
-                    check_tool gunzip
-                    gunzip -v "$file" ;;
-                *.zip)
-                    print_format "zip"
-                    check_tool unzip
-                    unzip "$file" ;;
-                *.lz4)
-                    print_format "lz4"
-                    check_tool unlz4
-                    unlz4 "$file" ;;
-                *.zst)
-                    print_format "zstd"
-                    check_tool unzstd
-                    unzstd "$file" ;;
-                *.xz)
-                    print_format "xz"
-                    check_tool unxz
-                    unxz -v "$file" ;;
-                *.iso)
-                    extracted="iso_$(date +%Y-%m-%d_%H-%M-%S)"
-                    print_format "iso extracted to $extracted"
-                    check_tool 7z
-                    7z x "$file" -o"$extracted" ;;
-                *.deb)
-                    print_format "deb"
-                    check_tool dpkg
-                    dpkg -x "$file" . ;;
-                *.rpm)
-                    print_format "rpm"
-                    check_tool rpm2cpio
-                    rpm2cpio "$file" | cpio -id ;;
-                *.jar)
-                    print_format "jar"
-                    check_tool jar
-                    jar xf "$file" ;;
-                *.cab)
-                    print_format "cab"
-                    check_tool cabextract
-                    cabextract -v "$file" ;;
-                *.arj)
-                    print_format "arj"
-                    check_tool arj
-                    arj x "$file" ;;
-                *.cpio)
-                    print_format "cpio"
-                    check_tool cpio
-                    cpio -id < "$file" ;;
-                *.Z)
-                    print_format "Z"
-                    check_tool uncompress
-                    uncompress -v "$file" ;;
-                *)
-                    echo "'$file' could not be extracted: unsupported file format" ;;
-            esac
-        else
-            echo "'$file' is not a valid file"
-        fi
-    done
+run_extract() {
+    echo "Running: $*"
+    "$@"
 }
 
-# Handle all arguments (including wildcards like *)
-extract "$@"
+extract_file() {
+    local file="$1"
+
+    if [[ ! -f "$file" ]]; then
+        echo "'$file' is not a valid file"
+        return
+    fi
+
+    case "$file" in
+        *.tar|*.tar.xz|*.tar.gz|*.tgz|*.tar.bz2|*.tbz2|*.txz)
+            print_format "tar"
+            check_tool tar
+            run_extract tar xf "$file" -C "$OUTPUT_DIR" ;;
+        *.bz2)
+            print_format "bzip2"
+            check_tool bunzip2
+            run_extract bunzip2 -vk "$file" ;;
+        *.rar)
+            print_format "rar"
+            check_tool unrar
+            run_extract unrar x "$file" "$OUTPUT_DIR/" ;;
+        *.7z)
+            print_format "7z"
+            check_tool 7z
+            run_extract 7z x "$file" -o"$OUTPUT_DIR" ;;
+        *.gz)
+            print_format "gzip"
+            check_tool gunzip
+            run_extract gunzip -vk "$file" ;;
+        *.zip)
+            print_format "zip"
+            check_tool unzip
+            run_extract unzip -d "$OUTPUT_DIR" "$file" ;;
+        *.lz4)
+            print_format "lz4"
+            check_tool unlz4
+            run_extract unlz4 "$file" "$OUTPUT_DIR/$(basename "$file" .lz4)" ;;
+        *.zst)
+            print_format "zstd"
+            check_tool unzstd
+            run_extract unzstd -o "$OUTPUT_DIR/$(basename "$file" .zst)" "$file" ;;
+        *.xz)
+            print_format "xz"
+            check_tool unxz
+            run_extract unxz -vk "$file" ;;
+        *.iso)
+            print_format "iso"
+            check_tool 7z
+            run_extract 7z x "$file" -o"$OUTPUT_DIR/$(basename "$file" .iso)" ;;
+        *.deb)
+            print_format "deb"
+            check_tool dpkg
+            run_extract dpkg -x "$file" "$OUTPUT_DIR" ;;
+        *.rpm)
+            print_format "rpm"
+            check_tool rpm2cpio
+            run_extract sh -c "rpm2cpio \"$file\" | (cd \"$OUTPUT_DIR\" && cpio -id)" ;;
+        *.jar)
+            print_format "jar"
+            check_tool jar
+            run_extract jar xf "$file" ;;
+        *.cab)
+            print_format "cab"
+            check_tool cabextract
+            run_extract cabextract -d "$OUTPUT_DIR" "$file" ;;
+        *.arj)
+            print_format "arj"
+            check_tool arj
+            run_extract arj x "$file" "$OUTPUT_DIR/" ;;
+        *.cpio)
+            print_format "cpio"
+            check_tool cpio
+            run_extract sh -c "(cd \"$OUTPUT_DIR\" && cpio -id < \"$file\")" ;;
+        *.Z)
+            print_format "compress"
+            check_tool uncompress
+            run_extract uncompress -v "$file" ;;
+        *)
+            echo "'$file' could not be extracted: unsupported file format" ;;
+    esac
+}
+
+# Argument parsing
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -h|--help)
+            display_help ;;
+        -o|--output)
+            OUTPUT_DIR="$2"
+            shift 2 ;;
+        *)
+	    # sigma bashism
+            FILES+=("$1")
+            shift ;;
+    esac
+done
+
+if [[ ${#FILES[@]} -eq 0 ]]; then
+    echo "No files specified"
+    exit 1
+fi
+
+# Ensure output dir exists
+mkdir -p "$OUTPUT_DIR" || { echo "Failed to create output directory"; exit 1; }
+
+# Extract all files
+for f in "${FILES[@]}"; do
+    extract_file "$f"
+done
