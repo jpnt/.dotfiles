@@ -90,7 +90,8 @@
 ;; Treesitter
 (local nvim-treesitter (require :nvim-treesitter))
 ;; ignore auto install for these filetypes:
-(local ignored_ft ["sh"
+(local ignored_ft ["dosini"
+                   "sh"
                    "mininotify"
                    "minipick"
                    "fugitive"
