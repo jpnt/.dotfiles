@@ -1,4 +1,0 @@
-backend = "pulseaudio"
-
-[spotify]
-bitrate = 320
