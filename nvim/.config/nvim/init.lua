@@ -18,13 +18,16 @@ vim.api.nvim_create_autocmd("PackChanged", {
 -- while adding them to &runtimepath.
 vim.pack.add({
   -- Fennel environment and compiler.
-  "https://github.com/aileot/nvim-thyme",
   "https://git.sr.ht/~technomancy/fennel",
+  "https://github.com/aileot/nvim-thyme",
   -- Gives us some pleasant fennel macros.
   "https://github.com/aileot/nvim-laurel",
   -- Enables lazy loading of plugins.
   "https://github.com/BirdeeHub/lze",
 }, { confirm = false })
+
+-- Ensure fennel plugin gets compiled
+vim.fn.system("make -C " .. vim.fn.stdpath("data") .. "/site/pack/core/opt/fennel")
 
 -- Override package loading so thyme can hook into `require` calls and generate lua code
 -- if the required package is a fennel file.
