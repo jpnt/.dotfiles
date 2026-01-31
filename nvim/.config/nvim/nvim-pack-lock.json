@@ -58,11 +58,6 @@
       "rev": "64dd4cf3f6fd0ab17622c5ce15c91fc539c3f24a",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-context"
     },
-    "orgmode": {
-      "rev": "ca572cccdf5f401deb478e64af90aff8fcd2c43a",
-      "src": "https://github.com/nvim-orgmode/orgmode",
-      "version": "'0.7.2'"
-    },
     "rainbow-delimiters.nvim": {
       "rev": "d6b802552cbe7d643a3b6b31f419c248d1f1e220",
       "src": "https://github.com/HiPhish/rainbow-delimiters.nvim"
@@ -90,6 +85,10 @@
     "vim-visual-multi": {
       "rev": "a6975e7c1ee157615bbc80fc25e4392f71c344d4",
       "src": "https://github.com/mg979/vim-visual-multi"
+    },
+    "zk-nvim": {
+      "rev": "51c8f858420112dda495a6f4ddbd3943ae433e39",
+      "src": "https://github.com/zk-org/zk-nvim"
     }
   }
 }

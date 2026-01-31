@@ -53,11 +53,9 @@
  "https://github.com/tpope/vim-fugitive"
  "https://github.com/tpope/vim-eunuch"
  "https://github.com/tpope/vim-vinegar"
- ;; Orgmode
- {:src "https://github.com/nvim-orgmode/orgmode"
-  :version :0.7.2
-  :on_require :orgmode
-  :lazy false
-  :setup {:org_agenda_files "~/Sync/Org/**/*"
-          :org_default_notes_file "~/Sync/Org/refile.org"}}
+  ;; Note taking with zk
+  {:src "https://github.com/zk-org/zk-nvim"
+   :on_require :zk
+   :lazy false
+   :setup {:auto_attach {:enabled true}}}
 ]
