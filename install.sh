@@ -1,18 +1,65 @@
 #!/bin/sh
-# TODO: do not hardcode $HOME/.config/... as the XDG_CONFIG?
-# TODO: glob/multiple file input support. ingore install.sh (itself) and README.md
-# TODO: do not hardcode font across multiple files? FONT flag to configure. default will be the one i use but also support doing e.g. FONT=... ./install.sh *   the command then will be simple just a sed of the default font for the font that was selected. of course we must validate if the font was changed that the font is valid!
+set -eu
 
-[ $# -eq 1 ] || { echo "usage: $0 <dir>"; exit 1; }
-[ -d "$1" ] || { echo "error: $1 not found or is not a directory"; exit 1; }
+usage() {
+    echo "usage: $0 [-n] [-f] <dir> [dir ...]" >&2
+    exit 1
+}
 
-src="${1%/}" # strip trailing slash
+DRYRUN=0
+FORCE=0
 
-find "$src" -type f -printf '%P\n' | while read -r rel_path; do
-    target_path="$HOME/$rel_path"
-
-    mkdir -p "$(dirname "$target_path")"
-    [ -e "$target_path" ] && rm -f "$target_path"
-    ln -sf "$PWD/$src/$rel_path" "$target_path" \
-        && echo "Linked $target_path -> $PWD/$src/$rel_path"
+while getopts "nf" opt; do
+    case "$opt" in
+        n) DRYRUN=1 ;;
+        f) FORCE=1 ;;
+        *) usage ;;
+    esac
 done
+shift $((OPTIND - 1))
+
+[ $# -ge 1 ] || usage
+
+ignore_top() {
+    case "$1" in
+        _*|install.sh|flatpak-theme.sh|README.md) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+link_file() {
+    src=$1
+    dst=$2
+
+    if [ -e "$dst" ] && [ ! -L "$dst" ]; then
+        [ "$FORCE" -eq 1 ] || {
+            echo "skip (exists): $dst" >&2
+            return
+        }
+    fi
+
+    [ "$DRYRUN" -eq 1 ] && {
+        echo "ln -sf $src $dst"
+        return
+    }
+
+    mkdir -p "$(dirname "$dst")"
+    rm -f "$dst"
+    ln -s "$src" "$dst"
+    echo "linked $dst"
+}
+
+for mod in "$@"; do
+    [ -d "$mod" ] || {
+        echo "error: $mod not a directory" >&2
+        exit 1
+    }
+
+    ignore_top "$mod" && continue
+
+    (cd "$mod" && find . -type f | sed 's|^\./||') |
+    while read -r rel; do
+        link_file "$PWD/$mod/$rel" "$HOME/$rel"
+    done
+done
+

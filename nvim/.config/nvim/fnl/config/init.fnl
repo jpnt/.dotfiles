@@ -85,12 +85,17 @@
           (bmap! :n "gd" vim.lsp.buf.definition)
           (bmap! :n "<leader>ca" vim.lsp.buf.code_action)
           (bmap! :n "<leader>rn" vim.lsp.buf.rename))))
+          ; (bmap! :n "<leader>ih" (λ [] (vim.lsp.inlay_hint.enable
+          ;                              (not (vim.lsp.inlay_hint.is_enabled {:bufnr 0}))
+          ;                              {:bufnr 0}))))))
 
 
 ;; Treesitter
 (local nvim-treesitter (require :nvim-treesitter))
 ;; ignore auto install for these filetypes:
-(local ignored_ft ["dosini"
+(local ignored_ft ["text"
+                   "conf"
+                   "dosini"
                    "sh"
                    "mininotify"
                    "minipick"
@@ -119,7 +124,6 @@
 (tset lint :linters_by_ft
       {:python [:ruff]
        :c [:clangtidy]
-       :clojure [:clj-kondo]
-       :sh [:shellcheck]})
+       :clojure [:clj-kondo]})
 (augroup! :nvim_lint {:clear true}
   (autocmd! [:BufWritePost] ["*"] #(lint.try_lint)))

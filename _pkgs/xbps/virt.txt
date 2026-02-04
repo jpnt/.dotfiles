@@ -1,0 +1,6 @@
+podman
+flatpak
+catatonit
+libvirt
+qemu
+virt-manager

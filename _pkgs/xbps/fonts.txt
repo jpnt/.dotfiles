@@ -1,0 +1,5 @@
+dejavu-fonts-ttf
+noto-fonts-ttf
+noto-fonts-cjk
+noto-fonts-emoji
+nerd-fonts-ttf

@@ -1,0 +1,13 @@
+mpv
+imv
+pipewire
+alsa-pipewire
+alsa-utils
+ffmpeg
+zathura-pdf-mupdf
+ImageMagick
+cmus
+cmus-pulseaudio
+cmus-faad
+cmus-flac
+cmus-opus
