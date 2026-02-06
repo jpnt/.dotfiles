@@ -7,7 +7,7 @@ export MANPATH="${HOME}/.local/share/man:${MANPATH}"
 # Basic environment configuration
 export \
     XDG_CONFIG_HOME="${HOME}/.config" \
-    TERMINAL=foot \
+    TERMINAL=footclient \
     EDITOR=nvim \
     GTK_THEME=Adwaita:dark \
     QT_STYLE_OVERRIDE=Adwaita-Dark \
@@ -34,6 +34,5 @@ fi
 
 # Start graphical session on tty1 if not already running
 if test "$(tty)" = "/dev/tty1" && test -z "$WAYLAND_DISPLAY"; then
-    exec river 2>&1 | tee ~/.local/state/river.log
-    # exec sh -c 'slstatus -s | dwl 2>&1 | tee ~/.local/state/dwl.log'
+    exec river > ~/.local/state/river.log 2>&1
 fi

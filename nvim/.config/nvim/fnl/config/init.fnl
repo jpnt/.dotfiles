@@ -66,7 +66,8 @@
 
 ;; LSP Config
 (vim.diagnostic.config {:virtual_lines {:current_line true}})
-(vim.lsp.enable ["clangd"
+(vim.lsp.enable ["markdown_oxide"
+                 "clangd"
                  "lua_ls"
                  "vtsls"
                  "pyright"

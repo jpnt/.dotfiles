@@ -58,4 +58,8 @@
    :on_require :zk
    :lazy false
    :setup {:auto_attach {:enabled true}}}
+  {:src "https://github.com/MeanderingProgrammer/render-markdown.nvim"
+   :on_require :render-markdown
+   :lazy false
+   :setup {}}
 ]
