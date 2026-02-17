@@ -6,23 +6,23 @@
       "version": "'v1.8.0'"
     },
     "conform.nvim": {
-      "rev": "5ac2bb57a9096f00ca50e1a3c46020d5930319b8",
+      "rev": "c2526f1cde528a66e086ab1668e996d162c75f4f",
       "src": "https://github.com/stevearc/conform.nvim"
     },
     "conjure": {
-      "rev": "67705566318002cc0a88b075f695518a43aa0ca7",
+      "rev": "42048ce74a7d86dd85091d7d8cebb78d25761da3",
       "src": "https://github.com/Olical/conjure"
     },
     "fennel": {
-      "rev": "29db8f99996137336a1f23ebb7e9743d7dcfee5b",
+      "rev": "d370f8d14236c346ae65c18e1bf3921652b6bbee",
       "src": "https://git.sr.ht/~technomancy/fennel"
     },
     "friendly-snippets": {
-      "rev": "572f5660cf05f8cd8834e096d7b4c921ba18e175",
+      "rev": "6cd7280adead7f586db6fccbd15d2cac7e2188b9",
       "src": "https://github.com/rafamadriz/friendly-snippets"
     },
     "lze": {
-      "rev": "ab1c3202c62fc19a33ede14a8b6fc66e772b91d7",
+      "rev": "7276233f8fbe883e0a3b2164a836a2b292883a1c",
       "src": "https://github.com/BirdeeHub/lze"
     },
     "melange-nvim": {
@@ -30,7 +30,7 @@
       "src": "https://github.com/savq/melange-nvim"
     },
     "mini.nvim": {
-      "rev": "c9d3bc2df3015d82eabe3d2d88dac1ef5746e9e8",
+      "rev": "4ca988557786c9a4e41d5e5b6e31b4c9d7379f53",
       "src": "https://github.com/nvim-mini/mini.nvim",
       "version": "'main'"
     },
@@ -39,11 +39,11 @@
       "src": "https://github.com/aileot/nvim-laurel"
     },
     "nvim-lint": {
-      "rev": "ca6ea12daf0a4d92dc24c5c9ae22a1f0418ade37",
+      "rev": "a3d17105a79fc12055c2a0d732665d9c2b1c2dc3",
       "src": "https://github.com/mfussenegger/nvim-lint"
     },
     "nvim-lspconfig": {
-      "rev": "92ee7d42320edfbb81f3cad851314ab197fa324a",
+      "rev": "44acfe887d4056f704ccc4f17513ed41c9e2b2e6",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-thyme": {
@@ -51,7 +51,7 @@
       "src": "https://github.com/aileot/nvim-thyme"
     },
     "nvim-treesitter": {
-      "rev": "d19def46c112c26c17adeef88dd1253cc6d623a1",
+      "rev": "ca35dc5184327f9e19b70932190a256235acecb1",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-treesitter-context": {
@@ -59,7 +59,7 @@
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-context"
     },
     "rainbow-delimiters.nvim": {
-      "rev": "d6b802552cbe7d643a3b6b31f419c248d1f1e220",
+      "rev": "e2858c43caafec291f915ef25fbed27bbe78abbd",
       "src": "https://github.com/HiPhish/rainbow-delimiters.nvim"
     },
     "render-markdown.nvim": {
