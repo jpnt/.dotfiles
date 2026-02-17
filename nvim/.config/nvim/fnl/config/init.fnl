@@ -12,7 +12,6 @@
 (vim.cmd.colorscheme "melange")
 (vim.cmd "packadd nvim.undotree")
 
-(set! :mouse "")
 (set! :guicursor "n-v-i-c:block-Cursor")
 (set! :wrap true)
 (set! :linebreak true)
@@ -86,10 +85,6 @@
           (bmap! :n "gd" vim.lsp.buf.definition)
           (bmap! :n "<leader>ca" vim.lsp.buf.code_action)
           (bmap! :n "<leader>rn" vim.lsp.buf.rename))))
-          ; (bmap! :n "<leader>ih" (λ [] (vim.lsp.inlay_hint.enable
-          ;                              (not (vim.lsp.inlay_hint.is_enabled {:bufnr 0}))
-          ;                              {:bufnr 0}))))))
-
 
 ;; Treesitter
 (local nvim-treesitter (require :nvim-treesitter))

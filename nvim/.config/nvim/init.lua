@@ -27,7 +27,9 @@ vim.pack.add({
 }, { confirm = false })
 
 -- Ensure fennel plugin gets compiled
-vim.fn.system("make -C " .. vim.fn.stdpath("data") .. "/site/pack/core/opt/fennel")
+local fennel_path = vim.fn.stdpath("data") .. "/site/pack/core/opt/fennel"
+local out = vim.fn.system("make -C " .. fennel_path)
+if vim.v.shell_error ~= 0 then error("Fennel compile failed:\n" .. out) end
 
 -- Override package loading so thyme can hook into `require` calls and generate lua code
 -- if the required package is a fennel file.
