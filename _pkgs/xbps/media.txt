@@ -11,3 +11,4 @@ cmus-pulseaudio
 cmus-faad
 cmus-flac
 cmus-opus
+wiremix
