@@ -3,11 +3,7 @@
     "blink.cmp": {
       "rev": "b19413d214068f316c78978b08264ed1c41830ec",
       "src": "https://github.com/saghen/blink.cmp",
-      "version": "'v1.8.0'"
-    },
-    "conform.nvim": {
-      "rev": "c2526f1cde528a66e086ab1668e996d162c75f4f",
-      "src": "https://github.com/stevearc/conform.nvim"
+      "version": "'v1.9.1'"
     },
     "conjure": {
       "rev": "42048ce74a7d86dd85091d7d8cebb78d25761da3",
@@ -21,8 +17,16 @@
       "rev": "6cd7280adead7f586db6fccbd15d2cac7e2188b9",
       "src": "https://github.com/rafamadriz/friendly-snippets"
     },
+    "guard-collection": {
+      "rev": "edf6c86c06badc972964dadb7fd469022690cbf0",
+      "src": "https://github.com/nvimdev/guard-collection"
+    },
+    "guard.nvim": {
+      "rev": "addb8d2f40662b8b62d60dd7d18f503beb2332e7",
+      "src": "https://github.com/nvimdev/guard.nvim"
+    },
     "lze": {
-      "rev": "7276233f8fbe883e0a3b2164a836a2b292883a1c",
+      "rev": "e1b8c2e99fc1812fb79d309d2aad95fcdf0e01a5",
       "src": "https://github.com/BirdeeHub/lze"
     },
     "melange-nvim": {
@@ -30,7 +34,7 @@
       "src": "https://github.com/savq/melange-nvim"
     },
     "mini.nvim": {
-      "rev": "4ca988557786c9a4e41d5e5b6e31b4c9d7379f53",
+      "rev": "577d2dcb558efce1518c45a76345e01bf346c8e8",
       "src": "https://github.com/nvim-mini/mini.nvim",
       "version": "'main'"
     },
@@ -39,19 +43,23 @@
       "src": "https://github.com/aileot/nvim-laurel"
     },
     "nvim-lint": {
-      "rev": "a3d17105a79fc12055c2a0d732665d9c2b1c2dc3",
+      "rev": "606b823a57b027502a9ae00978ebf4f5d5158098",
       "src": "https://github.com/mfussenegger/nvim-lint"
     },
     "nvim-lspconfig": {
-      "rev": "44acfe887d4056f704ccc4f17513ed41c9e2b2e6",
+      "rev": "ab5139c99df944479e5a26495a37840fcbb1d512",
       "src": "https://github.com/neovim/nvim-lspconfig"
+    },
+    "nvim-notify": {
+      "rev": "8701bece920b38ea289b457f902e2ad184131a5d",
+      "src": "https://github.com/rcarriga/nvim-notify"
     },
     "nvim-thyme": {
       "rev": "13b2a55dad7b86ae6c83d51fc640eb00b45c4525",
       "src": "https://github.com/aileot/nvim-thyme"
     },
     "nvim-treesitter": {
-      "rev": "ca35dc5184327f9e19b70932190a256235acecb1",
+      "rev": "d660b7c002f3922b6bb3da47206645488a698426",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-treesitter-context": {
@@ -59,11 +67,11 @@
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-context"
     },
     "rainbow-delimiters.nvim": {
-      "rev": "e2858c43caafec291f915ef25fbed27bbe78abbd",
+      "rev": "01993eb20c6cdc1d33e7e98252368840309f99b9",
       "src": "https://github.com/HiPhish/rainbow-delimiters.nvim"
     },
     "render-markdown.nvim": {
-      "rev": "48b4175dbca8439d30c1f52231cbe5a712c8f9d9",
+      "rev": "1c958131c083c8557ea499fdb08c88b8afb05c4e",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
     "rtp.nvim": {
@@ -90,9 +98,9 @@
       "rev": "a6975e7c1ee157615bbc80fc25e4392f71c344d4",
       "src": "https://github.com/mg979/vim-visual-multi"
     },
-    "zk-nvim": {
-      "rev": "51c8f858420112dda495a6f4ddbd3943ae433e39",
-      "src": "https://github.com/zk-org/zk-nvim"
+    "visual-whitespace.nvim": {
+      "rev": "49ff2b1c572ed7033a584381fa23aad2bf3bb258",
+      "src": "https://github.com/mcauley-penney/visual-whitespace.nvim"
     }
   }
 }

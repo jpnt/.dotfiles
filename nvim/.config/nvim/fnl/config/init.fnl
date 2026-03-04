@@ -65,7 +65,8 @@
 
 ;; LSP Config
 (vim.diagnostic.config {:virtual_lines {:current_line true}})
-(vim.lsp.enable ["markdown_oxide"
+(vim.lsp.enable ["terraformls"
+                 "markdown_oxide"
                  "clangd"
                  "lua_ls"
                  "vtsls"
@@ -89,7 +90,10 @@
 ;; Treesitter
 (local nvim-treesitter (require :nvim-treesitter))
 ;; ignore auto install for these filetypes:
-(local ignored_ft ["text"
+(local ignored_ft ["jproperties"
+                   "help"
+                   "qf"
+                   "text"
                    "conf"
                    "dosini"
                    "sh"
@@ -115,11 +119,19 @@
                           ;; enable highlight only if there's an installed grammar.
                           (vim.treesitter.start bufnr))))))))
 
-;; Linters
-(local lint (require :lint))
-(tset lint :linters_by_ft
-      {:python [:ruff]
-       :c [:clangtidy]
-       :clojure [:clj-kondo]})
-(augroup! :nvim_lint {:clear true}
-  (autocmd! [:BufWritePost] ["*"] #(lint.try_lint)))
+;; Formatters and linters
+(g! :guard_config {:always_save false
+                   :auto_lint true
+                   :fmt_on_save true
+                   :lint_interval 500
+                   :lsp_as_default_formatter true
+                   :refresh_diagnostic true
+                   :save_on_fmt true})
+(local ft (require :guard.filetype))
+(: (ft :c)
+   :fmt :clang_format
+   :lint :clangtidy)
+(: (ft :python)
+   :lint :ruff)
+(: (ft :clojure)
+   :lint :clj-kondo)

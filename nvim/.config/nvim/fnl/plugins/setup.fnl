@@ -14,6 +14,9 @@
  ;; LspConfig (preconfigured set lsps)
  {:src "https://github.com/neovim/nvim-lspconfig"
   :event [:BufReadPost :BufNewFile]}
+ ;; Formatting and linting
+ "https://github.com/nvimdev/guard.nvim"
+ "https://github.com/nvimdev/guard-collection"
  ;; Mini plugin collection
  {:src "https://github.com/nvim-mini/mini.nvim"
   :version :main
@@ -32,34 +35,21 @@
           (: (require :mini.surround) :setup {}))}
  ;; Completion
  {:src "https://github.com/saghen/blink.cmp"
-  :version :v1.8.0
+  :version :v1.9.1
   :on_require :blink.cmp
   :event [:InsertEnter]
   :setup {:completion {:documentation {:auto_show true}}}}
  ;; Snippets
  {:src "https://github.com/rafamadriz/friendly-snippets"
   :dep_of :blink.cmp}
- ;; Format
- {:src "https://github.com/stevearc/conform.nvim"
-  :on_require :conform
-  :event [:BufWritePre]
-  :setup {:formatters_by_ft {:c [:clang-format]}
-          :format_on_save {:timeout_ms 500
-                           :lsp_format "fallback"}}}
- ;; Lint
- "https://github.com/mfussenegger/nvim-lint"
  ;; Stuff by tpope
  "https://github.com/tpope/vim-dispatch"
  "https://github.com/tpope/vim-fugitive"
  "https://github.com/tpope/vim-eunuch"
  "https://github.com/tpope/vim-vinegar"
-  ;; Note taking with zk
-  {:src "https://github.com/zk-org/zk-nvim"
-   :on_require :zk
-   :lazy false
-   :setup {:auto_attach {:enabled true}}}
   {:src "https://github.com/MeanderingProgrammer/render-markdown.nvim"
    :on_require :render-markdown
    :lazy false
    :setup {}}
+   "https://github.com/mcauley-penney/visual-whitespace.nvim"
 ]
