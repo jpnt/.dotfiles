@@ -1,0 +1,4 @@
+[Unit]
+Description=User Graphical Session
+Requires=river.service
+After=river.service
