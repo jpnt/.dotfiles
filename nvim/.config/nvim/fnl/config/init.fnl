@@ -129,9 +129,9 @@
                    :save_on_fmt true})
 (local ft (require :guard.filetype))
 (: (ft :c)
-   :fmt :clang_format
+   :fmt :clang-format
    :lint :clangtidy)
 (: (ft :python)
    :lint :ruff)
-(: (ft :clojure)
-   :lint :clj-kondo)
+; (: (ft :clojure)
+;    :lint :clj-kondo)
