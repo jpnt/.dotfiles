@@ -27,7 +27,7 @@ for pad in $(riverctl list-inputs | grep -i touchpad); do
     riverctl input "$pad" drag-lock enabled
     riverctl input "$pad" disable-while-typing enabled
     riverctl input "$pad" middle-emulation disabled
-    riverctl input "$pad" natural-scroll disabled
+    riverctl input "$pad" natural-scroll enabled
     riverctl input "$pad" scroll-method two-finger
     riverctl input "$pad" click-method button-areas
     riverctl input "$pad" accel-profile adaptive
@@ -134,6 +134,7 @@ riverctl rule-add -app-id Eclipse float
 # Layout
 riverctl default-layout rivertile
 
+# TODO: this doesnt work. just use s6-svscan for user services.
 # Write display variables
 test -d "$TURNSTILE_ENV_DIR" && {
     echo "$WAYLAND_DISPLAY" > "$TURNSTILE_ENV_DIR"/WAYLAND_DISPLAY
@@ -145,5 +146,12 @@ FTRIG="/run/user/$(id -u)/wayland-ready"
 s6-mkfifodir "$FTRIG"
 s6-ftrig-notify "$FTRIG" 'r'
 
-# Start layout generator (blocks)
-exec rivertile -view-padding 0 -outer-padding 0
+# Maybe give up and fork all processes in river...
+rivertile -view-padding 0 -outer-padding 0 &
+# foot --server &
+# kanshi &
+# swaybg -i ~/Imagens/Wallpaper/current &
+# wlsunset -l 40 -L -8 -t 4500 -T 6500 -g 1.0 &
+# TODO: https://sr.ht/~kennylevinsen/poweralertd/
+
+
