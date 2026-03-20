@@ -48,14 +48,19 @@
  "https://github.com/tpope/vim-eunuch"
  "https://github.com/tpope/vim-vinegar"
  ;; Markdown
-  {:src "https://github.com/MeanderingProgrammer/render-markdown.nvim"
+ {:src "https://github.com/MeanderingProgrammer/render-markdown.nvim"
    :on_require :render-markdown
    :lazy false
    :setup {}}
-  "https://github.com/mcauley-penney/visual-whitespace.nvim"
-  {:src "https://github.com/Bekaboo/dropbar.nvim"
+ "https://github.com/mcauley-penney/visual-whitespace.nvim"
+ ;; Breadcrumbs
+ {:src "https://github.com/Bekaboo/dropbar.nvim"
    :on_require :dropbar
    :lazy false
    :setup {}
   }
+  ;; AI
+ {:src "https://github.com/carlos-algms/agentic.nvim"
+  :on_require :agentic
+  :setup {:provider :copilot-acp}}
 ]
