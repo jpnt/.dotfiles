@@ -90,7 +90,9 @@
 ;; Treesitter
 (local nvim-treesitter (require :nvim-treesitter))
 ;; ignore auto install for these filetypes:
-(local ignored_ft ["gitconfig"
+(local ignored_ft ["dropbar_preview"
+                   "dropbar_menu"
+                   "gitconfig"
                    "jproperties"
                    "help"
                    "qf"

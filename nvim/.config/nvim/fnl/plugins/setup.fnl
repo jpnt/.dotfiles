@@ -53,4 +53,9 @@
    :lazy false
    :setup {}}
   "https://github.com/mcauley-penney/visual-whitespace.nvim"
+  {:src "https://github.com/Bekaboo/dropbar.nvim"
+   :on_require :dropbar
+   :lazy false
+   :setup {}
+  }
 ]
