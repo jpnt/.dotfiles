@@ -9,7 +9,7 @@
 (require :plugins)
 
 ;; Finally the rest of the configuration.
-(vim.cmd.colorscheme "melange")
+(vim.cmd.colorscheme "gruvbox-material")
 (vim.cmd "packadd nvim.undotree")
 
 (set! :guicursor "n-v-i-c:block-Cursor")

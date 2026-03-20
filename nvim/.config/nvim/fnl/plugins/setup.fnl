@@ -1,7 +1,7 @@
 [;; Sources `plugin` and `ftdetect` directories when lazy loading.
  "https://github.com/lumen-oss/rtp.nvim"
  ;; Colorscheme
- "https://github.com/savq/melange-nvim"
+ "https://github.com/sainnhe/gruvbox-material"
  ;; Treesitter
  {:src "https://github.com/nvim-treesitter/nvim-treesitter"
   :after_build #(vim.cmd "TSUpdate")}
@@ -47,9 +47,10 @@
  "https://github.com/tpope/vim-fugitive"
  "https://github.com/tpope/vim-eunuch"
  "https://github.com/tpope/vim-vinegar"
+ ;; Markdown
   {:src "https://github.com/MeanderingProgrammer/render-markdown.nvim"
    :on_require :render-markdown
    :lazy false
    :setup {}}
-   "https://github.com/mcauley-penney/visual-whitespace.nvim"
+  "https://github.com/mcauley-penney/visual-whitespace.nvim"
 ]

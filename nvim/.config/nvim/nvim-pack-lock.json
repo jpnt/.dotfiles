@@ -17,6 +17,10 @@
       "rev": "6cd7280adead7f586db6fccbd15d2cac7e2188b9",
       "src": "https://github.com/rafamadriz/friendly-snippets"
     },
+    "gruvbox-material": {
+      "rev": "790afe9dd085aa04eccd1da3626c5fa05c620e53",
+      "src": "https://github.com/sainnhe/gruvbox-material"
+    },
     "guard-collection": {
       "rev": "edf6c86c06badc972964dadb7fd469022690cbf0",
       "src": "https://github.com/nvimdev/guard-collection"
@@ -28,10 +32,6 @@
     "lze": {
       "rev": "e1b8c2e99fc1812fb79d309d2aad95fcdf0e01a5",
       "src": "https://github.com/BirdeeHub/lze"
-    },
-    "melange-nvim": {
-      "rev": "ce42f6b629beeaa00591ba73a77d3eeac4cf28ce",
-      "src": "https://github.com/savq/melange-nvim"
     },
     "mini.nvim": {
       "rev": "577d2dcb558efce1518c45a76345e01bf346c8e8",
