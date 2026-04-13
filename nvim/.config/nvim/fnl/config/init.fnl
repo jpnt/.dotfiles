@@ -33,8 +33,8 @@
 (map! :i "<C-l>" "λ" {:desc "Insert lambda symbol"})
 (map! :nvx :<leader>y "\"+y<CR>" {:desc "Yank to clipboard"})
 (map! :nvx :<leader>d "\"+d<CR>" {:desc "Delete to clipboard"})
-(map! :n :<C-Tab> :<cmd>bnext<CR> {:desc "Switch to next buffer"})
-(map! :n :<C-S-Tab> :<cmd>bprevious<CR> {:desc "Switch to previous buffer"})
+(map! :n :<Tab> :<cmd>bnext<CR> {:desc "Switch to next buffer"})
+(map! :n :<S-Tab> :<cmd>bprevious<CR> {:desc "Switch to previous buffer"})
 
 (map! :n "<leader>u"
       #(m undotree open {:command "topleft 30vnew"}
