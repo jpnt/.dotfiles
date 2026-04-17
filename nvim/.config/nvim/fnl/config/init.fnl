@@ -45,11 +45,6 @@
 (map! :n "<leader>g" ":Pick grep_live<CR>"  {:desc "Live grep"})
 (map! :n "<leader>h" ":Pick help<CR>"  {:desc "Help"})
 
-(map! :n "<leader>a" 
-      #(let [agentic (require :agentic)]
-         (agentic:toggle))
-      {:desc "Toggle agent"})
-
 (map! :n "<leader>\\"
       #(do
          (vim.cmd.vnew)

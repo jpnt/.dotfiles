@@ -57,10 +57,6 @@
  {:src "https://github.com/Bekaboo/dropbar.nvim"
    :on_require :dropbar
    :lazy false
-   :setup {}
-  }
-  ;; AI
- {:src "https://github.com/carlos-algms/agentic.nvim"
-  :on_require :agentic
-  :setup {:provider :copilot-acp}}
+   :setup {}}
+ "https://github.com/dstein64/vim-startuptime"
 ]
