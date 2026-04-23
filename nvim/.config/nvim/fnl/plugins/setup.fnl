@@ -27,12 +27,11 @@
           (: (require :mini.notify) :setup {})
           (: (require :mini.pick) :setup {})
           (: (require :mini.pairs) :setup {})
-          (: (require :mini.starter) :setup {})
           (: (require :mini.jump) :setup {})
           (: (require :mini.icons) :setup {})
           (: (require :mini.diff) :setup {})
-          (: (require :mini.tabline) :setup {})
-          (: (require :mini.surround) :setup {}))}
+          (: (require :mini.surround) :setup {}))
+ }
  ;; Completion
  {:src "https://github.com/saghen/blink.cmp"
   :version :v1.9.1
