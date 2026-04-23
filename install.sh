@@ -22,7 +22,7 @@ shift $((OPTIND - 1))
 
 ignore_top() {
     case "$1" in
-        _*|install.sh|flatpak-theme.sh|README.md) return 0 ;;
+        install.sh|README.md) return 0 ;;
         *) return 1 ;;
     esac
 }
