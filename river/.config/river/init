@@ -80,9 +80,9 @@ riverctl map normal Super+Shift S spawn 'sh -c "grim -g \"$(slurp)\" - | wl-copy
 
 # Notifications
 riverctl map normal Control+Alt Backspace spawn 'waylock'
-riverctl map normal Super+Shift B spawn 'notify-send -t 2000 "Battery" "$(cat /sys/class/power_supply/BAT0/capacity)% $(cat /sys/class/power_supply/BAT0/status)"'
-riverctl map normal Super+Shift D spawn 'notify-send -t 2000 "Date" "$(date)"'
-riverctl map normal Super+Shift T spawn 'notify-send -t 2000 notify-send -t 1000 "Tags" "$(rivertags)"'
+riverctl map normal Super+Shift B spawn 'notify-send -t 2000 -h string:x-canonical-private-synchronous:sys:battery "Battery" "$(cat /sys/class/power_supply/BAT0/capacity)% $(cat /sys/class/power_supply/BAT0/status)"'
+riverctl map normal Super+Shift D spawn 'notify-send -t 2000 -h string:x-canonical-private-synchronous:sys:date "Date" "$(date)"'
+riverctl map normal Super+Shift T spawn 'notify-send -t 2000 -h string:x-canonical-private-synchronous:wl:tags notify-send -t 1000 "Tags" "$(rivertags)"'
 
 # Pomodoro
 # TODO: UX is shit
