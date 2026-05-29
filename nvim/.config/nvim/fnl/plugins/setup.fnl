@@ -2,6 +2,9 @@
  "https://github.com/lumen-oss/rtp.nvim"
  ;; Colorscheme
  "https://github.com/sainnhe/gruvbox-material"
+ "https://github.com/xiyaowong/transparent.nvim"
+ ;; Auto-ident
+ "https://github.com/Darazaki/indent-o-matic"
  ;; Treesitter
  {:src "https://github.com/nvim-treesitter/nvim-treesitter"
   :after_build #(vim.cmd "TSUpdate")}
@@ -17,6 +20,8 @@
  ;; Formatting and linting
  "https://github.com/nvimdev/guard.nvim"
  "https://github.com/nvimdev/guard-collection"
+ ;; Fuzzy finder
+ "https://github.com/camspiers/snap"
  ;; Mini plugin collection
  {:src "https://github.com/nvim-mini/mini.nvim"
   :version :main
@@ -24,17 +29,14 @@
   :after (λ []
           (: (require :mini.ai) :setup {})
           (: (require :mini.cursorword) :setup {})
-          (: (require :mini.notify) :setup {})
-          (: (require :mini.pick) :setup {})
           (: (require :mini.pairs) :setup {})
-          (: (require :mini.jump) :setup {})
           (: (require :mini.icons) :setup {})
           (: (require :mini.diff) :setup {})
           (: (require :mini.surround) :setup {}))
  }
  ;; Completion
  {:src "https://github.com/saghen/blink.cmp"
-  :version :v1.9.1
+  :version :v1.10.2
   :on_require :blink.cmp
   :event [:InsertEnter]
   :setup {:completion {:documentation {:auto_show true}}}}
@@ -52,10 +54,5 @@
    :lazy false
    :setup {}}
  "https://github.com/mcauley-penney/visual-whitespace.nvim"
- ;; Breadcrumbs
- {:src "https://github.com/Bekaboo/dropbar.nvim"
-   :on_require :dropbar
-   :lazy false
-   :setup {}}
  "https://github.com/dstein64/vim-startuptime"
 ]

@@ -1,20 +1,16 @@
 {
   "plugins": {
     "blink.cmp": {
-      "rev": "4b18c32adef2898f95cdef6192cbd5796c1a332d",
+      "rev": "78336bc89ee5365633bcf754d93df01678b5c08f",
       "src": "https://github.com/saghen/blink.cmp",
-      "version": "'v1.9.1'"
+      "version": "'v1.10.2'"
     },
     "conjure": {
-      "rev": "23718a259a03be9d72a05bef6d76bea789e46b5c",
+      "rev": "c51a9ca7495b36c05686a85e71d888efb81f1e06",
       "src": "https://github.com/Olical/conjure"
     },
-    "dropbar.nvim": {
-      "rev": "ce202248134e3949aac375fd66c28e5207785b10",
-      "src": "https://github.com/Bekaboo/dropbar.nvim"
-    },
     "fennel": {
-      "rev": "dfa816e83421436ee9259164acbf2a8d2af79e84",
+      "rev": "8cce1304cad4549e0d05b48ed9da0f4584094dcc",
       "src": "https://git.sr.ht/~technomancy/fennel"
     },
     "friendly-snippets": {
@@ -22,7 +18,7 @@
       "src": "https://github.com/rafamadriz/friendly-snippets"
     },
     "gruvbox-material": {
-      "rev": "790afe9dd085aa04eccd1da3626c5fa05c620e53",
+      "rev": "11d779b26a9ab2b3db8c22c6ac9fb6e8ed4fea79",
       "src": "https://github.com/sainnhe/gruvbox-material"
     },
     "guard-collection": {
@@ -33,12 +29,16 @@
       "rev": "addb8d2f40662b8b62d60dd7d18f503beb2332e7",
       "src": "https://github.com/nvimdev/guard.nvim"
     },
+    "indent-o-matic": {
+      "rev": "764da1f30b5bb4a49035c3abc9a586322296b812",
+      "src": "https://github.com/Darazaki/indent-o-matic"
+    },
     "lze": {
-      "rev": "1d05835370e841c1605ec88d0541195c9410c34e",
+      "rev": "37daa89a10a60bd153fa80e9041d6137f077d6fb",
       "src": "https://github.com/BirdeeHub/lze"
     },
     "mini.nvim": {
-      "rev": "59f09943573c5348ca6c88393fa09ce3b66a7818",
+      "rev": "9d0b9b7188d5c24b5a87f0d8b383ec8bda7a0de4",
       "src": "https://github.com/nvim-mini/mini.nvim",
       "version": "'main'"
     },
@@ -46,41 +46,41 @@
       "rev": "0167c1ded60a6c325266287cf63fd1816b411605",
       "src": "https://github.com/aileot/nvim-laurel"
     },
-    "nvim-lint": {
-      "rev": "606b823a57b027502a9ae00978ebf4f5d5158098",
-      "src": "https://github.com/mfussenegger/nvim-lint"
-    },
     "nvim-lspconfig": {
-      "rev": "841c6d4139aedb8a3f2baf30cef5327371385b93",
+      "rev": "9573948c38bfabeec353ae7dd7d3ffec4c506a6b",
       "src": "https://github.com/neovim/nvim-lspconfig"
-    },
-    "nvim-notify": {
-      "rev": "8701bece920b38ea289b457f902e2ad184131a5d",
-      "src": "https://github.com/rcarriga/nvim-notify"
     },
     "nvim-thyme": {
       "rev": "13b2a55dad7b86ae6c83d51fc640eb00b45c4525",
       "src": "https://github.com/aileot/nvim-thyme"
     },
     "nvim-treesitter": {
-      "rev": "877f724846f2202a16e311bd19efb954bd1c430e",
+      "rev": "4916d6592ede8c07973490d9322f187e07dfefac",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-treesitter-context": {
-      "rev": "9a8e39993e3b895601bf8227124a48ea8268149e",
+      "rev": "b311b30818951d01f7b4bf650521b868b3fece16",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-context"
     },
     "rainbow-delimiters.nvim": {
-      "rev": "607a438d8c647a355749973fd295e33505afafde",
+      "rev": "a798325b7f36acc62741d1029930a7b96d4dd4bf",
       "src": "https://github.com/HiPhish/rainbow-delimiters.nvim"
     },
     "render-markdown.nvim": {
-      "rev": "e3c18ddd27a853f85a6f513a864cf4f2982b9f26",
+      "rev": "5adf0895310c1904e5abfaad40a2baad7fe44a07",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
     "rtp.nvim": {
       "rev": "494ddfc888bb466555d90ace731856de1320fe45",
       "src": "https://github.com/lumen-oss/rtp.nvim"
+    },
+    "snap": {
+      "rev": "eae4d882904f32dce64c5d1dfe57e2738295481c",
+      "src": "https://github.com/camspiers/snap"
+    },
+    "transparent.nvim": {
+      "rev": "8ac59883de84e9cd1850ea25cf087031c5ba7d54",
+      "src": "https://github.com/xiyaowong/transparent.nvim"
     },
     "vim-dispatch": {
       "rev": "a2ff28abdb2d89725192db5b8562977d392a4d3f",
@@ -107,7 +107,7 @@
       "src": "https://github.com/mg979/vim-visual-multi"
     },
     "visual-whitespace.nvim": {
-      "rev": "49ff2b1c572ed7033a584381fa23aad2bf3bb258",
+      "rev": "02714f141dc0783eb814af6be534bdb0273142ff",
       "src": "https://github.com/mcauley-penney/visual-whitespace.nvim"
     }
   }

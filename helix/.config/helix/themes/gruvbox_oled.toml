@@ -1,0 +1,8 @@
+inherits = "gruvbox-material"
+
+"ui.background" = { bg = "#000000" }
+"ui.window" = { bg = "#000000" }
+"ui.popup" = { bg = "#000000" }
+"ui.help" = { bg = "#000000" }
+"ui.menu" = { bg = "#000000" }
+"ui.text" = { fg = "white", bg = "#000000" }

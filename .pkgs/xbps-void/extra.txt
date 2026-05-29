@@ -10,6 +10,7 @@ keepassxc
 syncthing
 glxinfo
 git
+tree-sitter-cli
 tree-sitter-devel
 tealdeer
 ldns

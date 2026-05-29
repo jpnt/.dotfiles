@@ -4,6 +4,7 @@
 ; the leader is defined.
 (g! :mapleader " ")
 (g! :maplocalleader ",")
+(g! :netrw_liststyle 1)
 
 ;; Then load all plugins so the rest of the configuration can reference them if needed to.
 (require :plugins)
@@ -40,10 +41,16 @@
       #(m undotree open {:command "topleft 30vnew"}
       {:desc "Open undotree"}))
 
-(map! :n "<leader>d" ":Pick buffers<CR>" {:desc "Buffers"})
-(map! :n "<leader>f" ":Pick files<CR>" {:desc "Find files"})
-(map! :n "<leader>g" ":Pick grep_live<CR>"  {:desc "Live grep"})
-(map! :n "<leader>h" ":Pick help<CR>"  {:desc "Help"})
+(local snap (require :snap))
+(snap.maps
+  [["<leader>f"
+    ((. snap.config :file)
+      {:producer "ripgrep.file"})]
+
+   ["<leader>g"
+    ((. snap.config :vimgrep) {})]])
+; (map! :n "<leader>f" ":Pick files<CR>" {:desc "Find files"})
+; (map! :n "<leader>g" ":Pick grep_live<CR>"  {:desc "Live grep"})
 
 (map! :n "<leader>\\"
       #(do
@@ -74,7 +81,7 @@
                  "clangd"
                  "lua_ls"
                  "vtsls"
-                 "pyright"
+                 "basedpyright"
                  "gopls"
                  "rust_analyzer"
                  "zls"
@@ -94,15 +101,7 @@
 ;; Treesitter
 (local nvim-treesitter (require :nvim-treesitter))
 ;; ignore auto install for these filetypes:
-(local ignored_ft ["AgenticChat"
-                   "AgenticTodos"
-                   "AgenticCode"
-                   "AgenticFiles"
-                   "AgenticDiagnostics"
-                   "AgenticInput"
-                   "dropbar_preview"
-                   "dropbar_menu"
-                   "gitconfig"
+(local ignored_ft ["gitconfig"
                    "jproperties"
                    "help"
                    "qf"
@@ -148,3 +147,5 @@
    :lint :ruff)
 ; (: (ft :clojure)
 ;    :lint :clj-kondo)
+; (: (ft :rust)
+;    :lint :clippy)

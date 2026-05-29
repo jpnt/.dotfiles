@@ -10,9 +10,11 @@ video/x-matroska=mpv.desktop;
 [Default Applications]
 image/jpeg=imv.desktop;
 image/png=imv.desktop;
-text/html=app.zen_browser.zen.desktop;
+text/html=ungoogled-chromium.desktop
 text/plain=nvim.desktop;
 video/mp4=mpv.desktop;
-x-scheme-handler/http=app.zen_browser.zen.desktop;
-x-scheme-handler/https=app.zen_browser.zen.desktop;
+x-scheme-handler/http=ungoogled-chromium.desktop
+x-scheme-handler/https=ungoogled-chromium.desktop
 application/pdf=org.pwmt.zathura.desktop
+x-scheme-handler/about=ungoogled-chromium.desktop
+x-scheme-handler/unknown=ungoogled-chromium.desktop

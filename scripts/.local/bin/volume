@@ -1,0 +1,44 @@
+#!/bin/sh
+
+SINK='@DEFAULT_AUDIO_SINK@'
+SOURCE='@DEFAULT_AUDIO_SOURCE@'
+
+get_desc() {
+    wpctl inspect "$1" |
+        awk -F'"' '/node.description/ { print $2 }'
+}
+
+notify_sink() {
+    notify-send \
+        -t 1000 \
+        -h string:x-canonical-private-synchronous:sys:volume \
+        "$(get_desc "$SINK")" \
+        "$(wpctl get-volume "$SINK")"
+}
+
+notify_source() {
+    notify-send \
+        -t 1000 \
+        -h string:x-canonical-private-synchronous:sys:mic \
+        "$(get_desc "$SOURCE")" \
+        "$(wpctl get-volume "$SOURCE")"
+}
+
+case "$1" in
+    up)
+        wpctl set-volume -l 1.0 "$SINK" 5%+
+        notify_sink
+        ;;
+    down)
+        wpctl set-volume -l 1.0 "$SINK" 5%-
+        notify_sink
+        ;;
+    mute)
+        wpctl set-mute "$SINK" toggle
+        notify_sink
+        ;;
+    mic-mute)
+        wpctl set-mute "$SOURCE" toggle
+        notify_source
+        ;;
+esac
