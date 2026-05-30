@@ -13,7 +13,7 @@ profile desktop {
         adaptive_sync off
     }
     output "Samsung Electric Company S24C31x H4CW901201X" {
-        mode 1920x1080@60Hz
+        mode 1920x1080@75Hz
         position 0,0
         adaptive_sync off
     }
