@@ -1,5 +1,22 @@
 vim.loader.enable()
 
+-- Neovide (nvim GUI)
+if vim.g.neovide then
+  local function scale(delta)
+    vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + delta
+  end
+
+  vim.keymap.set({ "n", "v" }, "<C-+>", function() scale(0.1) end, { silent = true })
+  vim.keymap.set({ "n", "v" }, "<C-->", function() scale(-0.1) end, { silent = true })
+  vim.keymap.set({ "n", "v" }, "<C-0>", function() vim.g.neovide_scale_factor = 1 end, { silent = true })
+  vim.keymap.set({ "n", "v" }, "<C-ScrollWheelUp>", function() scale(0.1) end, { silent = true })
+  vim.keymap.set({ "n", "v" }, "<C-ScrollWheelDown>", function() scale(-0.1) end, { silent = true })
+
+  vim.keymap.set({ "n", "v" }, "<C-S-c>", '"+y', { desc = "Copy to clipboard" })
+  vim.keymap.set("i", "<C-S-v>", "<C-r>+", { desc = "Paste from clipboard" })
+  vim.keymap.set({ "n", "v" }, "<C-S-v>", '"+p', { desc = "Paste from clipboard" })
+end
+
 -- Clear Fennel cache when Fennel dependencies are changed.
 local rebuild_thyme = false
 
