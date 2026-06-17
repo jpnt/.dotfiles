@@ -46,6 +46,13 @@
   (assert-compile (sym? func) "expected function name")
   `((. (require ,(tostring m)) ,(tostring func)) ,...))
 
+(fn insert-date [fmt]
+  `(vim.api.nvim_put
+     [,(os.date fmt)]
+     "c"
+     true
+     true))
+
 {: tx!
  : let!
  : g!
@@ -68,4 +75,5 @@
  : highlight!
  : hi!
  : dbg!
- : m}
+ : m
+ : insert-date}

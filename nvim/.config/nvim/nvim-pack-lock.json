@@ -17,6 +17,10 @@
       "rev": "6cd7280adead7f586db6fccbd15d2cac7e2188b9",
       "src": "https://github.com/rafamadriz/friendly-snippets"
     },
+    "fzf-lua": {
+      "rev": "988416cc782dfe28bff3f0da9b8c943b236cd86a",
+      "src": "https://github.com/ibhagwan/fzf-lua"
+    },
     "gruvbox-material": {
       "rev": "11d779b26a9ab2b3db8c22c6ac9fb6e8ed4fea79",
       "src": "https://github.com/sainnhe/gruvbox-material"
@@ -73,10 +77,6 @@
     "rtp.nvim": {
       "rev": "494ddfc888bb466555d90ace731856de1320fe45",
       "src": "https://github.com/lumen-oss/rtp.nvim"
-    },
-    "snap": {
-      "rev": "eae4d882904f32dce64c5d1dfe57e2738295481c",
-      "src": "https://github.com/camspiers/snap"
     },
     "transparent.nvim": {
       "rev": "8ac59883de84e9cd1850ea25cf087031c5ba7d54",

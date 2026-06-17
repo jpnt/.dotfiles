@@ -51,6 +51,7 @@ if vim.v.shell_error ~= 0 then error("Fennel compile failed:\n" .. out) end
 -- Override package loading so thyme can hook into `require` calls and generate lua code
 -- if the required package is a fennel file.
 table.insert(package.loaders, function(...)
+-- table.insert(package, function(...)
   return require("thyme").loader(...)
 end)
 

@@ -41,16 +41,13 @@
       #(m undotree open {:command "topleft 30vnew"}
       {:desc "Open undotree"}))
 
-(local snap (require :snap))
-(snap.maps
-  [["<leader>f"
-    ((. snap.config :file)
-      {:producer "ripgrep.file"})]
+(map! :n "<localleader>d"
+        #(insert-date "%Y-%m-%d")
+        {:desc "Insert current date"})
 
-   ["<leader>g"
-    ((. snap.config :vimgrep) {})]])
-; (map! :n "<leader>f" ":Pick files<CR>" {:desc "Find files"})
-; (map! :n "<leader>g" ":Pick grep_live<CR>"  {:desc "Live grep"})
+(map! :n "<leader>f" ":FzfLua files<CR>" {:desc "Fuzzy find files"})
+(map! :n "<leader>g" ":FzfLua live_grep<CR>" {:desc "Grep files"})
+(map! :n "<leader>r" ":FzfLua oldfiles<CR>" {:desc "Recent files"})
 
 (map! :n "<leader>\\"
       #(do
@@ -58,11 +55,6 @@
          (vim.cmd.term)
          (vim.cmd.wincmd "J"))
       {:desc "Open vertical terminal"})
-
-(local util (require :util))
-(map! :n "<localleader>d"
-        #(util.insert-date "%Y-%m-%d")
-        {:desc "Insert current date"})
 
 
 (augroup! :line-num-only-in-active-windows
@@ -101,7 +93,8 @@
 ;; Treesitter
 (local nvim-treesitter (require :nvim-treesitter))
 ;; ignore auto install for these filetypes:
-(local ignored_ft ["gitconfig"
+(local ignored_ft ["checkhealth"
+                   "gitconfig"
                    "jproperties"
                    "help"
                    "qf"

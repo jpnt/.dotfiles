@@ -20,8 +20,8 @@
  ;; Formatting and linting
  "https://github.com/nvimdev/guard.nvim"
  "https://github.com/nvimdev/guard-collection"
- ;; Fuzzy finder
- "https://github.com/camspiers/snap"
+ ;; fzf/ripgrep integration
+ "https://github.com/ibhagwan/fzf-lua"
  ;; Mini plugin collection
  {:src "https://github.com/nvim-mini/mini.nvim"
   :version :main
