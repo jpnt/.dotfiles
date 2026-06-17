@@ -93,7 +93,8 @@
 ;; Treesitter
 (local nvim-treesitter (require :nvim-treesitter))
 ;; ignore auto install for these filetypes:
-(local ignored_ft ["checkhealth"
+(local ignored_ft ["mail"
+                   "checkhealth"
                    "gitconfig"
                    "jproperties"
                    "help"
