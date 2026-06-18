@@ -5,9 +5,11 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-set -o vi
+# Prompt
+PS1='$ \u:[\w]> '
 
-eval "$(keychain --eval --quiet github_jpnt bitbucket)"
+# Vim mode
+set -o vi
 
 # Enable bash-completion
 if [ -f /etc/bash_completion ]; then
@@ -17,14 +19,13 @@ fi
 # Aliases
 alias ls='ls --color=always'
 alias grep='grep --color=always'
-alias tree='tree -C'
 alias diff='diff --color=always'
 alias ip='ip --color=always'
 alias dmesg='dmesg --color=always'
 alias ..='cd ..'
 alias l='eza -alh --icons --group --group-directories-first --color-scale'
+alias t='l -T'
 alias ta='tmux attach'
-alias tn='tmux new -s'
 alias nv='nvim'
 alias llm='uvx ramalama'
 alias g='git status -sb'
@@ -36,6 +37,10 @@ alias gd='git diff --color-moved --patience'
 alias straceps='strace -ftt -e trace=%process,%signal -o "straceps_$(date +%Y%m%d_%H%M%S).log"'
 alias stracerw='strace -ftt -e trace=read,write -o "stracerw_$(date +%Y%m%d_%H%M%S).log"'
 alias rsyncpreserve='rsync -avHAXS --numeric-ids'
+alias k='kubecolor'
+alias docker='podman'
 
-# Prompt
-PS1='$ \u:[\w]> '
+# Functions
+hex() { [ $# -gt 0 ] && printf '0x%x\n' "$@" || while read -r n; do printf '0x%x\n' "$n"; done; }
+dec() { [ $# -gt 0 ] && printf '%d\n' "$@" || while read -r n; do printf '%d\n' "$n"; done; }
+oct() { [ $# -gt 0 ] && printf '0%o\n' "$@" || while read -r n; do printf '0%o\n' "$n"; done; }
