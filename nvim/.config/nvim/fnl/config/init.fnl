@@ -68,7 +68,8 @@
 
 ;; LSP Config
 (vim.diagnostic.config {:virtual_lines {:current_line true}})
-(vim.lsp.enable ["terraformls"
+(vim.lsp.enable ["jsonls"
+                 "terraformls"
                  "markdown_oxide"
                  "clangd"
                  "lua_ls"
