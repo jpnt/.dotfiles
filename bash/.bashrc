@@ -10,6 +10,13 @@ PS1='$ \u:[\w]> '
 
 # Vim mode
 set -o vi
+# TODO: REMOVE THIS! use user service instead.
+# weird stuff happened: PID of ssh agent was equal to syncthing user service.
+# my runit user services are spawned by turnstile in Void Linux. but could also be issue
+# of ssh agent part. who even sets the PID of the ssh agent? why cant I see the process
+# running? yes i verified now. even if ssh-agent process doesnt successfully run it sets
+# the env var for it.
+eval "$(keychain --eval --quiet github_jpnt bitbucket)"
 
 # Enable bash-completion
 if [ -f /etc/bash_completion ]; then
@@ -27,6 +34,7 @@ alias l='eza -alh --icons --group --group-directories-first --color-scale'
 alias t='l -T'
 alias ta='tmux attach'
 alias nv='nvim'
+alias open='xdg-open'
 alias llm='uvx ramalama'
 alias g='git status -sb'
 alias gb='git branch --all'
