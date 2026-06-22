@@ -52,6 +52,6 @@ hex() { [ $# -gt 0 ] && printf '0x%x\n' "$@" || while read -r n; do printf '0x%x
 dec() { [ $# -gt 0 ] && printf '%d\n' "$@" || while read -r n; do printf '%d\n' "$n"; done; }
 oct() { [ $# -gt 0 ] && printf '0%o\n' "$@" || while read -r n; do printf '0%o\n' "$n"; done; }
 
-sel() { fd . -0 | fzf -m --read0 --print0; }
-sx() { xargs -0 -r "$@"; }
+sel() { local dir="${1:-.}"; fd . "$dir" -0 | fzf -m --read0 --print0; }
+run() { xargs -0 -r "$@"; }
 
