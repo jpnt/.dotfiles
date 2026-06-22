@@ -75,7 +75,7 @@ def call_llm(cfg: dict[str, str], prompt: str, model: str | None, stream: bool):
                     j = json.loads(chunk)
                 except json.JSONDecodeError:
                     continue
-                sys.stdout.write(j["choices"][0]["delta"].get("content", ""))
+                sys.stdout.write(j["choices"][0]["delta"].get("content") or "")
                 sys.stdout.flush()
         return ""
 
