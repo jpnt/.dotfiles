@@ -6,6 +6,8 @@ import urllib.request
 import os
 from pathlib import Path
 import tomllib
+import hashlib
+import tempfile
 
 def load_config():
     path = Path("~/.config/llm/config.toml").expanduser()
@@ -16,6 +18,17 @@ def load_config():
         "model": os.getenv("LLM_MODEL", "qwen"),
         "api_key": os.getenv("LLM_API_KEY", "dummy"),
     }
+
+def cache_path(model: str, instruction: str, data: str) -> Path:
+    h = hashlib.sha256()
+    h.update(instruction.encode())
+    h.update(b"\0")
+    h.update(data.encode())
+    key = h.hexdigest()[:16]
+
+    path = Path("~/.cache/llm").expanduser() / model / f"{key}.md"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    return path
 
 
 def parse_args() -> tuple[str | None, bool, str]:
@@ -94,9 +107,18 @@ def main():
     else:
         prompt = instruction
 
+    cache_file = cache_path(model or cfg["model"], instruction, data)
+
+    if cache_file.exists() and not stream:
+        print(cache_file.read_text())
+        return 0
+
     try:
         out = call_llm(cfg, prompt, model, stream)
         if not stream:
+            tmp = cache_file.with_suffix(".tmp")
+            tmp.write_text(out)
+            tmp.replace(cache_file)
             print(out)
     except Exception as e:
         print(f"error: {e}", file=sys.stderr)
