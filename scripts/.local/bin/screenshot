@@ -1,0 +1,12 @@
+#!/bin/sh
+set -eu
+
+lock="${XDG_RUNTIME_DIR:-/tmp}/grim.lock"
+mkdir "$lock" 2>/dev/null || exit 0
+trap 'rmdir "$lock"' EXIT INT TERM HUP
+
+case "$1" in
+    full)   grim ;;
+    region) grim -g "$(slurp)" ;;
+    *)      echo "usage: $0 [ full | region ]" >&2; exit 1 ;;
+esac
