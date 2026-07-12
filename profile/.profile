@@ -9,10 +9,6 @@ export EDITOR=nvim
 export PAGER=less
 export LESS='-R --use-color -Dd+r$Du+b$'
 
-# XDG_RUNTIME_DIR fallback
-: "${XDG_RUNTIME_DIR:=/run/user/$(id -u)}"
-mkdir -p "$XDG_RUNTIME_DIR" && chmod 700 "$XDG_RUNTIME_DIR"
-
 # Source shell-specific interactive config if interactive
 if test -n "$PS1"; then
     case "$(ps -p $$ -o comm= 2>/dev/null)" in
@@ -23,7 +19,6 @@ fi
 if test "$(tty)" = "/dev/tty1"; then
     export XKB_DEFAULT_LAYOUT="us,pt"
     export XKB_DEFAULT_OPTIONS="grp:alt_shift_toggle,caps:swapescape"
-	export WLR_DRM_DEVICES=/dev/dri/card0
 
     exec river > /tmp/river-$(date '+%s').log 2>&1
 fi

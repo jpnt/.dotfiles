@@ -1,13 +1,18 @@
 #!/bin/sh
-bat_dir="/sys/class/power_supply/BAT0"
+bat_dir=/sys/class/power_supply/BAT0
 
-test -d "${bat_dir}" || echo "error: ${bat_dir} not found" && exit 1
+if [ ! -d "$bat_dir" ]; then
+    echo "error: $bat_dir not found" >&2
+    exit 1
+fi
 
-capacity="$(cat ${bat_dir}/capacity)"
-status="$(cat ${bat_dir}/status)"
+capacity="$(cat $bat_dir/capacity)" # seems to block here
+status="$(cat $bat_dir/status)"
+
+echo "$capacity% $status"
 
 notify-send \
 	-t 2000 \
 	-h string:x-canonical-private-synchronous:sys:battery \
 	"Battery" \
-	"${capacity}% ${status}"
+	"$capacity% $status"
