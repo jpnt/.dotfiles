@@ -17,7 +17,6 @@ grim
 slurp
 seatd
 dumb_runtime_dir
-keyd
 dhcpcd
 qt5-wayland
 qt6-wayland

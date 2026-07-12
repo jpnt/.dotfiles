@@ -21,6 +21,9 @@ if test -n "$PS1"; then
 fi
 
 if test "$(tty)" = "/dev/tty1"; then
+    export XKB_DEFAULT_LAYOUT="us,pt"
+    export XKB_DEFAULT_OPTIONS="grp:alt_shift_toggle,caps:swapescape"
 	export WLR_DRM_DEVICES=/dev/dri/card0
+
     exec river > /tmp/river-$(date '+%s').log 2>&1
 fi
