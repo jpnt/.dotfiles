@@ -1,9 +1,8 @@
 #!/bin/sh
 set -eu
 
-lock="${XDG_RUNTIME_DIR:-/tmp}/grim.lock"
-mkdir "$lock" 2>/dev/null || exit 0
-trap 'rmdir "$lock"' EXIT INT TERM HUP
+exec 9>"${XDG_RUNTIME_DIR:-/tmp}/grim.lock"
+flock -n 9
 
 case "$1" in
     full)   grim ;;
