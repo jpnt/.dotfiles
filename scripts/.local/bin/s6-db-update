@@ -1,0 +1,23 @@
+#!/bin/sh
+# based on: https://wiki.artixlinux.org/Main/LocalUserServicesOns6
+set -eu
+
+DATAPATH="$HOME/.local/share/s6"
+RCPATH="$DATAPATH/rc"
+DBPATH="$RCPATH/compiled"
+SVPATH="$DATAPATH/sv"
+LIVE="${XDG_STATE_HOME:-$HOME/.local/state}/s6/rc"
+TIMESTAMP=$(date +%s)
+
+mkdir -p "$RCPATH" "$SVPATH"
+
+s6-rc-compile "$DBPATH-$TIMESTAMP" "$SVPATH"
+
+if s6-svok "${XDG_STATE_HOME:-$HOME/.local/state}/s6/scan" 2>/dev/null; then
+    s6-rc-update -l "$LIVE" "$DBPATH-$TIMESTAMP"
+fi
+
+ln -sfn "$DBPATH-$TIMESTAMP" "$DBPATH.tmp"
+mv -T "$DBPATH.tmp" "$DBPATH"
+
+echo "==> switched to $DBPATH-$TIMESTAMP"

@@ -1,0 +1,2 @@
+#!/bin/sh
+exec wlsunset -l 40 -L -8 -t 4500 -T 6500 -g 1.0

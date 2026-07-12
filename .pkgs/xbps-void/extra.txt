@@ -1,3 +1,4 @@
+s6-man-pages
 smartmontools
 lm_sensors
 dmidecode

@@ -1,149 +1,16 @@
 #!/bin/sh
+export TERMINAL=footclient \
+	GTK_THEME=Adwaita:dark \
+	QT_STYLE_OVERRIDE=Adwaita-Dark
 
-# Appearance
-riverctl background-color 0x000000
-riverctl border-color-focused 0xa7a7a7
-riverctl border-color-unfocused 0x373737
-riverctl border-width 1
+export \
+	XDG_SESSION_TYPE=wayland \
+	GDK_BACKEND=wayland \
+	QT_QPA_PLATFORM=wayland-egl \
+	MOZ_ENABLE_WAYLAND=1 \
+	CLUTTER_BACKEND=wayland \
+	SDL_VIDEODRIVER=wayland \
+	ELM_DISPLAY=wl \
+	_JAVA_AWT_WM_NONREPARENTING=1
 
-# Keyboard
-riverctl set-repeat 40 600
-riverctl keyboard-layout -options "grp:alt_shift_toggle" "pt,us"
-
-# Cursor
-riverctl focus-follows-cursor normal
-riverctl hide-cursor when-typing enabled
-
-# Mouse
-riverctl map-pointer normal Super BTN_LEFT move-view      
-riverctl map-pointer normal Super BTN_RIGHT resize-view   
-riverctl map-pointer normal Super BTN_MIDDLE toggle-float 
-
-# Touchpad
-for pad in $(riverctl list-inputs | grep -i touchpad); do
-    riverctl input "$pad" tap enabled
-    riverctl input "$pad" tap-button-map left-right-middle
-    riverctl input "$pad" drag enabled
-    riverctl input "$pad" drag-lock enabled
-    riverctl input "$pad" disable-while-typing enabled
-    riverctl input "$pad" middle-emulation disabled
-    riverctl input "$pad" natural-scroll enabled
-    riverctl input "$pad" scroll-method two-finger
-    riverctl input "$pad" click-method button-areas
-    riverctl input "$pad" accel-profile adaptive
-    riverctl input "$pad" pointer-accel 0.0
-done
-
-# Terminal
-riverctl map normal Super+Shift Return spawn "$TERMINAL"
-
-# Launcher
-riverctl map normal Super P spawn 'fuzzel'
-
-# Window management
-riverctl map normal Super X close                    
-riverctl map normal Super J focus-view next          
-riverctl map normal Super K focus-view previous      
-riverctl map normal Super Return zoom                
-riverctl map normal Super Tab focus-previous-tags
-
-# Snapping
-riverctl map normal Super Left  snap left
-riverctl map normal Super Right snap right
-riverctl map normal Super Up    snap up
-riverctl map normal Super Down  snap down
-riverctl map normal Super+Shift Left  spawn 'riverctl snap left; riverctl resize vertical +9999'
-riverctl map normal Super+Shift Right spawn 'riverctl snap right; riverctl resize vertical +9999'
-riverctl map normal Super+Shift Up    spawn 'riverctl snap up; riverctl resize horizontal +9999'
-riverctl map normal Super+Shift Down  spawn 'riverctl snap down; riverctl resize horizontal +9999'
-
-# Floating resize
-riverctl map normal Super+Shift H resize horizontal -100
-riverctl map normal Super+Shift L resize horizontal +100
-riverctl map normal Super+Shift J resize vertical +100
-riverctl map normal Super+Shift K resize vertical -100
-
-# Layout control
-riverctl map normal Super H send-layout-cmd rivertile "main-ratio -0.05"  
-riverctl map normal Super L send-layout-cmd rivertile "main-ratio +0.05"  
-riverctl map normal Super I send-layout-cmd rivertile "main-count +1"     
-riverctl map normal Super D send-layout-cmd rivertile "main-count -1"
-
-# Layout switching
-riverctl map normal Super E toggle-fullscreen
-riverctl map normal Super Space toggle-float
-riverctl map normal Super F toggle-float
-
-# Screenshot
-riverctl map normal Super S spawn 'grim'
-riverctl map normal Super+Shift S spawn 'sh -c "grim -g \"$(slurp)\" - | wl-copy"' 
-
-# Notifications
-riverctl map normal Control+Alt Backspace spawn 'waylock'
-# TODO: instead of lengthy notify-send commands, extract them somewhere
-riverctl map normal Super+Shift B spawn 'notify-send -t 2000 -h string:x-canonical-private-synchronous:sys:battery "Battery" "$(cat /sys/class/power_supply/BAT0/capacity)% $(cat /sys/class/power_supply/BAT0/status)"'
-riverctl map normal Super+Shift D spawn 'notify-send -t 2000 -h string:x-canonical-private-synchronous:sys:date "Date" "$(date)"'
-
-riverctl map normal Super+Shift T spawn 'notify-send -t 2000 -h string:x-canonical-private-synchronous:wl:tags "Tags" "$(rivertags)"'
-
-# Audio
-riverctl map normal None XF86AudioRaiseVolume spawn 'volume up'
-riverctl map normal None XF86AudioLowerVolume spawn 'volume down'
-riverctl map normal None XF86AudioMute spawn 'volume mute'
-riverctl map normal None XF86AudioMicMute spawn 'volume mic-mute'
-
-# Monitor focus
-riverctl map normal Super Comma focus-output previous
-riverctl map normal Super Period focus-output next
-riverctl map normal Super+Shift Comma send-to-output previous  
-riverctl map normal Super+Shift Period send-to-output next
-
-# Tags
-for i in $(seq 1 9); do
-    tags=$((1 << (i - 1)))
-    riverctl map normal Super "$i" set-focused-tags "$tags"
-    riverctl map normal Super+Shift "$i" set-view-tags "$tags"
-    riverctl map normal Super+Control "$i" toggle-focused-tags "$tags"
-    riverctl map normal Super+Control+Shift "$i" toggle-view-tags "$tags"
-done
-
-all_tags=$(((1 << 32) - 1))
-riverctl map normal Super 0 set-focused-tags "$all_tags"
-riverctl map normal Super+Shift 0 set-view-tags "$all_tags"
-
-# Exit
-riverctl map normal Super+Shift Q exit
-
-# VT switching
-for vt in $(seq 1 12); do
-    riverctl map normal Control+Alt "F$vt" spawn "chvt $vt"
-done
-
-# Rules
-riverctl rule-add -app-id gimp float
-riverctl rule-add -app-id Eclipse float
-
-# Layout
-riverctl default-layout rivertile
-
-# TODO: this doesnt work. just use s6-svscan for user services.
-# Write display variables
-test -d "$TURNSTILE_ENV_DIR" && {
-    echo "$WAYLAND_DISPLAY" > "$TURNSTILE_ENV_DIR"/WAYLAND_DISPLAY
-    test -n "$DISPLAY" && echo "$DISPLAY" > "$TURNSTILE_ENV_DIR"/DISPLAY
-}
-
-# Signal readiness
-FTRIG="/run/user/$(id -u)/wayland-ready"
-s6-mkfifodir "$FTRIG"
-s6-ftrig-notify "$FTRIG" 'r'
-
-# Maybe give up and fork all processes in river...
-rivertile -view-padding 0 -outer-padding 0 &
-# foot --server &
-# kanshi &
-# swaybg -i ~/Imagens/Wallpaper/current &
-# wlsunset -l 40 -L -8 -t 4500 -T 6500 -g 1.0 &
-# TODO: https://sr.ht/~kennylevinsen/poweralertd/
-
-
+s6-user-session

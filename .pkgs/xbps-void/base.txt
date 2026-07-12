@@ -6,7 +6,7 @@ foot
 xdg-user-dirs
 xdg-desktop-portal-wlr
 xdg-desktop-portal-gtk
-wlroots0.19-devel
+wlroots0.20-devel
 xorg-server-xwayland
 xlsclients
 lswt
@@ -16,7 +16,7 @@ wl-clipboard
 grim
 slurp
 seatd
-turnstile
+dumb_runtime_dir
 keyd
 dhcpcd
 qt5-wayland
@@ -27,8 +27,6 @@ fuzzel
 trash-cli
 fnott
 waylock
-swaybg
-swayidle
 kanshi
 gammastep
 handlr
@@ -43,7 +41,5 @@ eza
 ntpd-rs
 qalculate
 btrfs-progs
-btrbk
 zstd
-keychain
 make

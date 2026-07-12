@@ -1,0 +1,3 @@
+#!/bin/sh
+exec s6-notifyoncheck dbus-daemon --session --nofork --nopidfile \
+    --address="unix:path=${XDG_RUNTIME_DIR}/bus"

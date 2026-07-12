@@ -50,6 +50,7 @@ link_file() {
 }
 
 for mod in "$@"; do
+    mod=${mod%/}
     [ -d "$mod" ] || {
         echo "error: $mod not a directory" >&2
         exit 1

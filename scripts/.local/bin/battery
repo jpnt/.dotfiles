@@ -1,0 +1,13 @@
+#!/bin/sh
+bat_dir="/sys/class/power_supply/BAT0"
+
+test -d "${bat_dir}" || echo "error: ${bat_dir} not found" && exit 1
+
+capacity="$(cat ${bat_dir}/capacity)"
+status="$(cat ${bat_dir}/status)"
+
+notify-send \
+	-t 2000 \
+	-h string:x-canonical-private-synchronous:sys:battery \
+	"Battery" \
+	"${capacity}% ${status}"

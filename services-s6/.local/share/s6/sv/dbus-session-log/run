@@ -1,0 +1,4 @@
+#!/bin/sh
+d="${XDG_STATE_HOME:-$HOME/.local/state}/s6-logs/dbus-session"
+mkdir -p "$d"
+exec s6-log -d3 t "$d"

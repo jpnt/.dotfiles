@@ -1,0 +1,24 @@
+#!/bin/sh
+set -e
+# Accept that XDG_RUNTIME_DIR is not reliable on all environments...
+STATE="${XDG_STATE_HOME:-$HOME/.local/state}/s6"
+SCAN="$STATE/scan"
+LIVE="$STATE/rc"
+
+# Already supervised and alive? Leave it running, don't touch it.
+if s6-svok "$SCAN" 2>/dev/null; then
+    exit 0
+fi
+
+# Not alive -> anything here is stale state from a crashed/incomplete
+# previous run (or a prior logout that didn't tear down cleanly).
+# Safe to wipe before reinitializing.
+rm -rf "$SCAN" "$LIVE"
+
+mkdir -p "$SCAN"
+s6-svscan "$SCAN" &
+s6-rc-init \
+    -c "$HOME/.local/share/s6/rc/compiled" \
+    -l "$LIVE" \
+    "$SCAN"
+exec s6-rc -l "$LIVE" -u change default

@@ -3,6 +3,10 @@
 SINK='@DEFAULT_AUDIO_SINK@'
 SOURCE='@DEFAULT_AUDIO_SOURCE@'
 
+usage() {
+    echo "$0: usage: $0 [ up | down | mute | mic-mute ]"
+}
+
 get_desc() {
     wpctl inspect "$1" |
         awk -F'"' '/node.description/ { print $2 }'
@@ -41,4 +45,6 @@ case "$1" in
         wpctl set-mute "$SOURCE" toggle
         notify_source
         ;;
+    *)
+        usage
 esac
