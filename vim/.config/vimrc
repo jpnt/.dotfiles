@@ -1,0 +1,29 @@
+vim9script
+
+colorscheme novum
+set background=dark
+
+set number relativenumber
+set hidden
+set nocompatible
+
+syntax on
+filetype plugin indent on
+
+packadd comment
+# external plugins are vendored, see pack/vendor/start
+
+source ~/.config/vim/autocomplete.vim
+source ~/.config/vim/lspconfig.vim
+
+g:mapleader = ' '
+nmap <silent> <leader>f <Cmd>Files<CR>
+nmap <silent> <leader>g <Cmd>RG<CR>
+nmap <silent> <leader>r <Cmd>MRU<CR>
+
+# yank/paste to clipboard
+nnoremap <leader>y "+y
+xnoremap <leader>y "+y
+nnoremap <leader>Y "+Y
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
