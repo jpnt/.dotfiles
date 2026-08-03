@@ -43,8 +43,6 @@ autocmd User LspAttached {
   nnoremap <buffer> <silent> <leader>e <Cmd>LspDiag current<CR>
   nnoremap <buffer> <silent> <leader>rn <Cmd>LspRename<CR>
   nnoremap <buffer> <silent> <leader>ca <Cmd>LspCodeAction<CR>
-  nmap <buffer> <silent> gq <plug>(LspFormat)
-  xmap <buffer> <silent> gq <plug>(LspFormat)
 }
 
 autocmd User LspDetached {
@@ -56,6 +54,4 @@ autocmd User LspDetached {
   silent! nunmap <buffer> <leader>e
   silent! nunmap <buffer> <leader>rn
   silent! nunmap <buffer> <leader>ca
-  silent! nunmap <buffer> gq
-  silent! xunmap <buffer> gq
 }
