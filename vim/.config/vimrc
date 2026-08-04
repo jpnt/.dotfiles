@@ -15,6 +15,7 @@ packadd comment
 
 source ~/.config/vim/autocomplete.vim
 source ~/.config/vim/lspconfig.vim
+source ~/.config/vim/statusline.vim
 
 g:mapleader = ' '
 nmap <silent> <leader>f <Cmd>Files<CR>
