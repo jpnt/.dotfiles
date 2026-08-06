@@ -4,13 +4,13 @@ colorscheme novum
 set background=dark
 
 set number relativenumber
+set ignorecase smartcase
 set hidden
-set nocompatible
-
-syntax on
-filetype plugin indent on
 
 packadd comment
+packadd cfilter
+packadd matchit
+packadd editorconfig
 # external plugins are vendored, see pack/vendor/start
 
 source ~/.config/vim/autocomplete.vim
