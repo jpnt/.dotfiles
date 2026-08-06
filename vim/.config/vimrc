@@ -1,5 +1,7 @@
 vim9script
 
+g:mapleader = ' '
+
 colorscheme novum
 set background=dark
 
@@ -17,7 +19,6 @@ source ~/.config/vim/autocomplete.vim
 source ~/.config/vim/lspconfig.vim
 source ~/.config/vim/statusline.vim
 
-g:mapleader = ' '
 nmap <silent> <leader>f <Cmd>Files<CR>
 nmap <silent> <leader>g <Cmd>RG<CR>
 nmap <silent> <leader>r <Cmd>MRU<CR>
