@@ -13,6 +13,7 @@ packadd comment
 packadd cfilter
 packadd matchit
 packadd editorconfig
+packadd termdebug
 # external plugins are vendored, see pack/vendor/start
 
 source ~/.config/vim/autocomplete.vim
