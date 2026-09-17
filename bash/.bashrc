@@ -39,6 +39,7 @@ alias stracerw='strace -ftt -e trace=read,write -o "stracerw_$(date +%Y%m%d_%H%M
 alias rsyncpreserve='rsync -avHAXS --numeric-ids'
 alias k='kubecolor'
 alias docker='podman'
+alias pdf2txt='mutool draw -F txt'
 
 # Functions
 hex() { [ $# -gt 0 ] && printf '0x%x\n' "$@" || while read -r n; do printf '0x%x\n' "$n"; done; }
